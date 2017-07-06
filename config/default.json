@@ -1,0 +1,30 @@
+{
+  "host": "localhost",
+  "port": 3030,
+  "public": "../client/",
+  "filesDir": "../files/",
+  "paginate": {
+    "default": 10,
+    "max": 50
+  },
+  "mongodb": "mongodb://mongo:27017/qap",
+  "authentication": {
+    "secret": "f06ee1384578fa36c508fda6dfafea70b147c73e856270a4dcf5178552490c6b864fabc41b9d601bcb14fd125db81221ff78d397c6fad5ef5918baa41ef8c6da3edeb9569cf60974937c0a12dc60ab883f06e0ab9e1b879a340f10fd9dee8dc08243c77ab5db9afa06496b3da0a977bd4c93b42579a8cea0b9adcfdd7a2d88a93d303b5c4d62a23dae863a412f1544cc31cc276f85c31ce35e52817c2b90081ce5c4624c615b7e31b14424fb3ac4fb5c2e7e556af4ed6ce7ac2dc9428fd142717dd3b6cd1fca729fe2be985899dedcb8ae428a65d31dd24cda9ec62069f1188b2a0b8559afba3cb7edaac92aeadb80c0391d88de9c1310f85299a3487fb4af10",
+    "strategies": [
+      "anonymous",
+      "jwt"
+    ],
+    "path": "/authentication",
+    "service": "users",
+    "jwt": {
+      "header": {
+        "type": "access"
+      },
+      "audience": "https://yourdomain.com",
+      "subject": "anonymous",
+      "issuer": "feathers",
+      "algorithm": "HS256",
+      "expiresIn": "1d"
+    }
+  }
+}
