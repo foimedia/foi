@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import client from '../main/feathers';
 
 class PostMedia extends Component {
 
@@ -10,9 +9,7 @@ class PostMedia extends Component {
   }
 
   componentDidMount() {
-
     const { data } = this.props;
-
   }
 
   getFileUrl() {

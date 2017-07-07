@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import client from './feathers';
-import Post from '../components/post';
+import Story from '../components/story';
 
 class Timeline extends Component {
 
@@ -8,7 +8,7 @@ class Timeline extends Component {
     const { posts } = this.props;
 
     return <main>
-      {posts.map(post => <Post key={post.id} post={post} />)}
+      {posts.map(post => <Story key={post.id} posts={post} />)}
     </main>;
   }
 
