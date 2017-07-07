@@ -13,7 +13,7 @@ class Post extends Component {
   render() {
     const { post } = this.props;
 
-    return <div>
+    return <section className="post">
       {post.type == 'text' &&
         <PostText data={post.content} />
       }
@@ -29,7 +29,7 @@ class Post extends Component {
       {post.type == 'location' &&
         <PostLocation data={post.content} />
       }
-    </div>;
+    </section>;
   }
 
 }

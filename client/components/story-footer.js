@@ -22,10 +22,11 @@ const StoryFooterBox = styled.footer`
       margin-right: 1rem;
       font-weight: 600;
     }
-    &:first-child {
+    &:nth-child(1) {
       margin: 0;
       &:before {
         content: '';
+        margin: 0;
       }
     }
   }

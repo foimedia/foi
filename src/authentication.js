@@ -48,7 +48,7 @@ module.exports = function () {
           if(hook.data.strategy == 'anonymous') {
             // make sure params.payload exists
             hook.params.payload = hook.params.payload || {};
-            // clear user and key
+            // clear user and key if coming from authorized session
             if(hook.params.payload.user) {
               delete hook.params.payload.user;
               delete hook.params.payload.key;

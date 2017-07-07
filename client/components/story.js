@@ -13,8 +13,10 @@ const StoryBox = styled.article`
     border-color: #d6d6d6;
     box-shadow: 0 0 8px rgba(0,0,0,0.08);
   }
-  p {
-    margin: 0;
+  .post {
+    p {
+      margin: 0;
+    }
   }
 `;
 
