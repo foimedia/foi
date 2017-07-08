@@ -14,29 +14,9 @@ module.exports = function () {
   app.configure(chat);
   app.configure(media);
 
-  const parse = data => {
+  const createPost = data => {
     const message = new Message(data);
-    const type = message.getType();
-    if(type !== undefined && !message.isBotCommand()) {
-      const post = {
-        id: message.message_id,
-        sentAt: message.getSentAt(),
-        creatorSentAt: message.getCreatorSentAt(),
-        editedAt: message.getEditedAt(),
-        type: type,
-        content: message[type],
-        mediaId: message[type].file_id,
-        userId: message.from.id,
-        chatId: message.chat.id,
-        creatorId: message.getCreator()
-      };
-      return post;
-    }
-    return false;
-  };
-
-  const createPost = message => {
-    const post = parse(message);
+    const post = message.toPost();
     const { user, chat, media } = app.telegram;
     if(post) {
       return user.createMessageUsers(message)
@@ -49,6 +29,18 @@ module.exports = function () {
     }
   };
 
+  const updatePost = data => {
+    const message = new Message(data);
+    const post = message.toPost();
+    if(post) {
+      service.get(post.id).then(() => {
+        service.patch(post.id, post);
+      }).catch(() => {
+        createPost(data);
+      });
+    }
+  }
+
   /*
    * Message received
    */
@@ -57,20 +49,12 @@ module.exports = function () {
   /*
    * Message edited
    */
-  bot.on('edited_message', message => {
-    const post = parse(message);
-    if(post) {
-      service.get(post.id).then(data => {
-        service.patch(post.id, post);
-      }).catch(() => {
-        createPost(message);
-      });
-    }
-  });
+  bot.on('edited_message', updatePost);
 
   return Object.assign(app.telegram || {}, {
     post: {
-      parse
+      createPost,
+      updatePost
     }
   });
 

@@ -67,6 +67,26 @@ Message.prototype.isBotCommand = function () {
   } else {
     return false;
   }
-}
+};
+
+Message.prototype.toPost = function () {
+  const type = this.getType();
+  if(type !== undefined && !this.isBotCommand()) {
+    const post = {
+      id: this.message_id,
+      sentAt: this.getSentAt(),
+      creatorSentAt: this.getCreatorSentAt(),
+      editedAt: this.getEditedAt(),
+      type: type,
+      content: this[type],
+      mediaId: this[type].file_id,
+      userId: this.from.id,
+      chatId: this.chat.id,
+      creatorId: this.getCreator()
+    };
+    return post;
+  }
+  return false;
+};
 
 exports = module.exports = Message;
