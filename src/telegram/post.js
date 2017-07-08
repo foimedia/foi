@@ -58,10 +58,10 @@ module.exports = function () {
    * Message edited
    */
   bot.on('edited_message', message => {
-    const post = Post.parse(message);
+    const post = parse(message);
     if(post) {
-      postService.get(post.id).then(data => {
-        postService.patch(post.id, post);
+      service.get(post.id).then(data => {
+        service.patch(post.id, post);
       }).catch(() => {
         createPost(message);
       });

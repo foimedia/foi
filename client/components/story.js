@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import StoryFooter from './story-footer';
 import Post from './post/index';
+import { client } from '../main/feathers';
 
 const StoryBox = styled.article`
   max-width: 600px;
@@ -43,22 +44,37 @@ class Story extends Component {
     return story.posts;
   }
 
-  render() {
+  componentDidMount() {
     const { story } = this.props;
-    const posts = this.getPosts();
-    return <StoryBox>
-      {story.title &&
-        <header className="story-header">
-          <h2>{story.title}</h2>
-        </header>
+    const storyService = client.service('stories');
+    this.setState({ story });
+    storyService.on('patched', patchedStory => {
+      if(patchedStory.id == story.id) {
+        this.setState({ story: patchedStory });
       }
-      <section className="story-posts">
-        {posts.map(post =>
-          <Post key={post.id} post={post} />
-        )}
-      </section>
-      <StoryFooter {...this.props} />
-    </StoryBox>;
+    });
+  }
+
+  render() {
+    const { story } = this.state;
+    const posts = this.getPosts();
+    if(story === undefined) {
+      return <p>Loading story...</p>;
+    } else {
+      return <StoryBox>
+        {story.title &&
+          <header className="story-header">
+            <h2>{story.title}</h2>
+          </header>
+        }
+        <section className="story-posts">
+          {posts.map(post =>
+            <Post key={`post-${post.id}`} post={post} />
+          )}
+        </section>
+        <StoryFooter {...this.props} />
+      </StoryBox>;
+    }
 
   }
 
