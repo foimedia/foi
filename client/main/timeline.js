@@ -23,6 +23,7 @@ class Timeline extends Component {
     return {
       id: post.id,
       userId: post.userId,
+      user: post.user,
       posts: [post],
       createdAt: post.sentAt
     };
@@ -35,6 +36,16 @@ class Timeline extends Component {
 
     const promises = [];
 
+    // Stories
+    promises.push(stories.find({
+      query: {
+        $sort: {
+          createdAt: -1
+        }
+      }
+    }));
+
+    // Posts not assigned to any story
     promises.push(posts.find({
       query: {
         storyId: {
@@ -46,17 +57,11 @@ class Timeline extends Component {
       }
     }));
 
-    promises.push(stories.find({
-      query: {
-        $sort: {
-          createdAt: -1
-        }
-      }
-    }));
-
     Promise.all(promises).then(res => {
-      const stories = this.handlePosts(res[0].data).concat(res[1].data);
+      // Concat stories and storified posts
+      const stories = res[0].data.concat(this.handlePosts(res[1].data));
       this.setState({
+        // Set state with descending date sort
         stories: stories.sort((a,b) => {
           return -(new Date(a.createdAt) - new Date(b.createdAt))
         })

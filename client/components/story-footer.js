@@ -88,14 +88,9 @@ class StoryFooter extends Component {
 
   render() {
     const { story } = this.props;
-    const contributors = this.getContributors();
     return <StoryFooterBox>
       <p>
-        {contributors.map((contributor,i) =>
-          <span key={story.id + '-' + i}>
-            {contributor.first_name} {contributor.last_name}
-          </span>
-        )}
+        {story.user.first_name} {story.user.last_name}
       </p>
       <p>
         {this.getStoryDate()}

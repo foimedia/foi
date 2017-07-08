@@ -35,6 +35,7 @@ module.exports = {
 
   after: {
     all: [
+      populate('user', {field: 'userId', service: 'users'}),
       populate({
         schema: {
           include: {
