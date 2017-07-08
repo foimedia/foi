@@ -1,8 +1,27 @@
-import React, { Component } from 'react';
-import Story from '../components/story';
 import { client } from './feathers';
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import Story from '../components/story';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
+import Transition from 'react-transition-group/Transition';
 
-class Timeline extends Component {
+const StoriesWrapper = styled.section`
+  max-width: 600px;
+  margin: 0 auto;
+  .fade {
+    transition: all 200ms linear;
+  }
+  .fade-entering, .fade-exited {
+    transform: translate(0, -2rem);
+    opacity: 0.01;
+  }
+  .fade-entered, .fade-exiting {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+`;
+
+class Stories extends Component {
 
   constructor (props) {
     super(props);
@@ -106,23 +125,29 @@ class Timeline extends Component {
   render () {
     const { stories } = this.state;
     if(stories === undefined) {
-      return <main>
-        <h1>Loading</h1>
-      </main>;
+      return <h2>Loading</h2>;
     } else if(!stories.length) {
-      return <main>
-        <h1>No posts were found</h1>
-      </main>;
+      return <h2>No posts were found</h2>;
     } else {
-      return <section className="stories">
-        {stories.map(story =>
-          (story.posts && story.posts.length) &&
-            <Story key={`story-${story.id}`} story={story} />
-        )}
-      </section>;
+      const items = stories.map(story => {
+        if(story.posts && story.posts.length) {
+          return <Transition key={`story-${story.id}`} timeout={200}>
+            {(status) => (
+              <div className={`fade fade-${status}`}>
+                <Story story={story} />
+              </div>
+            )}
+          </Transition>;
+        }
+      });
+      return <StoriesWrapper className="stories">
+        <TransitionGroup>
+          {items}
+        </TransitionGroup>
+      </StoriesWrapper>;
     }
   }
 
 }
 
-export default Timeline;
+export default Stories;

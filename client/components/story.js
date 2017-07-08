@@ -1,13 +1,13 @@
+import { client } from '../main/feathers';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import StoryFooter from './story-footer';
 import Post from './post/index';
-import { client } from '../main/feathers';
+// import Transition from 'react-transition-group/Transition';
 
 const StoryBox = styled.article`
-  max-width: 600px;
   border: 1px solid #e6e6e6;
-  margin: 0 auto 1rem;
+  margin: 0 0 1rem;
   border-radius: 3px;
   box-shadow: 0 0 5px rgba(0,0,0,0.05);
   :hover {
@@ -29,6 +29,23 @@ const StoryBox = styled.article`
     p {
       margin: 0;
     }
+  }
+  .example-enter {
+    opacity: 0.01;
+  }
+
+  .example-enter.example-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in;
+  }
+
+  .example-leave {
+    opacity: 1;
+  }
+
+  .example-leave.example-leave-active {
+    opacity: 0.01;
+    transition: opacity 300ms ease-in;
   }
 `;
 
@@ -56,6 +73,10 @@ class Story extends Component {
         this.setState({ story: patchedStory });
       }
     });
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return nextProps.story !== this.state.story;
   }
 
   render() {

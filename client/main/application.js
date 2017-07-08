@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Timeline from './timeline';
+import Stories from './stories';
 import { client } from './feathers';
 
 
@@ -23,12 +23,12 @@ const auth = (token = false) => {
 
 class Application extends Component {
 
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {};
   }
 
-  componentDidMount() {
+  componentDidMount () {
 
     const authorize = client.service('authorize');
 
@@ -50,7 +50,7 @@ class Application extends Component {
 
   }
 
-  logout() {
+  logout () {
     this.setState({
       payload: undefined,
       user: undefined
@@ -63,7 +63,7 @@ class Application extends Component {
     });
   }
 
-  render() {
+  render () {
     const { payload, user } = this.state;
     return <main>
       {(user === undefined && payload !== undefined) &&
@@ -75,7 +75,7 @@ class Application extends Component {
           <a href="javascript:void(0);" onClick={this.logout.bind(this)}>Logout</a>
         </div>
       }
-      <Timeline />
+      <Stories />
     </main>;
   }
 

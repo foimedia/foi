@@ -28,6 +28,10 @@ class Post extends Component {
     });
   }
 
+  shouldComponentUpdate(nextProps) {
+    return nextProps.post !== this.state.post;
+  }
+
   render() {
 
     const { post } = this.state;
