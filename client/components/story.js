@@ -40,8 +40,11 @@ class Story extends Component {
   }
 
   getPosts() {
-    const { story } = this.props;
-    return story.posts;
+    const { story } = this.state;
+    if(story !== undefined && story.posts && story.posts.length)
+      return story.posts;
+    else
+      return [];
   }
 
   componentDidMount() {
@@ -57,10 +60,10 @@ class Story extends Component {
 
   render() {
     const { story } = this.state;
-    const posts = this.getPosts();
     if(story === undefined) {
       return <p>Loading story...</p>;
     } else {
+      const posts = this.getPosts();
       return <StoryBox>
         {story.title &&
           <header className="story-header">
