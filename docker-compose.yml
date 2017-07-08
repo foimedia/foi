@@ -12,7 +12,7 @@ services:
     - .:/src
     environment:
       NODE_ENV: development
-      TELEGRAM_TOKEN: [your-telegram-token-here]
+      TELEGRAM_TOKEN: 354916489:AAGFCSApVarFkRN0R9ZFxVajcicVcv6OPLU
   mongo:
     image: mongo
     ports:

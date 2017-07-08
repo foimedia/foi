@@ -1,4 +1,6 @@
-module.exports = function (app) {
+module.exports = function () {
+
+  const app = this;
 
   const service = app.service('users');
 
@@ -26,9 +28,11 @@ module.exports = function (app) {
     return Promise.all(promises);
   }
 
-  return {
-    updateUser,
-    createMessageUsers
-  }
+  return Object.assign(app.telegram || {}, {
+    user: {
+      updateUser,
+      createMessageUsers
+    }
+  });
 
 };

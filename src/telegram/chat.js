@@ -1,5 +1,6 @@
-module.exports = function (app) {
+module.exports = function () {
 
+  const app = this;
   const service = app.service('chats');
 
   function updateChat (chat) {
@@ -21,8 +22,10 @@ module.exports = function (app) {
     return Promise.all(promises);
   }
 
-  return {
-    createMessageChats
-  };
+  return Object.assign(app.telegram || {}, {
+    chat: {
+      createMessageChats
+    }
+  });
 
 };

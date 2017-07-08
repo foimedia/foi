@@ -38,11 +38,6 @@ module.exports = function () {
   app.service('authentication').hooks({
     before: {
       create: [
-        hook => {
-          console.log(hook.params);
-          console.log(hook.data);
-          return hook;
-        },
         authentication.hooks.authenticate(config.strategies),
         hook => {
           if(hook.data.strategy == 'anonymous') {

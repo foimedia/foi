@@ -1,91 +1,77 @@
-const getCreator = msg => {
-  return msg.forward_from ? msg.forward_from.id : msg.from.id;
-};
-const getCreatorSentAt = msg => {
-  return msg.forward_date ? new Date(msg.forward_date * 1000) : new Date(msg.date * 1000);
-}
-const getMessageEditedAt = msg => {
-  return msg.edit_date ? new Date(msg.edit_date * 1000) : new Date(msg.date * 1000);
-};
-const getSentAt = msg => {
-  return new Date(msg.date * 1000);
-};
+const Message = require('./message');
 
-const supportedTypes = [
-  'text',
-  'photo',
-  'audio',
-  'document',
-  'sticker',
-  'video',
-  'voice',
-  'video_note',
-  'contact',
-  'location',
-  'venue'
-];
-
-function getType (msg) {
-  let detected;
-  for(var key in msg) {
-    supportedTypes.forEach(type => {
-      if(key == type) {
-        detected = key;
-      }
-    });
-  }
-  return detected;
-};
-
-function hasEntity (msg, entityType) {
-  const entities = msg.entities;
-  let hasEntity = false;
-  if(entities && entities.length) {
-    entities.forEach(entity => {
-      if(entity.type == entityType)
-        hasEntity = true;
-    });
-  }
-  return hasEntity;
-};
-
-function isBotCommand(msg) {
-  if(hasEntity(msg, 'bot_command')) {
-    // Any slash following a string receives the bot command entity
-    if(msg.text.indexOf('/') == 0) {
-      return true;
-    } else {
-      return false;
-    }
-  } else {
-    return false;
-  }
-};
-
-function parse (msg) {
-  const type = getType(msg);
-  if(type !== undefined && !isBotCommand(msg)) {
-    const post = {
-      id: msg.message_id,
-      sentAt: getSentAt(msg),
-      creatorSentAt: getCreatorSentAt(msg),
-      editedAt: getMessageEditedAt(msg),
-      type: type,
-      content: msg[type],
-      mediaId: msg[type].file_id,
-      userId: msg.from.id,
-      chatId: msg.chat.id,
-      creatorId: getCreator(msg)
-    };
-    return post;
-  }
-  return false;
-};
+const user = require('./user');
+const chat = require('./chat');
+const media = require('./media');
 
 module.exports = function () {
-  return {
-    supportedTypes,
-    hasEntity,
-    parse
+
+  const app = this;
+  const bot = app.telegram.bot;
+  const service = app.service('posts');
+
+  app.configure(user);
+  app.configure(chat);
+  app.configure(media);
+
+  const parse = data => {
+    const message = new Message(data);
+    const type = message.getType();
+    if(type !== undefined && !message.isBotCommand()) {
+      const post = {
+        id: message.message_id,
+        sentAt: message.getSentAt(),
+        creatorSentAt: message.getCreatorSentAt(),
+        editedAt: message.getEditedAt(),
+        type: type,
+        content: message[type],
+        mediaId: message[type].file_id,
+        userId: message.from.id,
+        chatId: message.chat.id,
+        creatorId: message.getCreator()
+      };
+      return post;
+    }
+    return false;
   };
+
+  const createPost = message => {
+    const post = parse(message);
+    const { user, chat, media } = app.telegram;
+    if(post) {
+      return user.createMessageUsers(message)
+        .then(() => chat.createMessageChats(message))
+        .then(() => media.createPostMedia(post))
+        .then(() => service.create(post))
+        .catch(err => {
+          throw new errors.GeneralError(err);
+        });
+    }
+  };
+
+  /*
+   * Message received
+   */
+  bot.on('message', createPost);
+
+  /*
+   * Message edited
+   */
+  bot.on('edited_message', message => {
+    const post = Post.parse(message);
+    if(post) {
+      postService.get(post.id).then(data => {
+        postService.patch(post.id, post);
+      }).catch(() => {
+        createPost(message);
+      });
+    }
+  });
+
+  return Object.assign(app.telegram || {}, {
+    post: {
+      parse
+    }
+  });
+
 };

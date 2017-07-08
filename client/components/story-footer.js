@@ -39,24 +39,22 @@ class StoryFooter extends Component {
     this.state = {};
   }
 
+  componentDidMount() {
+
+  }
+
   getPosts() {
-    const { posts } = this.props;
-    if(!Array.isArray(posts)) {
-      return [posts];
-    } else {
-      return posts;
-    }
+    const { story } = this.props;
+    return story.posts;
   }
 
   getContributors() {
     const posts = this.getPosts();
     let contributors = [];
-    console.log(posts);
     posts.forEach(post => {
       if(contributors.indexOf(post.creator) == -1)
         contributors.push(post.creator);
     });
-    console.log(contributors);
     return contributors;
   }
 
@@ -89,9 +87,16 @@ class StoryFooter extends Component {
   }
 
   render() {
+    const { story } = this.props;
     const contributors = this.getContributors();
     return <StoryFooterBox>
-      <p>{contributors.map(contributor => <span key={contributor.username}>{contributor.first_name} {contributor.last_name}</span>)}</p>
+      <p>
+        {contributors.map((contributor,i) =>
+          <span key={story.id + '-' + i}>
+            {contributor.first_name} {contributor.last_name}
+          </span>
+        )}
+      </p>
       <p>
         {this.getStoryDate()}
       </p>

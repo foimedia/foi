@@ -1,7 +1,8 @@
-module.exports = function (app) {
+module.exports = function () {
 
+  const app = this;
+  const bot = app.telegram.bot;
   const service = app.service('authorize');
-  const bot = app.bot;
 
   bot.onText(/\/start (.+)/, (msg, match) => {
     const token = match[1];

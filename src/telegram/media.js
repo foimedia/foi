@@ -1,4 +1,6 @@
-module.exports = function (app) {
+module.exports = function () {
+
+  const app = this;
 
   const service = app.service('media');
 
@@ -22,8 +24,10 @@ module.exports = function (app) {
     return Promise.all(promises);
   };
 
-  return {
-    createPostMedia
-  };
+  return Object.assign(app.telegram || {}, {
+    media: {
+      createPostMedia
+    }
+  });
 
 };

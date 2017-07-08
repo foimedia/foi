@@ -13,7 +13,18 @@ const StoryBox = styled.article`
     border-color: #d6d6d6;
     box-shadow: 0 0 8px rgba(0,0,0,0.08);
   }
+  .story-header {
+    padding: 2rem;
+    h2 {
+      margin: 0;
+    }
+    border-bottom: 1px solid #eee;
+  }
   .post {
+    margin: 0 0 1rem;
+    &:last-child {
+      margin: 0;
+    }
     p {
       margin: 0;
     }
@@ -28,19 +39,25 @@ class Story extends Component {
   }
 
   getPosts() {
-    const { posts } = this.props;
-    if(!Array.isArray()) {
-      return [posts];
-    } else {
-      return posts;
-    }
+    const { story } = this.props;
+    return story.posts;
   }
 
   render() {
+    const { story } = this.props;
     const posts = this.getPosts();
     return <StoryBox>
-      {posts.map(post => <Post key={post.id} post={post} />)}
-      <StoryFooter posts={posts} />
+      {story.title &&
+        <header className="story-header">
+          <h2>{story.title}</h2>
+        </header>
+      }
+      <section className="story-posts">
+        {posts.map(post =>
+          <Post key={post.id} post={post} />
+        )}
+      </section>
+      <StoryFooter {...this.props} />
     </StoryBox>;
 
   }

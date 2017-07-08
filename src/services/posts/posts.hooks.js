@@ -4,38 +4,49 @@ const { iff, populate } = require('feathers-hooks-common');
 
 module.exports = {
   before: {
-    all: [
-      hook => {
-        console.log(hook.params);
-        return hook;
-      },
-      authenticate('jwt')
-    ],
+    all: [],
     find: [],
     get: [],
     create: [
-      (hook) => {
+      hook => {
         if(hook.params.provider)
           throw new errors.Forbidden('Posts can only be created internally');
         return hook;
+      },
+      // Assign to story
+      hook => {
+        const storyService = hook.app.service('stories');
+        return storyService.find({
+          query: {
+            userId: hook.data.userId,
+            status: 'active'
+          }
+        }).then(res => {
+          if(res.data.length) {
+            hook.data.storyId = res.data[0].id;
+          }
+          return hook;
+        }).catch(res => {
+          return hook;
+        });
       }
     ],
     update: [
-      (hook) => {
+      hook => {
         if(hook.params.provider)
           throw new errors.Forbidden('Posts can only be updated internally');
         return hook;
       }
     ],
     patch: [
-      (hook) => {
+      hook => {
         if(hook.params.provider)
           throw new errors.Forbidden('Posts can only be patched internally');
         return hook;
       }
     ],
     remove: [
-      (hook) => {
+      hook => {
         if(hook.params.provider)
           throw new errors.Forbidden('Posts can only be removed internally');
         return hook;

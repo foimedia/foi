@@ -2,7 +2,7 @@ const mkdirp = require('mkdirp');
 const errors = require('feathers-errors');
 
 const fetch = () => hook => {
-  const bot = hook.app.bot;
+  const bot = hook.app.telegram.bot;
   if(!hook.data.file_id) {
     throw new errors.BadRequest('Missing file id.');
   } else {

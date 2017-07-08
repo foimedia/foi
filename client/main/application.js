@@ -7,7 +7,8 @@ const auth = (token = false) => {
   if(!token) {
     return client.authenticate().catch(() => {
       return client.authenticate({
-        strategy: 'anonymous'
+        strategy: 'anonymous',
+        accessToken: null
       });
     });
   } else {
@@ -30,6 +31,7 @@ class Application extends Component {
   componentDidMount() {
 
     const posts = client.service('posts');
+    const stories = client.service('stories');
     const authorize = client.service('authorize');
 
     client.on('authenticated', data => {
@@ -47,31 +49,68 @@ class Application extends Component {
     });
 
     auth().then(() => {
-      return posts.find({
+      posts.find({
         query: {
+          storyId: {
+            $in: [false,undefined,null]
+          },
           $sort: {
             sentAt: -1
           }
         }
-      }).then(postPage => {
-        const posts = postPage.data;
+      }).then(res => {
+        const posts = res.data;
         this.setState({ posts });
+      });
+      stories.find({
+        query: {
+          $sort: {
+            createdAt: -1
+          }
+        }
+      }).then(res => {
+        const stories = res.data;
+        this.setState({ stories });
       });
     });
 
     // Add new post to the posts list
     posts.on('created', newPost => {
-      this.state.posts.unshift(newPost);
+      if(!newPost.storyId) {
+        this.state.posts.unshift(newPost);
+        return this.setState({posts: this.state.posts});
+      } else {
+        this.state.stories.forEach((story, i) => {
+          if(newPost.storyId == story.id) {
+            this.state.stories[i].posts = this.state.stories[i].posts || [];
+            this.state.stories[i].posts.push(newPost);
+          }
+        });
+        return this.setState({stories: this.state.stories});
+      }
+    });
+    posts.on('patched', patchedPost => {
+      if(!patchedPost.storyId) {
+        this.state.posts.forEach((post, i) => {
+          if(patchedPost.id == post.id) {
+            this.state.posts[i] = patchedPost;
+          }
+        });
+      }
       return this.setState({posts: this.state.posts});
     });
+    stories.on('created', newStory => {
+      this.state.stories.unshift(newStory);
+      return this.setState({stories: this.state.stories});
+    });
 
-    posts.on('patched', patchedPost => {
-      this.state.posts.forEach((post, i) => {
-        if(patchedPost.id == post.id) {
-          this.state.posts[i] = patchedPost;
+    stories.on('patched', patchedStory => {
+      this.state.stories.forEach((story, i) => {
+        if(patchedStory.id == story.id) {
+          this.state.stories[i] = patchedStory;
         }
       });
-      return this.setState({posts: this.state.posts});
+      return this.setState({stories: this.state.stories});
     });
 
   }
@@ -90,12 +129,12 @@ class Application extends Component {
   }
 
   render() {
-    const { posts, payload, user } = this.state;
-    if(posts === undefined) {
+    const { stories, posts, payload, user } = this.state;
+    if(posts === undefined || stories === undefined) {
       return <main>
         <h1>Loading</h1>
       </main>;
-    } else if(!posts.length) {
+    } else if(!posts.length || !stories.length) {
       return <main>
         <h1>No posts were found</h1>
       </main>;
@@ -110,7 +149,7 @@ class Application extends Component {
             <a href="javascript:void(0);" onClick={this.logout.bind(this)}>Logout</a>
           </div>
         }
-        <Timeline posts={posts} />
+        <Timeline stories={stories || []} posts={posts || []} />
       </main>
     }
   }

@@ -11,6 +11,8 @@ const VideoBox = styled.div`
     }
   }
   video {
+    max-width: 100%;
+    height: auto;
     margin: 0 auto;
     display: block;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
