@@ -101,16 +101,17 @@ class Stories extends Component {
       const newStories = this.state.stories.slice();
       if(!newPost.storyId) {
         newStories.unshift(this.storifyPost(newPost));
-        return this.setState({stories: newStories});
       } else {
+        console.log('belongs to story');
         newStories.forEach((story, i) => {
           if(newPost.storyId == story.id) {
+            console.log('found story', newStories[i]);
             newStories[i].posts = newStories[i].posts || [];
             newStories[i].posts.push(newPost);
           }
         });
-        return this.setState({stories: newStories});
       }
+      return this.setState({stories: newStories});
     });
 
     // Add new story
