@@ -1,0 +1,19 @@
+version: '2'
+services:
+  app:
+    build: .
+    command: nodemon src/
+    links:
+      - mongo
+    ports:
+    - 3030:3030
+    volumes:
+    - /src/node_modules
+    - .:/src
+    environment:
+      NODE_ENV: development
+      TELEGRAM_TOKEN: [your-token-here]
+  mongo:
+    image: mongo
+    ports:
+    - 27018:27017
