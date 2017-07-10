@@ -1,4 +1,4 @@
-# qap
+# FOI
 
 > Telegram Publisher Bot
 
@@ -14,7 +14,7 @@ Getting up and running is as easy as 1, 2, 3.
 2. Install your dependencies
 
     ```
-    cd path/to/qap; npm install
+    cd path/to/foi; npm install
     ```
 
 3. Start your app

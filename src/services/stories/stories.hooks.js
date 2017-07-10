@@ -35,15 +35,30 @@ module.exports = {
 
   after: {
     all: [
-      populate('user', {field: 'userId', service: 'users'}),
       populate({
         schema: {
-          include: {
-            service: 'posts',
-            nameAs: 'posts',
-            parentField: 'id',
-            childField: 'storyId',
-          }
+          include: [
+            {
+              'service': 'users',
+              'nameAs': 'user',
+              'parentField': 'userId',
+              'childField': 'id',
+              'provider': undefined
+            },
+            {
+              service: 'posts',
+              nameAs: 'posts',
+              parentField: 'id',
+              childField: 'storyId',
+              asArray: true,
+              query: {
+                $limit: -1,
+                $sort: {
+                  sentAt: 1
+                }
+              }
+            }
+          ]
         }
       })
     ],

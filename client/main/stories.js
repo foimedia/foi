@@ -50,13 +50,13 @@ class Stories extends Component {
 
   fetchStories () {
 
-    const posts = client.service('posts');
-    const stories = client.service('stories');
+    const storyService = client.service('stories');
+    const postService = client.service('posts');
 
     const promises = [];
 
     // Stories
-    promises.push(stories.find({
+    promises.push(storyService.find({
       query: {
         $sort: {
           createdAt: -1
@@ -65,7 +65,7 @@ class Stories extends Component {
     }));
 
     // Posts not assigned to any story
-    promises.push(posts.find({
+    promises.push(postService.find({
       query: {
         storyId: {
           $in: [false,undefined,null]
@@ -91,32 +91,25 @@ class Stories extends Component {
 
   componentDidMount () {
 
-    const posts = client.service('posts');
-    const stories = client.service('stories');
+    const postService = client.service('posts');
+    const storyService = client.service('stories');
 
     this.fetchStories();
 
-    // Add new post
-    posts.on('created', newPost => {
-      const newStories = this.state.stories.slice();
+    // Add new single-post story
+    postService.on('created', newPost => {
+      const { stories } = this.state;
       if(!newPost.storyId) {
+        const newStories = stories.slice();
         newStories.unshift(this.storifyPost(newPost));
-      } else {
-        console.log('belongs to story');
-        newStories.forEach((story, i) => {
-          if(newPost.storyId == story.id) {
-            console.log('found story', newStories[i]);
-            newStories[i].posts = newStories[i].posts || [];
-            newStories[i].posts.push(newPost);
-          }
-        });
+        return this.setState({stories: newStories});
       }
-      return this.setState({stories: newStories});
     });
 
     // Add new story
-    stories.on('created', newStory => {
-      const newStories = this.state.stories.slice();
+    storyService.on('created', newStory => {
+      const { stories } = this.state;
+      const newStories = stories.slice();
       newStories.unshift(newStory);
       return this.setState({stories: newStories});
     });
@@ -131,15 +124,13 @@ class Stories extends Component {
       return <h2>No posts were found</h2>;
     } else {
       const items = stories.map(story => {
-        if(story.posts && story.posts.length) {
-          return <Transition key={`story-${story.id}`} timeout={200}>
-            {(status) => (
-              <div className={`fade fade-${status}`}>
-                <Story story={story} />
-              </div>
-            )}
-          </Transition>;
-        }
+        return <Transition key={`story-${story.id}`} timeout={200}>
+          {(status) => (
+            <div className={`fade fade-${status}`}>
+              <Story story={story} />
+            </div>
+          )}
+        </Transition>;
       });
       return <StoriesWrapper className="stories">
         <TransitionGroup>

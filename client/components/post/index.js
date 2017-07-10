@@ -19,7 +19,7 @@ class Post extends Component {
   componentDidMount() {
     const { post } = this.props;
     const postService = client.service('posts');
-    this.setState({ post });
+    this.setState({ post: Object.assign({}, post) });
     postService.on('patched', patchedPost => {
       if(patchedPost.id == post.id) {
         console.log(this);

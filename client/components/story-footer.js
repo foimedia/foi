@@ -44,8 +44,8 @@ class StoryFooter extends Component {
   }
 
   getPosts() {
-    const { story } = this.props;
-    return story.posts;
+    const { posts } = this.props;
+    return posts;
   }
 
   getContributors() {

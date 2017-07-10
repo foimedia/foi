@@ -30,33 +30,16 @@ const StoryBox = styled.article`
       margin: 0;
     }
   }
-  .example-enter {
-    opacity: 0.01;
-  }
-
-  .example-enter.example-enter-active {
-    opacity: 1;
-    transition: opacity 500ms ease-in;
-  }
-
-  .example-leave {
-    opacity: 1;
-  }
-
-  .example-leave.example-leave-active {
-    opacity: 0.01;
-    transition: opacity 300ms ease-in;
-  }
 `;
 
 class Story extends Component {
 
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {};
   }
 
-  getPosts() {
+  getPosts () {
     const { story } = this.state;
     if(story !== undefined && story.posts && story.posts.length)
       return story.posts;
@@ -64,27 +47,43 @@ class Story extends Component {
       return [];
   }
 
-  componentDidMount() {
+  componentDidMount () {
+
     const { story } = this.props;
+
+    this.setState({
+      story: Object.assign({}, story),
+      posts: Array.isArray(story.posts) ? story.posts.slice() : []
+    });
+
     const storyService = client.service('stories');
-    this.setState({ story });
+    const postService = client.service('posts');
     storyService.on('patched', patchedStory => {
       if(patchedStory.id == story.id) {
         this.setState({ story: patchedStory });
       }
     });
+    postService.on('created', newPost => {
+      const { story } = this.state;
+      if(newPost.storyId == story.id) {
+        const { posts } = this.state;
+        const newPosts = posts.slice();
+        newPosts.push(newPost);
+        return this.setState({posts: newPosts});
+      }
+    });
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate (nextProps) {
     return nextProps.story !== this.state.story;
   }
 
-  render() {
-    const { story } = this.state;
+  render () {
+    const { story, posts } = this.state;
+    console.log(posts);
     if(story === undefined) {
       return <p>Loading story...</p>;
-    } else {
-      const posts = this.getPosts();
+    } else if(posts !== undefined && posts.length) {
       return <StoryBox>
         {story.title &&
           <header className="story-header">
@@ -96,8 +95,10 @@ class Story extends Component {
             <Post key={`post-${post.id}`} post={post} />
           )}
         </section>
-        <StoryFooter {...this.props} />
+        <StoryFooter story={story} posts={posts} />
       </StoryBox>;
+    } else {
+      return null;
     }
 
   }
