@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
+var config = require('config');
 
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
@@ -14,6 +15,12 @@ module.exports = {
     publicPath: '/static/'
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      },
+      'botName': JSON.stringify(config.get('telegram').botName)
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
   ],

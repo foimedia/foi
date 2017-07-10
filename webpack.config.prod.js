@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
+var config = require('config');
 var HTMLWebpackPlugin = require('html-webpack-plugin');
 
 var HTMLWebpackPluginConfig = new HTMLWebpackPlugin({
@@ -23,7 +24,8 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify('production')
-      }
+      },
+      'botName': JSON.stringify(config.get('telegram').botName)
     }),
     new webpack.optimize.UglifyJsPlugin({
       compressor: {

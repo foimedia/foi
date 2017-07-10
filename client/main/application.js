@@ -67,7 +67,7 @@ class Application extends Component {
     const { payload, user } = this.state;
     return <main>
       {(user === undefined && payload !== undefined) &&
-        <a href={`https://telegram.me/QAPBot?start=${payload.key}`} target="_blank">Authenticate</a>
+        <a href={`https://telegram.me/${botName}?start=${payload.key}`} target="_blank">Authenticate</a>
       }
       {user !== undefined &&
         <div>

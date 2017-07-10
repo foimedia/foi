@@ -1,5 +1,4 @@
 const errors = require('feathers-errors');
-const token = process.env.TELEGRAM_TOKEN || false;
 const TelegramBot = require('node-telegram-bot-api');
 
 const post = require('./post');
@@ -10,8 +9,10 @@ module.exports = function () {
 
   const app = this;
 
+  const config = app.get('telegram');
+
   // Create bot and assign to app
-  const bot = new TelegramBot(token, {polling: true});
+  const bot = new TelegramBot(config.token, {polling: true});
 
   app.telegram = Object.assign(app.telegram || {}, {
     bot
