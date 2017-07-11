@@ -51,7 +51,7 @@ class Post extends Component {
         {(post.type == 'video' || post.type == 'video_note') &&
           <PostVideo data={post.media} type={post.type} />
         }
-        {post.type == 'location' &&
+        {(post.type == 'location' || post.type == 'venue') &&
           <PostLocation data={post.content} />
         }
       </article>;
