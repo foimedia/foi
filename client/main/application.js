@@ -36,7 +36,6 @@ class Application extends Component {
 
     client.on('authenticated', data => {
       client.passport.verifyJWT(data.accessToken).then(payload => {
-        console.log(payload);
         this.setState({
           payload: payload,
           user: payload.user
@@ -65,9 +64,9 @@ class Application extends Component {
 
   render () {
     const { payload, user } = this.state;
-    return <main>
+    return <div>
       {(user === undefined && payload !== undefined) &&
-        <a href={`https://telegram.me/QAPBot?start=${payload.key}`} target="_blank">Authenticate</a>
+        <a href={`https://telegram.me/${foi.botName}?start=${payload.key}`} target="_blank">Authenticate</a>
       }
       {user !== undefined &&
         <div>
@@ -76,7 +75,7 @@ class Application extends Component {
         </div>
       }
       <Stories />
-    </main>;
+    </div>;
   }
 
 }

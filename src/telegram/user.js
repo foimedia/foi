@@ -6,7 +6,7 @@ module.exports = function () {
 
   function updateUser (user) {
     // bot.getUserProfilePhotos(user.id).then(data => {
-    //   // console.log(data.photos[0]);
+    // console.log(data.photos[0]);
     // });
     let promises = [];
     service.find({ query: { id: user.id } }).then(res => {

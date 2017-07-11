@@ -12,7 +12,6 @@ services:
     - .:/src
     environment:
       NODE_ENV: development
-      TELEGRAM_TOKEN: [your-token-here]
   mongo:
     image: mongo
     ports:

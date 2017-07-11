@@ -12,9 +12,9 @@ class PostText extends Component {
     const { data } = this.props;
 
     return <TextBox>
-      <p>{data.split('\n').map((item, key) => {
-        return <span key={key}><Twemoji text={item} /><br/></span>
-      })}</p>
+      {data.split('\n').map((item, key) => {
+        return <p key={key}><Twemoji text={item} /><br/></p>
+      })}
     </TextBox>;
   }
 

@@ -22,7 +22,6 @@ class Post extends Component {
     this.setState({ post: Object.assign({}, post) });
     postService.on('patched', patchedPost => {
       if(patchedPost.id == post.id) {
-        console.log(this);
         this.setState({ post: patchedPost });
       }
     });
@@ -39,7 +38,7 @@ class Post extends Component {
     if(post == undefined) {
       return <p>Loading post</p>;
     } else {
-      return <section className="post">
+      return <article className="post">
         {post.type == 'text' &&
           <PostText data={post.content} />
         }
@@ -55,7 +54,7 @@ class Post extends Component {
         {post.type == 'location' &&
           <PostLocation data={post.content} />
         }
-      </section>;
+      </article>;
     }
   }
 

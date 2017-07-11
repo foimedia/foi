@@ -80,7 +80,6 @@ class Story extends Component {
 
   render () {
     const { story, posts } = this.state;
-    console.log(posts);
     if(story === undefined) {
       return <p>Loading story...</p>;
     } else if(posts !== undefined && posts.length) {
