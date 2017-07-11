@@ -10,8 +10,18 @@ L.Icon.Default.mergeOptions({
     shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
 
+const MapContainer = styled.div`
+  overflow: hidden;
+  border-radius: 3px 3px 0 0;
+  margin: 0 0 1.5rem;
+  .leaflet-container {
+    width: 100%;
+    height: 300px;
+  }
+`;
+
 const VenueBox = styled.div`
-  padding: 1rem 2rem;
+  padding: 0 1.5rem 1.5rem;
   font-size: .8em;
   color: #666;
   h3 {
@@ -19,15 +29,6 @@ const VenueBox = styled.div`
   }
   p {
     margin: 0;
-  }
-`;
-
-const MapContainer = styled.div`
-  overflow: hidden;
-  border-radius: 3px 3px 0 0;
-  .leaflet-container {
-    width: 100%;
-    height: 300px;
   }
 `;
 

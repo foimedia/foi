@@ -5,8 +5,10 @@ import PostMedia from './post-media';
 const VideoBox = styled.div`
   width: 100%;
   &.type-video_note {
-    margin: 2rem 0;
+    margin: 1.5rem 0;
     video {
+      width: 320px;
+      height: 320px;
       border-radius: 100%;
     }
   }

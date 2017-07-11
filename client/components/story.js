@@ -15,7 +15,7 @@ const StoryBox = styled.article`
     box-shadow: 0 0 8px rgba(0,0,0,0.08);
   }
   .story-header {
-    padding: 2rem;
+    padding: 1.5rem;
     h2 {
       margin: 0;
     }

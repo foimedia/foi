@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import Stories from './stories';
 import { client } from './feathers';
 
+const AppContainer = styled.div`
+  font-family: sans-serif;
+  line-height: 1.5;
+`
 
 const auth = (token = false) => {
   if(!token) {
@@ -64,7 +69,7 @@ class Application extends Component {
 
   render () {
     const { payload, user } = this.state;
-    return <div>
+    return <AppContainer>
       {(user === undefined && payload !== undefined) &&
         <a href={`https://telegram.me/${foi.botName}?start=${payload.key}`} target="_blank">Authenticate</a>
       }
@@ -75,7 +80,7 @@ class Application extends Component {
         </div>
       }
       <Stories />
-    </div>;
+    </AppContainer>;
   }
 
 }

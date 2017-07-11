@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Twemoji } from 'react-emoji-render';
 
 const TextBox = styled.div`
-  margin: 2rem;
+  margin: 1.5rem;
 `
 
 class PostText extends Component {

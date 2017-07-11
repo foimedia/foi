@@ -12,7 +12,7 @@ const StoriesWrapper = styled.section`
     transition: all 200ms linear;
   }
   .fade-entering, .fade-exited {
-    transform: translate(0, -2rem);
+    transform: translate(0, -1.5rem);
     opacity: 0.01;
   }
   .fade-entered, .fade-exiting {

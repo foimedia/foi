@@ -3,10 +3,9 @@ import styled from 'styled-components';
 import moment from 'moment';
 
 const StoryFooterBox = styled.footer`
-  background: #f6f6f6;
-  padding: 1rem 2rem;
+  padding: 0 1.5rem 1.5rem;
   font-size: .8em;
-  color: #999;
+  color: #ccc;
   border-radius: 0 0 3px 3px;
   p {
     display: inline-block;
