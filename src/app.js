@@ -14,7 +14,6 @@ const socketio = require('feathers-socketio');
 const handler = require('feathers-errors/handler');
 const notFound = require('feathers-errors/not-found');
 
-const webpack = require('webpack');
 
 const middleware = require('./middleware');
 const services = require('./services');
@@ -28,16 +27,24 @@ const authentication = require('./authentication');
 
 const app = feathers();
 
-const configType = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
+const env = app.get('env');
 
-const config = require(`../webpack.config.${configType}`);
-const compiler = webpack(config);
+const webpack = require('webpack');
+const webpackConfig = require(`../config/webpack/${env}`);
+const compiler = webpack(webpackConfig);
+const webpackDev = require('webpack-dev-middleware');
+const hmr = require("webpack-hot-middleware");
 
-app.use(require('webpack-dev-middleware')(compiler, {
-  noInfo: true,
-  publicPath: config.output.publicPath
-}));
-app.use(require('webpack-hot-middleware')(compiler));
+
+if(env !== 'production') {
+  app.use(webpackDev(compiler, {
+    // noInfo: true,
+    publicPath: webpackConfig.output.publicPath
+  }));
+  app.use(hmr(compiler));
+} else {
+  app.use('/', feathers.static(webpackConfig.output.path));
+}
 
 // Load app configuration
 app.configure(configuration(path.join(__dirname, '..')));
@@ -49,7 +56,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
 // Host the public folder
-app.use('/', feathers.static(app.get('public')));
 app.use('/files', feathers.static(app.get('filesDir')));
 
 // Set up Plugins and providers

@@ -1,6 +1,5 @@
 {
   "host": "localhost",
-  "port": 3030,
   "public": "../client/",
   "filesDir": "../files/",
   "paginate": {
