@@ -28,15 +28,13 @@ const authentication = require('./authentication');
 const app = feathers();
 
 const env = app.get('env');
-
-const webpack = require('webpack');
 const webpackConfig = require(`../config/webpack/${env}`);
-const compiler = webpack(webpackConfig);
-const webpackDev = require('webpack-dev-middleware');
-const hmr = require("webpack-hot-middleware");
-
 
 if(env !== 'production') {
+  const webpack = require('webpack');
+  const compiler = webpack(webpackConfig);
+  const webpackDev = require('webpack-dev-middleware');
+  const hmr = require("webpack-hot-middleware");
   app.use(webpackDev(compiler, {
     // noInfo: true,
     publicPath: webpackConfig.output.publicPath

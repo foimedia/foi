@@ -11,7 +11,7 @@ module.exports = {
   output: {
     path: path.resolve('public'),
     publicPath: '/',
-    filename: 'assets/[name]-[chunkhash].js',
+    filename: '[name]-[chunkhash].js'
   },
   plugins: [
     new HTMLWebpackPlugin({
@@ -24,18 +24,29 @@ module.exports = {
         'NODE_ENV': JSON.stringify(env)
       },
       'foi': {
+        'url': JSON.stringify(config.get('url')),
         'botName': JSON.stringify(config.get('telegram').botName)
       }
     })
   ],
   module: {
-    loaders: [{
-      test: /\.jsx?/,
-      loader: 'babel-loader',
-      query: {
-        presets: ['es2015', 'react']
+    loaders: [
+      {
+        test: /\.jsx?/,
+        loader: 'babel-loader',
+        query: {
+          presets: ['es2015', 'react']
+        },
+        exclude: /node_modules/
       },
-      exclude: /node_modules/
-    }]
+      {
+        test: /\.css$/,
+        loader: 'style-loader!css-loader'
+      },
+      {
+        test: /\.(png|jpg|gif)$/,
+        loader: 'file-loader'
+      }
+    ]
   }
 };
