@@ -69,6 +69,18 @@ Message.prototype.isBotCommand = function () {
   }
 };
 
+Message.prototype.getMediaId = function () {
+  const type = this.getType();
+  const media = this[type];
+  if(Array.isArray(media) && media[0].file_id) {
+    return media.map(item => { return item.file_id; });
+  } else if(media.file_id) {
+    return media.file_id;
+  } else {
+    return null;
+  }
+};
+
 Message.prototype.toPost = function () {
   const type = this.getType();
   if(type !== undefined && !this.isBotCommand()) {
@@ -79,7 +91,7 @@ Message.prototype.toPost = function () {
       editedAt: this.getEditedAt(),
       type: type,
       content: this[type],
-      mediaId: this[type].file_id,
+      mediaId: this.getMediaId(),
       userId: this.from.id,
       chatId: this.chat.id,
       creatorId: this.getCreator()

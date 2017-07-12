@@ -6,7 +6,7 @@ module.exports = function () {
 
   function createPostMedia (post) {
     let promises = [];
-    if(typeof post.content !== 'string' && post.content.file_id) {
+    if(typeof post.content !== 'string' && (post.content.file_id || post.content[0].file_id)) {
       if(Array.isArray(post.content)) {
         post.content.forEach(file => {
           promises.push(service.create(file));

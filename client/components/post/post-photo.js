@@ -9,7 +9,7 @@ const PhotoBox = styled.div`
     max-width: 100%;
     max-height: 400px;
     display: block;
-    margin: 0 auto;
+    margin: 0 auto 1.5rem;
   }
 `;
 

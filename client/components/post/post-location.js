@@ -39,16 +39,12 @@ class PostLocation extends Component {
     const position = data.location ? [data.location.latitude, data.location.longitude] : [data.latitude, data.longitude];
     return <div className="location-container">
       <MapContainer>
-        <Map center={position} zoom={17}>
+        <Map center={position} zoom={17} scrollWheelZoom={false}>
           <TileLayer
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           />
-          <Marker position={position}>
-            <Popup>
-              <span>A pretty CSS3 popup.<br/>Easily customizable.</span>
-            </Popup>
-          </Marker>
+          <Marker position={position} />
         </Map>
       </MapContainer>
       {data.title &&

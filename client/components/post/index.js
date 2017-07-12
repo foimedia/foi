@@ -42,7 +42,7 @@ class Post extends Component {
         {post.type == 'text' &&
           <PostText data={post.content} />
         }
-        {post.type == 'photo' || post.type == 'sticker' &&
+        {(post.type == 'photo' || post.type == 'sticker') &&
           <PostPhoto data={post.media} />
         }
         {(post.type == 'audio' || post.type == 'voice') &&
