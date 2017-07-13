@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Stories from './stories';
+import Header from '../components/header';
 import { client } from './feathers';
 
 const AppContainer = styled.div`
+  margin: 4rem 1.5rem 1.5rem;
   font-family: sans-serif;
   line-height: 1.5;
-`
+  .loader {
+    margin: 2rem auto;
+  }
+`;
 
 const auth = (token = false) => {
   if(!token) {
@@ -34,24 +39,20 @@ class Application extends Component {
   }
 
   componentDidMount () {
-
     const authorize = client.service('authorize');
-
     auth();
-
     client.on('authenticated', data => {
       client.passport.verifyJWT(data.accessToken).then(payload => {
+        console.log(payload);
         this.setState({
           payload: payload,
           user: payload.user
         });
       });
     });
-
     authorize.on('created', data => {
       auth(data.accessToken);
     });
-
   }
 
   logout () {
@@ -68,17 +69,14 @@ class Application extends Component {
   }
 
   render () {
-    const { payload, user } = this.state;
+    const self = this;
     return <AppContainer>
-      {(user === undefined && payload !== undefined) &&
-        <a href={`https://telegram.me/${foi.botName}?start=${payload.key}`} target="_blank">Authenticate</a>
-      }
-      {user !== undefined &&
-        <div>
-          <h2>Hello, {user.first_name}.</h2>
-          <a href="javascript:void(0);" onClick={this.logout.bind(this)}>Logout</a>
-        </div>
-      }
+      <Header
+        {...this.state}
+        logout={logout => {
+          self.logout()
+        }}
+      />
       <Stories />
     </AppContainer>;
   }

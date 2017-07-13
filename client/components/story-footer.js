@@ -4,12 +4,12 @@ import moment from 'moment';
 
 const StoryFooterBox = styled.footer`
   padding: 0 1.5rem 1.5rem;
-  font-size: .8em;
+  font-size: .7em;
   color: #ccc;
   border-radius: 0 0 3px 3px;
   p {
     display: inline-block;
-    margin: 0 0 0 1rem;
+    margin: 0 0 0 .5rem;
     &.small,
     .small {
       font-size: .8em;
@@ -18,7 +18,7 @@ const StoryFooterBox = styled.footer`
     &:before {
       content: '\00b7';
       display: inline-block;
-      margin-right: 1rem;
+      margin-right: .5rem;
       font-weight: 600;
     }
     &:nth-child(1) {

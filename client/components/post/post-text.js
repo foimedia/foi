@@ -4,6 +4,9 @@ import { Twemoji } from 'react-emoji-render';
 
 const TextBox = styled.div`
   margin: 1.5rem;
+  p {
+    margin: 0;
+  }
 `
 
 class PostText extends Component {

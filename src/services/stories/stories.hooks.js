@@ -39,20 +39,20 @@ module.exports = {
         schema: {
           include: [
             {
-              'service': 'users',
               'nameAs': 'user',
+              'service': 'users',
               'parentField': 'userId',
               'childField': 'id',
               'provider': undefined
             },
             {
-              service: 'posts',
               nameAs: 'posts',
+              service: 'posts',
               parentField: 'id',
               childField: 'storyId',
               asArray: true,
+              paginate: false,
               query: {
-                $limit: -1,
                 $sort: {
                   sentAt: 1
                 }

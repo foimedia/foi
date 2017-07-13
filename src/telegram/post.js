@@ -1,5 +1,5 @@
+const errors = require('feathers-errors');
 const Message = require('./message');
-
 const user = require('./user');
 const chat = require('./chat');
 const media = require('./media');
@@ -21,7 +21,7 @@ module.exports = function () {
     if(post) {
       return user.createMessageUsers(message)
         .then(() => chat.createMessageChats(message))
-        .then(() => media.createPostMedia(post))
+        .then(() => media.createMessageMedia(message))
         .then(() => service.create(post))
         .catch(err => {
           throw new errors.GeneralError(err);

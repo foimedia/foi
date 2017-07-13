@@ -12,6 +12,15 @@ const supportedTypes = [
   'venue'
 ];
 
+const mediaTypes = [
+  'photo',
+  'audio',
+  'document',
+  'sticker',
+  'video',
+  'video_note'
+];
+
 function Message (message) {
   Object.assign(this, message);
 };
@@ -81,6 +90,15 @@ Message.prototype.getMediaId = function () {
   }
 };
 
+Message.prototype.getContent = function () {
+  const type = this.getType();
+  if(mediaTypes.indexOf(type) !== -1) {
+    return this.caption || null;
+  } else {
+    return this[type];
+  }
+};
+
 Message.prototype.toPost = function () {
   const type = this.getType();
   if(type !== undefined && !this.isBotCommand()) {
@@ -90,7 +108,7 @@ Message.prototype.toPost = function () {
       creatorSentAt: this.getCreatorSentAt(),
       editedAt: this.getEditedAt(),
       type: type,
-      content: this[type],
+      content: this.getContent(),
       mediaId: this.getMediaId(),
       userId: this.from.id,
       chatId: this.chat.id,

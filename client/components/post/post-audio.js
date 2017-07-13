@@ -7,23 +7,19 @@ const AudioBox = styled.div`
   audio {
     width: 100%;
     display: block;
+    margin: 0 0 1.5rem;
   }
 `
 
 class PostAudio extends PostMedia {
 
   render() {
-    const { data } = this.props;
-    if(!data) {
-      return <p>Loading audio...</p>
-    } else {
-      return <AudioBox>
-        <audio controls>
-          <source src={this.getFileUrl()} type={this.getMime()} />
-          Your browser does not support the audio element.
-        </audio>
-      </AudioBox>
-    }
+    return <AudioBox>
+      <audio controls>
+        <source src={this.getFileUrl()} type={this.getMime()} />
+        Your browser does not support the audio element.
+      </audio>
+    </AudioBox>
   }
 
 }

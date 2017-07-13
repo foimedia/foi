@@ -4,20 +4,22 @@ module.exports = function () {
 
   const service = app.service('media');
 
-  function createPostMedia (post) {
+  function createMessageMedia (message) {
+    const type = message.getType();
+    const media = message[type];
     let promises = [];
-    if(typeof post.content !== 'string' && (post.content.file_id || post.content[0].file_id)) {
-      if(Array.isArray(post.content)) {
-        post.content.forEach(file => {
+    if(typeof media !== 'string' && (media.file_id || media[0].file_id)) {
+      if(Array.isArray(media)) {
+        media.forEach(file => {
           promises.push(service.create(file));
           if(file.thumb) {
             promises.push(service.create(file.thumb));
           }
         });
       } else {
-        promises.push(service.create(post.content));
-        if(post.content.thumb) {
-          promises.push(service.create(post.content.thumb));
+        promises.push(service.create(media));
+        if(media.thumb) {
+          promises.push(service.create(media.thumb));
         }
       }
     }
@@ -26,7 +28,7 @@ module.exports = function () {
 
   return Object.assign(app.telegram || {}, {
     media: {
-      createPostMedia
+      createMessageMedia
     }
   });
 

@@ -26,8 +26,8 @@ const StoryBox = styled.article`
     &:last-child {
       margin: 0;
     }
-    p {
-      margin: 0;
+    .loader {
+      margin: 2rem auto;
     }
   }
 `;
