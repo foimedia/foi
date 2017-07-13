@@ -3,26 +3,36 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import StoryFooter from './story-footer';
 import Post from './post/index';
+import styleUtils from '../style-utils';
 // import Transition from 'react-transition-group/Transition';
 
 const StoryBox = styled.article`
   border: 1px solid #e6e6e6;
-  margin: 0 0 1rem;
+  margin: 0 0 .5rem;
   border-radius: 3px;
   box-shadow: 0 0 5px rgba(0,0,0,0.05);
+  ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+    margin-bottom: ${styleUtils.margins[i]}rem;
+  `)}
   :hover {
     border-color: #d6d6d6;
     box-shadow: 0 0 8px rgba(0,0,0,0.08);
   }
   .story-header {
     padding: 1.5rem;
+    ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+      padding: ${styleUtils.margins[i]}rem;
+    `)}
     h2 {
       margin: 0;
     }
     border-bottom: 1px solid #eee;
   }
   .post {
-    margin: 0 0 1rem;
+    margin: 0 0 .5rem;
+    ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+      margin-bottom: ${styleUtils.margins[i]}rem;
+    `)}
     &:last-child {
       margin: 0;
     }

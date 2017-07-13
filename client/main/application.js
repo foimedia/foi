@@ -3,14 +3,23 @@ import styled from 'styled-components';
 import Stories from './stories';
 import Header from '../components/header';
 import { client } from './feathers';
+import styleUtils from '../style-utils';
+
+// console.log(styles);
 
 const AppContainer = styled.div`
-  margin: 4rem 1.5rem 1.5rem;
   font-family: sans-serif;
   line-height: 1.5;
+  margin-top: 3rem;
+  margin-left: .5rem;
+  margin-right: .5rem;
   .loader {
     margin: 2rem auto;
   }
+  ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+    margin-left: ${styleUtils.margins[i]}rem;
+    margin-right: ${styleUtils.margins[i]}rem;
+  `)}
 `;
 
 const auth = (token = false) => {

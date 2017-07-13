@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PostMedia from './post-media';
+import styleUtils from '../../style-utils';
 
 const AudioBox = styled.div`
   width: 100%;
   audio {
     width: 100%;
     display: block;
-    margin: 0 0 1.5rem;
+    margin: 0 0 .5rem;
+    ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+      margin-bottom: ${styleUtils.margins[i]}rem;
+    `)}
   }
 `
 

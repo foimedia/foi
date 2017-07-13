@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
+import styleUtils from '../style-utils';
 
 const StoryFooterBox = styled.footer`
-  padding: 0 1.5rem 1.5rem;
+  padding: 0 .5rem .5rem;
   font-size: .7em;
   color: #ccc;
   border-radius: 0 0 3px 3px;
+  ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+    padding-left: ${styleUtils.margins[i]}rem;
+    padding-right: ${styleUtils.margins[i]}rem;
+    padding-bottom: ${styleUtils.margins[i]}rem;
+  `)}
   p {
     display: inline-block;
     margin: 0 0 0 .5rem;

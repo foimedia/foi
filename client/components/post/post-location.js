@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import styleUtils from '../../style-utils';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -13,7 +14,10 @@ L.Icon.Default.mergeOptions({
 const MapContainer = styled.div`
   overflow: hidden;
   border-radius: 3px 3px 0 0;
-  margin: 0 0 1.5rem;
+  margin: 0 0 .5rem;
+  ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+    margin-bottom: ${styleUtils.margins[i]}rem;
+  `)}
   .leaflet-container {
     width: 100%;
     height: 300px;
@@ -21,9 +25,14 @@ const MapContainer = styled.div`
 `;
 
 const VenueBox = styled.div`
-  padding: 0 1.5rem 1.5rem;
+  padding: 0 .5rem .5rem;
   font-size: .8em;
   color: #666;
+  ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+    padding-right: ${styleUtils.margins[i]}rem;
+    padding-left: ${styleUtils.margins[i]}rem;
+    padding-bottom: ${styleUtils.margins[i]}rem;
+  `)}
   h3 {
     margin: 0;
   }

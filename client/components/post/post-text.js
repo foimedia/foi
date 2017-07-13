@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import styleUtils from '../../style-utils';
 import { Twemoji } from 'react-emoji-render';
 
 const TextBox = styled.div`
-  margin: 1.5rem;
+  margin: .5rem;
+  ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+    margin: ${styleUtils.margins[i]}rem;
+  `)}
   p {
     margin: 0;
   }

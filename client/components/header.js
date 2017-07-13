@@ -1,16 +1,24 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import styleUtils from '../style-utils';
 
 const HeaderWrapper = styled.header`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  padding: .5rem 1.5rem;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  padding-left: .5rem;
+  padding-right: .5rem;
   font-size: .8em;
   background: #fff;
   color: #333;
   z-index: 10;
+  ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+    padding-left: ${styleUtils.margins[i]}rem;
+    padding-right: ${styleUtils.margins[i]}rem;
+  `)}
   a {
     color: inherit;
     text-decoration: none;
