@@ -43,7 +43,6 @@ class Application extends Component {
     auth();
     client.on('authenticated', data => {
       client.passport.verifyJWT(data.accessToken).then(payload => {
-        console.log(payload);
         this.setState({
           payload: payload,
           user: payload.user
