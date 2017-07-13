@@ -8,19 +8,21 @@ module.exports = function () {
     const type = message.getType();
     const media = message[type];
     let promises = [];
-    if(typeof media !== 'string' && (media.file_id || media[0].file_id)) {
-      if(Array.isArray(media)) {
+    if(typeof media !== 'string') {
+      if(Array.isArray(media) && media[0].file_id) {
         media.forEach(file => {
           promises.push(service.create(file));
           if(file.thumb) {
             promises.push(service.create(file.thumb));
           }
         });
-      } else {
+      } else if(media.file_id) {
         promises.push(service.create(media));
         if(media.thumb) {
           promises.push(service.create(media.thumb));
         }
+      } else {
+        return Promise.all(promises);
       }
     }
     return Promise.all(promises);
