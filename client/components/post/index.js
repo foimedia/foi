@@ -37,7 +37,7 @@ class Post extends Component {
     const { post } = this.state;
 
     if(post == undefined) {
-      return <ReactLoading className="loader" type={'bubbles'} color={'#999'} width="30" height="30" />;
+      return <ReactLoading className="loader" type={'bubbles'} color={'#999'} width="30px" height="30px" />;
     } else {
       return <article className="post">
         {post.type == 'text' &&
@@ -56,7 +56,7 @@ class Post extends Component {
           <PostAudio data={post.media} />
         }
         {(post.type == 'document') &&
-          <ReactLoading className="loader" type={'bubbles'} color={'#999'} width="30" height="30" />
+          <ReactLoading className="loader" type={'bubbles'} color={'#999'} width="30px" height="30px" />
         }
       </article>;
     }

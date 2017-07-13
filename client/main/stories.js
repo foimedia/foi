@@ -120,7 +120,7 @@ class Stories extends Component {
   render () {
     const { stories } = this.state;
     if(stories === undefined) {
-      return <ReactLoading className="loader" type={'bubbles'} color={'#999'} width="50" height="50" />;
+      return <ReactLoading className="loader" type={'bubbles'} color={'#999'} width="50px" height="50px" />;
     } else if(!stories.length) {
       return <h2>No posts were found</h2>;
     } else {
