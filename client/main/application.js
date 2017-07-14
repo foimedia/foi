@@ -5,8 +5,6 @@ import Header from '../components/header';
 import { client } from './feathers';
 import styleUtils from '../style-utils';
 
-// console.log(styles);
-
 const AppContainer = styled.div`
   font-family: sans-serif;
   line-height: 1.5;

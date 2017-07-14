@@ -35,7 +35,11 @@ class PostPhoto extends PostMedia {
 
   getPhotoAspectRatio () {
     const file = this.getFile();
-    return file.height / file.width * 100;
+    let ar = 0;
+    if(file !== undefined && file.width) {
+      ar = file.height / file.width * 100;
+    }
+    return ar;
   }
 
   render() {

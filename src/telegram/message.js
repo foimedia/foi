@@ -2,11 +2,11 @@ const supportedTypes = [
   'text',
   'photo',
   'audio',
+  'voice',
+  'video',
+  'video_note',
   'document',
   'sticker',
-  'video',
-  'voice',
-  'video_note',
   'contact',
   'location',
   'venue'
@@ -15,10 +15,11 @@ const supportedTypes = [
 const mediaTypes = [
   'photo',
   'audio',
-  'document',
-  'sticker',
+  'voice',
   'video',
-  'video_note'
+  'video_note',
+  'document',
+  'sticker'
 ];
 
 function Message (message) {

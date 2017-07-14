@@ -5,7 +5,13 @@ module.exports = {
   before: {
     all: [],
     find: [],
-    get: [],
+    get: [
+      // Fix integer ID
+      hook => {
+        hook.id = parseInt(hook.id);
+        return hook;
+      }
+    ],
     create: [
       hook => {
         if(hook.params.provider)
@@ -39,11 +45,11 @@ module.exports = {
         schema: {
           include: [
             {
-              'nameAs': 'user',
-              'service': 'users',
-              'parentField': 'userId',
-              'childField': 'id',
-              'provider': undefined
+              nameAs: 'user',
+              service: 'users',
+              parentField: 'userId',
+              childField: 'id',
+              provider: undefined
             },
             {
               nameAs: 'posts',

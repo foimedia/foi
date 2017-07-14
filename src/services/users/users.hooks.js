@@ -15,11 +15,11 @@ module.exports = {
     all: [],
     find: [ authenticate('jwt') ],
     get: [
+      // Fix integer ID
       hook => {
         hook.id = parseInt(hook.id);
         return hook;
-      },
-      // ...restrict
+      }
     ],
     create: [ discard('token') ],
     update: [ discard('token'), ...restrict ],
