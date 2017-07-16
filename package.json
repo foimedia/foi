@@ -49,6 +49,7 @@
     "html-webpack-plugin": "^2.29.0",
     "leaflet": "^1.1.0",
     "localstorage-memory": "^1.0.2",
+    "lodash": "^4.17.4",
     "mkdirp": "^0.5.1",
     "moment": "^2.18.1",
     "mongodb": "^2.2.29",
