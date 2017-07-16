@@ -17,20 +17,23 @@ module.exports = function () {
   const { user, chat, media } = app.telegram;
 
   const handleMessage = data => {
-    return chat.validateGroupInvite(new Message(data))
-      .then(user.createMessageUsers)
-      .then(chat.createMessageChats)
-      .then(chat.validatePrivateChat)
-      .then(media.createMessageMedia)
-      .then(createPost)
-      .catch(err => {
-        const chatId = data.chat.id;
-        if(typeof err === 'string') {
-          bot.sendMessage(chatId, err);
-        } else {
-          throw new errors.GeneralError(err);
-        }
-      });
+    const message = new Message(data);
+    if(!message.isBotCommand()) {
+      return chat.validateGroupInvite(message)
+        .then(user.createMessageUsers)
+        .then(chat.createMessageChats)
+        .then(chat.validatePrivateChat)
+        .then(media.createMessageMedia)
+        .then(createPost)
+        .catch(err => {
+          const chatId = data.chat.id;
+          if(typeof err === 'string') {
+            bot.sendMessage(chatId, err);
+          } else {
+            throw new errors.GeneralError(err);
+          }
+        });
+    }
   };
 
   const createPost = message => {
