@@ -4,11 +4,11 @@ module.exports = function () {
   const bot = app.telegram.bot;
   const service = app.service('authorize');
 
-  bot.onText(/\/start (.+)/, (msg, match) => {
+  bot.onText(/\/start (.+)/, (message, match) => {
     const token = match[1];
-    const chatId = msg.chat.id;
+    const chatId = message.chat.id;
     service.create({
-      userId: msg.from.id,
+      userId: message.from.id,
       userKey: token
     }).then(() => {
       bot.sendMessage(chatId, 'You are authenticated.');

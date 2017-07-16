@@ -20,27 +20,31 @@ module.exports = function () {
 
   function createMessageMedia (message) {
     const type = message.getType();
-    const media = message[type];
-    let promises = [];
-    if(typeof media !== 'string') {
-      if(Array.isArray(media) && media[0].file_id) {
-        media.forEach(file => {
-          service
-          promises.push(createMedia(file));
-          if(file.thumb) {
-            promises.push(createMedia(file.thumb));
+    if(type !== undefined) {
+      const media = message[type];
+      if(typeof media !== 'string') {
+        let promises = [];
+        if(Array.isArray(media) && media[0].file_id) {
+          media.forEach(file => {
+            service
+            promises.push(createMedia(file));
+            if(file.thumb) {
+              promises.push(createMedia(file.thumb));
+            }
+          });
+        } else if(media.file_id) {
+          promises.push(createMedia(media));
+          if(media.thumb) {
+            promises.push(createMedia(media.thumb));
           }
-        });
-      } else if(media.file_id) {
-        promises.push(createMedia(media));
-        if(media.thumb) {
-          promises.push(createMedia(media.thumb));
+        } else {
+          return Promise.all(promises).then(() => {
+            return message;
+          });
         }
-      } else {
-        return Promise.all(promises);
       }
     }
-    return Promise.all(promises);
+    return Promise.resolve(message);
   };
 
   return Object.assign(app.telegram || {}, {

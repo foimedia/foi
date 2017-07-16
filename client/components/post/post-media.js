@@ -26,7 +26,10 @@ class PostMedia extends Component {
 
   getFileUrl(index = null) {
     const file = this.getFile(index);
-    return '/files/' + file.file_id + '/' + file.file_name;
+    if(file !== undefined)
+      return '/files/' + file.file_id + '/' + file.file_name;
+    else
+      return '';
   }
 
   getMime() {

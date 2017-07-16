@@ -10,6 +10,16 @@ const restrict = [
   })
 ];
 
+const firstUser = () => hook => {
+  return hook.service.find({$limit: 1}).then(users => {
+    if(users.total === 0 || users.total === 1) {
+      hook.firstUser = true;
+      hook.data.roles = ['admin', 'publisher'];
+    }
+    return hook;
+  });
+};
+
 module.exports = {
   before: {
     all: [],
@@ -21,9 +31,9 @@ module.exports = {
         return hook;
       }
     ],
-    create: [ discard('token') ],
-    update: [ discard('token'), ...restrict ],
-    patch: [ discard('token'), ...restrict ],
+    create: [ firstUser(), discard('token') ],
+    update: [ firstUser(), discard('token'), ...restrict ],
+    patch: [ firstUser(), discard('token'), ...restrict ],
     remove: [ ...restrict ]
   },
 
