@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 module.exports = function () {
 
   const app = this;
@@ -10,6 +12,7 @@ module.exports = function () {
     // });
     return service.find({ query: { id: user.id } }).then(res => {
       if(res.data.length) {
+        user.chats = _.union(user.chats, res.data[0].chats || []);
         return service.patch(user.id, user);
       } else {
         return service.create(user);
@@ -31,8 +34,15 @@ module.exports = function () {
 
   function createMessageUsers (message) {
     let promises = [];
-    if(message.from)
-      promises.push(updateUser(message.from));
+    if(message.from) {
+      const user = Object.assign({
+        chats: []
+      }, message.from);
+      if(message.chat.type !== 'private') {
+        user.chats.push(message.chat.id);
+      }
+      promises.push(updateUser(user));
+    }
     if(message.forward_from)
       promises.push(updateUser(message.forward_from));
     return Promise.all(promises).then(() => {

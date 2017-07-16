@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Stories from './stories';
 import Header from '../components/header';
+import Sidebar from '../components/sidebar';
 import { client } from './feathers';
 import styleUtils from '../style-utils';
 
@@ -83,6 +84,9 @@ class Application extends Component {
           self.logout()
         }}
       />
+      <Sidebar>
+        
+      </Sidebar>
       <Stories />
     </AppContainer>;
   }
