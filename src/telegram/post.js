@@ -1,8 +1,8 @@
+const errors = require('feathers-errors');
 const Message = require('./message');
-
-const user = require('./user');
-const chat = require('./chat');
-const media = require('./media');
+const User = require('./user');
+const Chat = require('./chat');
+const Media = require('./media');
 
 module.exports = function () {
 
@@ -10,22 +10,35 @@ module.exports = function () {
   const bot = app.telegram.bot;
   const service = app.service('posts');
 
-  app.configure(user);
-  app.configure(chat);
-  app.configure(media);
+  app.configure(User);
+  app.configure(Chat);
+  app.configure(Media);
 
-  const createPost = data => {
-    const message = new Message(data);
-    const post = message.toPost();
-    const { user, chat, media } = app.telegram;
-    if(post) {
-      return user.createMessageUsers(message)
-        .then(() => chat.createMessageChats(message))
-        .then(() => media.createPostMedia(post))
-        .then(() => service.create(post))
-        .catch(err => {
+  const { user, chat, media } = app.telegram;
+
+  const handleMessage = data => {
+    return chat.validateGroupInvite(new Message(data))
+      .then(user.createMessageUsers)
+      .then(chat.createMessageChats)
+      .then(chat.validatePrivateChat)
+      .then(media.createMessageMedia)
+      .then(createPost)
+      .catch(err => {
+        const chatId = data.chat.id;
+        if(typeof err === 'string') {
+          bot.sendMessage(chatId, err);
+        } else {
           throw new errors.GeneralError(err);
-        });
+        }
+      });
+  };
+
+  const createPost = message => {
+    const post = message.toPost();
+    if(post) {
+      return service.create(post).then(() => {
+        return message;
+      });
     }
   };
 
@@ -39,12 +52,12 @@ module.exports = function () {
         createPost(data);
       });
     }
-  }
+  };
 
   /*
    * Message received
    */
-  bot.on('message', createPost);
+  bot.on('message', handleMessage);
 
   /*
    * Message edited
@@ -53,6 +66,7 @@ module.exports = function () {
 
   return Object.assign(app.telegram || {}, {
     post: {
+      handleMessage,
       createPost,
       updatePost
     }

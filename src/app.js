@@ -36,10 +36,14 @@ if(env !== 'production') {
   const webpackDev = require('webpack-dev-middleware');
   const hmr = require("webpack-hot-middleware");
   app.use(webpackDev(compiler, {
-    // noInfo: true,
+    noInfo: true,
     publicPath: webpackConfig.output.publicPath
   }));
-  app.use(hmr(compiler));
+  app.use(hmr(compiler, {
+    log: console.log,
+    path: "/__webpack_hmr",
+    heartbeat: 2000
+  }));
 } else {
   app.use('/', feathers.static(webpackConfig.output.path));
 }

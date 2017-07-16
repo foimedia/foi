@@ -4,15 +4,16 @@ import styled from 'styled-components';
 import Story from '../components/story';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import Transition from 'react-transition-group/Transition';
+import ReactLoading from 'react-loading';
 
 const StoriesWrapper = styled.section`
-  max-width: 600px;
+  max-width: 500px;
   margin: 0 auto;
   .fade {
     transition: all 200ms linear;
   }
   .fade-entering, .fade-exited {
-    transform: translate(0, -2rem);
+    transform: translate(0, -1.5rem);
     opacity: 0.01;
   }
   .fade-entered, .fade-exiting {
@@ -119,7 +120,7 @@ class Stories extends Component {
   render () {
     const { stories } = this.state;
     if(stories === undefined) {
-      return <h2>Loading</h2>;
+      return <ReactLoading className="loader" type={'bubbles'} color={'#999'} width="50px" height="50px" />;
     } else if(!stories.length) {
       return <h2>No posts were found</h2>;
     } else {

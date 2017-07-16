@@ -6,7 +6,13 @@ module.exports = {
   before: {
     all: [],
     find: [],
-    get: [],
+    get: [
+      // Fix integer ID
+      hook => {
+        hook.id = parseInt(hook.id);
+        return hook;
+      }
+    ],
     create: [
       hook => {
         if(hook.params.provider)
@@ -56,9 +62,33 @@ module.exports = {
 
   after: {
     all: [
-      populate('media', {field: 'mediaId', service: 'media'}),
-      populate('user', {field: 'userId', service: 'users'}),
-      populate('creator', {field: 'creatorId', service: 'users'})
+      populate({
+        schema: {
+          include: [
+            {
+              nameAs: 'user',
+              service: 'users',
+              parentField: 'userId',
+              childField: 'id',
+              provider: undefined
+            },
+            {
+              nameAs: 'creator',
+              service: 'users',
+              parentField: 'creatorId',
+              childField: 'id',
+              provider: undefined
+            },
+            {
+              nameAs: 'media',
+              service: 'media',
+              parentField: 'mediaId',
+              childField: 'file_id',
+              asArray: true
+            }
+          ]
+        }
+      })
     ],
     find: [],
     get: [],

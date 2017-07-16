@@ -4,29 +4,53 @@ module.exports = function () {
 
   const service = app.service('media');
 
-  function createPostMedia (post) {
-    let promises = [];
-    if(typeof post.content !== 'string' && post.content.file_id) {
-      if(Array.isArray(post.content)) {
-        post.content.forEach(file => {
-          promises.push(service.create(file));
-          if(file.thumb) {
-            promises.push(service.create(file.thumb));
-          }
-        });
+  function createMedia (file) {
+    return service.find({
+      query: {
+        file_id: file.file_id
+      }
+    }).then(res => {
+      if(res.data.length) {
+        return Promise.resolve();
       } else {
-        promises.push(service.create(post.content));
-        if(post.content.thumb) {
-          promises.push(service.create(post.content.thumb));
+        return service.create(file);
+      }
+    });
+  };
+
+  function createMessageMedia (message) {
+    const type = message.getType();
+    if(type !== undefined) {
+      const media = message[type];
+      if(typeof media !== 'string') {
+        let promises = [];
+        if(Array.isArray(media) && media[0].file_id) {
+          media.forEach(file => {
+            service
+            promises.push(createMedia(file));
+            if(file.thumb) {
+              promises.push(createMedia(file.thumb));
+            }
+          });
+        } else if(media.file_id) {
+          promises.push(createMedia(media));
+          if(media.thumb) {
+            promises.push(createMedia(media.thumb));
+          }
+        } else {
+          return Promise.all(promises).then(() => {
+            return message;
+          });
         }
       }
     }
-    return Promise.all(promises);
+    return Promise.resolve(message);
   };
 
   return Object.assign(app.telegram || {}, {
     media: {
-      createPostMedia
+      createMedia,
+      createMessageMedia
     }
   });
 

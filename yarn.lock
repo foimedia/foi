@@ -3722,6 +3722,10 @@ normalize-url@^1.4.0:
     query-string "^4.1.0"
     sort-keys "^1.0.0"
 
+normalize.css@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/normalize.css/-/normalize.css-7.0.0.tgz#abfb1dd82470674e0322b53ceb1aaf412938e4bf"
+
 npmlog@^4.0.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/npmlog/-/npmlog-4.1.2.tgz#08a7f2a8bf734604779a9efa4ad5cc717abb954b"
@@ -4392,11 +4396,18 @@ rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-blur-image-loader@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/react-blur-image-loader/-/react-blur-image-loader-0.2.2.tgz#4c80c491a43ca3698ebb9e7d410ba13b5a518c2d"
+  dependencies:
+    react "^15.4.2"
+    react-dom "^15.4.2"
+
 react-deep-force-update@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-1.0.1.tgz#f911b5be1d2a6fe387507dd6e9a767aa2924b4c7"
 
-react-dom@>=0.14.0, react-dom@^15.6.1:
+react-dom@>=0.14.0, react-dom@^15.4.2, react-dom@^15.6.1:
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.6.1.tgz#2cb0ed4191038e53c209eb3a79a23e2a4cf99470"
   dependencies:
@@ -4424,6 +4435,14 @@ react-leaflet@^1.4.0:
     babel-runtime "^6.23.0"
     lodash "^4.0.0"
     warning "^3.0.0"
+
+react-loading@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/react-loading/-/react-loading-0.1.4.tgz#b329ff2b870f1dc26c7068e91a1574f7dda27e67"
+
+react-progressive-image-loading@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/react-progressive-image-loading/-/react-progressive-image-loading-3.0.0.tgz#d9151ed84d9b0b2094824f89448a0726b65af390"
 
 react-proxy@^1.1.7:
   version "1.1.8"
@@ -4454,7 +4473,7 @@ react-transition-group@^2.0.2:
     prop-types "^15.5.8"
     warning "^3.0.0"
 
-react@>=0.14.0, react@^15.6.1:
+react@>=0.14.0, react@^15.4.2, react@^15.6.1:
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/react/-/react-15.6.1.tgz#baa8434ec6780bde997cdc380b79cd33b96393df"
   dependencies:

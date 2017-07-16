@@ -7,7 +7,7 @@ import rest from 'feathers-rest/client';
 import authentication from 'feathers-authentication-client';
 // import localStorage from 'localstorage-memory';
 
-const url = '';
+const url = foi.url;
 
 const socket = io(url);
 const client = feathers();

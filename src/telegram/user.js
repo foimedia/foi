@@ -8,28 +8,43 @@ module.exports = function () {
     // bot.getUserProfilePhotos(user.id).then(data => {
     // console.log(data.photos[0]);
     // });
-    let promises = [];
-    service.find({ query: { id: user.id } }).then(res => {
+    return service.find({ query: { id: user.id } }).then(res => {
       if(res.data.length) {
-        promises.push(service.patch(user.id, user));
+        return service.patch(user.id, user);
       } else {
-        promises.push(service.create(user));
+        return service.create(user);
       }
     });
-    return Promise.all(promises);
   }
 
-  function createMessageUsers (msg) {
+  function hasRole (user, role) {
+    return Array.isArray(user.roles) && user.roles.indexOf(role) !== -1;
+  }
+
+  function isPublisher (user) {
+    return hasRole(user, 'publisher');
+  }
+
+  function isAdmin (user) {
+    return hasRole(user, 'admin');
+  }
+
+  function createMessageUsers (message) {
     let promises = [];
-    if(msg.from)
-      promises.push(updateUser(msg.from));
-    if(msg.forward_from)
-      promises.push(updateUser(msg.forward_from));
-    return Promise.all(promises);
+    if(message.from)
+      promises.push(updateUser(message.from));
+    if(message.forward_from)
+      promises.push(updateUser(message.forward_from));
+    return Promise.all(promises).then(() => {
+      return message;
+    });
   }
 
   return Object.assign(app.telegram || {}, {
     user: {
+      hasRole,
+      isAdmin,
+      isPublisher,
       updateUser,
       createMessageUsers
     }

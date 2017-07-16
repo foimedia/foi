@@ -1,7 +1,24 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import Stories from './stories';
+import Header from '../components/header';
 import { client } from './feathers';
+import styleUtils from '../style-utils';
 
+const AppContainer = styled.div`
+  font-family: sans-serif;
+  line-height: 1.5;
+  margin-top: 3rem;
+  margin-left: .5rem;
+  margin-right: .5rem;
+  .loader {
+    margin: 2rem auto;
+  }
+  ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+    margin-left: ${styleUtils.margins[i]}rem;
+    margin-right: ${styleUtils.margins[i]}rem;
+  `)}
+`;
 
 const auth = (token = false) => {
   if(!token) {
@@ -29,11 +46,8 @@ class Application extends Component {
   }
 
   componentDidMount () {
-
     const authorize = client.service('authorize');
-
     auth();
-
     client.on('authenticated', data => {
       client.passport.verifyJWT(data.accessToken).then(payload => {
         this.setState({
@@ -42,11 +56,9 @@ class Application extends Component {
         });
       });
     });
-
     authorize.on('created', data => {
       auth(data.accessToken);
     });
-
   }
 
   logout () {
@@ -63,19 +75,16 @@ class Application extends Component {
   }
 
   render () {
-    const { payload, user } = this.state;
-    return <div>
-      {(user === undefined && payload !== undefined) &&
-        <a href={`https://telegram.me/${foi.botName}?start=${payload.key}`} target="_blank">Authenticate</a>
-      }
-      {user !== undefined &&
-        <div>
-          <h2>Hello, {user.first_name}.</h2>
-          <a href="javascript:void(0);" onClick={this.logout.bind(this)}>Logout</a>
-        </div>
-      }
+    const self = this;
+    return <AppContainer>
+      <Header
+        {...this.state}
+        logout={logout => {
+          self.logout()
+        }}
+      />
       <Stories />
-    </div>;
+    </AppContainer>;
   }
 
 }

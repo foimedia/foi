@@ -2,14 +2,24 @@ const supportedTypes = [
   'text',
   'photo',
   'audio',
+  'voice',
+  'video',
+  'video_note',
   'document',
   'sticker',
-  'video',
-  'voice',
-  'video_note',
   'contact',
   'location',
   'venue'
+];
+
+const mediaTypes = [
+  'photo',
+  'audio',
+  'voice',
+  'video',
+  'video_note',
+  'document',
+  'sticker'
 ];
 
 function Message (message) {
@@ -69,6 +79,27 @@ Message.prototype.isBotCommand = function () {
   }
 };
 
+Message.prototype.getMediaId = function () {
+  const type = this.getType();
+  const media = this[type];
+  if(Array.isArray(media) && media[0].file_id) {
+    return media.map(item => { return item.file_id; });
+  } else if(media.file_id) {
+    return media.file_id;
+  } else {
+    return null;
+  }
+};
+
+Message.prototype.getContent = function () {
+  const type = this.getType();
+  if(mediaTypes.indexOf(type) !== -1) {
+    return this.caption || null;
+  } else {
+    return this[type];
+  }
+};
+
 Message.prototype.toPost = function () {
   const type = this.getType();
   if(type !== undefined && !this.isBotCommand()) {
@@ -78,8 +109,8 @@ Message.prototype.toPost = function () {
       creatorSentAt: this.getCreatorSentAt(),
       editedAt: this.getEditedAt(),
       type: type,
-      content: this[type],
-      mediaId: this[type].file_id,
+      content: this.getContent(),
+      mediaId: this.getMediaId(),
       userId: this.from.id,
       chatId: this.chat.id,
       creatorId: this.getCreator()

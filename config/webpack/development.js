@@ -1,9 +1,13 @@
 const config = require('./common');
 const webpack = require('webpack');
 
-config.devtool = 'cheap-module-eval-source-map';
+config.entry.unshift('webpack-hot-middleware/client?path=/__webpack_hmr&timeout=2000&overlay=false&reload=true');
 
-config.plugins.concat([
+config.devtool = 'cheap-eval-source-map';
+
+config.output.filename = '[name].js';
+
+config.plugins = config.plugins.concat([
   new webpack.HotModuleReplacementPlugin(),
   new webpack.NoEmitOnErrorsPlugin()
 ]);

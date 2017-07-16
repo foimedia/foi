@@ -12,9 +12,24 @@ class PostMedia extends Component {
     const { data } = this.props;
   }
 
-  getFileUrl() {
+  getFile(index = null) {
     const { data } = this.props;
-    return '/files/' + data.file_id + '/' + data.file_name;
+    let file;
+    if(Array.isArray(data)) {
+      index = index || data.length - 1;
+      file = data[index];
+    } else {
+      file = data;
+    }
+    return file;
+  }
+
+  getFileUrl(index = null) {
+    const file = this.getFile(index);
+    if(file !== undefined)
+      return '/files/' + file.file_id + '/' + file.file_name;
+    else
+      return '';
   }
 
   getMime() {

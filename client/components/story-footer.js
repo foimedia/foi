@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
+import styleUtils from '../style-utils';
 
 const StoryFooterBox = styled.footer`
-  background: #f6f6f6;
-  padding: 1rem 2rem;
-  font-size: .8em;
-  color: #999;
+  padding: 0 .5rem .5rem;
+  font-size: .7em;
+  color: #ccc;
   border-radius: 0 0 3px 3px;
+  ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+    padding-left: ${styleUtils.margins[i]}rem;
+    padding-right: ${styleUtils.margins[i]}rem;
+    padding-bottom: ${styleUtils.margins[i]}rem;
+  `)}
   p {
     display: inline-block;
-    margin: 0 0 0 1rem;
+    margin: 0 0 0 .5rem;
     &.small,
     .small {
       font-size: .8em;
@@ -19,7 +24,7 @@ const StoryFooterBox = styled.footer`
     &:before {
       content: '\00b7';
       display: inline-block;
-      margin-right: 1rem;
+      margin-right: .5rem;
       font-weight: 600;
     }
     &:nth-child(1) {

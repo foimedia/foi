@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import PostMedia from './post-media';
 
 const VideoBox = styled.div`
-  width: 100%;
   &.type-video_note {
-    margin: 2rem 0;
+    margin: 1.5rem;
     video {
+      width: 320px;
       border-radius: 100%;
     }
   }
@@ -28,18 +28,14 @@ class PostVideo extends PostMedia {
 
   render() {
     const { data, type } = this.props;
-    if(!data) {
-      return <p>Loading video...</p>
-    } else {
-      const width = data.length || data.width;
-      const height = data.length || data.height;
-      return <VideoBox className={`type-${ type }`}>
-        <video width={width} height={height} controls={!this.isVideoNote()}>
-          <source src={this.getFileUrl()} type={this.getMime()} />
-          Your browser does not support the video element.
-        </video>
-      </VideoBox>
-    }
+    const width = data.length || data.width;
+    const height = data.length || data.height;
+    return <VideoBox className={`type-${ type }`}>
+      <video width={width} height={height} controls={!this.isVideoNote()}>
+        <source src={this.getFileUrl()} type={this.getMime()} />
+        Your browser does not support the video element.
+      </video>
+    </VideoBox>
   }
 
 }

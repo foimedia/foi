@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
+import ReactLoading from 'react-loading';
 import { client } from '../../main/feathers';
 
 import PostText from './post-text';
@@ -36,23 +37,26 @@ class Post extends Component {
     const { post } = this.state;
 
     if(post == undefined) {
-      return <p>Loading post</p>;
+      return <ReactLoading className="loader" type={'bubbles'} color={'#999'} width="30px" height="30px" />;
     } else {
       return <article className="post">
         {post.type == 'text' &&
           <PostText data={post.content} />
         }
-        {post.type == 'photo' || post.type == 'sticker' &&
-          <PostPhoto data={post.media} />
+        {(post.type == 'location' || post.type == 'venue') &&
+          <PostLocation data={post.content} />
         }
-        {(post.type == 'audio' || post.type == 'voice') &&
-          <PostAudio data={post.media} type={post.type} />
+        {(post.type == 'photo' || post.type == 'sticker') &&
+          <PostPhoto data={post.media} caption={post.content} />
         }
         {(post.type == 'video' || post.type == 'video_note') &&
-          <PostVideo data={post.media} type={post.type} />
+          <PostVideo data={post.media} caption={post.content} type={post.type} />
         }
-        {post.type == 'location' &&
-          <PostLocation data={post.content} />
+        {(post.type == 'audio' || post.type == 'voice') &&
+          <PostAudio data={post.media} />
+        }
+        {(post.type == 'document') &&
+          <ReactLoading className="loader" type={'bubbles'} color={'#999'} width="30px" height="30px" />
         }
       </article>;
     }
