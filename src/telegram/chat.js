@@ -31,8 +31,8 @@ module.exports = function () {
     const user = message.from;
     return new Promise((resolve, reject) => {
       if(message.chat.type == 'private') {
-        service.find({ query: { id: user.id } }).then(res => {
-          if(!res.data.length || !isPublisher(user)) {
+        userService.find({ query: { id: user.id } }).then(res => {
+          if(!res.data.length || !isPublisher(res.data[0])) {
             reject('User not authorized.');
           } else {
             resolve(message);

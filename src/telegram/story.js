@@ -3,7 +3,7 @@ const Message = require('./message');
 module.exports = function () {
 
   const app = this;
-  const bot = app.telegram.bot;
+  const { bot, chat } = app.telegram;
   const service = app.service('stories');
 
   const parse = (data, title = '') => {
@@ -18,18 +18,28 @@ module.exports = function () {
     return story;
   };
 
+  function createStory (message, match) {
+    return service.create(parse(message, match[1]));
+  }
+
   /*
    * Start story
    */
-  bot.onText(/\/story( .+)?/, (message, match) => {
-    const chatId = message.chat.id;
-    const title = match[1];
-    const story = parse(message, title);
-    service.create(story).then(data => {
-      bot.sendMessage(chatId, 'You just started your "' + data.title.trim() + '" story!');
-    }).catch(err => {
-      bot.sendMessage(chatId, err.message);
-    });
+  bot.onText(/\/story( .+)?/, (data, match) => {
+    const chatId = data.chat.id;
+    const message = new Message(data);
+    return chat.validatePrivateChat(message)
+      .then(() => createStory(message, match))
+      .then(data => {
+        bot.sendMessage(chatId, 'You just started your "' + data.title.trim() + '" story!');
+      })
+      .catch(err => {
+        if(typeof err === 'string') {
+          bot.sendMessage(chatId, err);
+        } else {
+          throw new errors.GeneralError(err);
+        }
+      });
   });
 
   /*
