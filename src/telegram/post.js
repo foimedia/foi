@@ -17,11 +17,6 @@ module.exports = function () {
   const { user, chat, media } = app.telegram;
 
   const handleMessage = data => {
-    if(data.chat.type == 'group') {
-      bot.getChatAdministrators(data.chat.id).then(data => {
-        console.log(data);
-      });
-    }
     return chat.validateGroupInvite(new Message(data))
       .then(user.createMessageUsers)
       .then(chat.createMessageChats)
