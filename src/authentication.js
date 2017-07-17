@@ -44,8 +44,8 @@ module.exports = function () {
             // make sure params.payload exists
             hook.params.payload = hook.params.payload || {};
             // clear user and key if coming from authorized session
-            if(hook.params.payload.user) {
-              delete hook.params.payload.user;
+            if(hook.params.payload.userId) {
+              delete hook.params.payload.userId;
               delete hook.params.payload.key;
             }
             // merge in `key` token property

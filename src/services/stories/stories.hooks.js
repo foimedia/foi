@@ -1,5 +1,5 @@
 const errors = require('feathers-errors');
-const { iff, populate } = require('feathers-hooks-common');
+const { when, populate, discard } = require('feathers-hooks-common');
 
 module.exports = {
   before: {
@@ -41,6 +41,10 @@ module.exports = {
 
   after: {
     all: [
+      when(
+        hook => hook.params.provider,
+        discard('_id')
+      ),
       populate({
         schema: {
           include: [

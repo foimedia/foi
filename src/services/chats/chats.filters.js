@@ -1,3 +1,7 @@
 module.exports = function (data, connection, hook) {
-  return data;
+  if(data.users.indexOf(connection.payload.userId) !== -1) {
+    return data;
+  } else {
+    return false;
+  }
 };

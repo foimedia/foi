@@ -31,19 +31,16 @@ module.exports = {
         return hook;
       }
     ],
-    create: [ firstUser(), discard('token') ],
-    update: [ firstUser(), discard('token'), ...restrict ],
-    patch: [ firstUser(), discard('token'), ...restrict ],
+    create: [ firstUser(), ],
+    update: [ firstUser(), ...restrict ],
+    patch: [ firstUser(), ...restrict ],
     remove: [ ...restrict ]
   },
 
   after: {
     all: [
-      when(
-        hook => hook.params.provider,
-        discard('password'),
-        discard('token')
-      )
+      discard('_id'),
+      discard('chats')
     ],
     find: [],
     get: [],
