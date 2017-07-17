@@ -12,8 +12,6 @@ const rest = require('feathers-rest');
 const socketio = require('feathers-socketio');
 
 const handler = require('feathers-errors/handler');
-const notFound = require('feathers-errors/not-found');
-
 
 const middleware = require('./middleware');
 const services = require('./services');
@@ -31,10 +29,12 @@ const env = app.get('env');
 const webpackConfig = require(`../config/webpack/${env}`);
 
 if(env !== 'production') {
+  const history = require('connect-history-api-fallback');
   const webpack = require('webpack');
   const compiler = webpack(webpackConfig);
   const webpackDev = require('webpack-dev-middleware');
   const hmr = require("webpack-hot-middleware");
+  app.use(history()); // pushState
   app.use(webpackDev(compiler, {
     noInfo: true,
     publicPath: webpackConfig.output.publicPath
@@ -45,8 +45,9 @@ if(env !== 'production') {
     heartbeat: 2000
   }));
 } else {
-  app.use('/', feathers.static(webpackConfig.output.path));
+  app.use(feathers.static(webpackConfig.output.path));
 }
+
 
 // Load app configuration
 app.configure(configuration(path.join(__dirname, '..')));
@@ -73,9 +74,16 @@ app.configure(authentication);
 app.configure(services);
 // Set up Telegram Bot (see `telegram/index.js`)
 app.configure(telegram);
-// Configure a middleware for 404s and the error handler
-app.use(notFound());
+
+// Configure a middleware for the error handler
 app.use(handler());
+
+// Allow pushState
+if(env === 'production') {
+  app.get('/*', function(req, res) {
+    res.sendFile(path.join(webpackConfig.output.path, 'index.html'));
+  });
+}
 
 app.hooks(appHooks);
 

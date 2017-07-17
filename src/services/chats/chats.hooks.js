@@ -3,14 +3,15 @@ const { when, discard } = require('feathers-hooks-common');
 
 module.exports = {
   before: {
-    all: [
+    all: [],
+    find: [],
+    get: [
+      // Fix integer ID
       hook => {
-        // console.log(hook.params);
+        hook.id = parseInt(hook.id);
         return hook;
       }
     ],
-    find: [],
-    get: [],
     create: [
       hook => {
         if(hook.params.provider)

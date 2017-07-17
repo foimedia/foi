@@ -1,16 +1,15 @@
 import { client } from './feathers';
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import styleUtils from '../style-utils';
 import Story from '../components/story';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import Transition from 'react-transition-group/Transition';
 import ReactLoading from 'react-loading';
 
 const StoriesWrapper = styled.section`
-  max-width: 500px;
-  margin: 0 auto;
   .fade {
-    transition: all 200ms linear;
+    transition: all 200ms ${styleUtils.transition};
   }
   .fade-entering, .fade-exited {
     transform: translate(0, -1.5rem);
@@ -26,7 +25,9 @@ class Stories extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+      query: {}
+    };
   }
 
   handlePosts (posts) {
@@ -49,7 +50,12 @@ class Stories extends Component {
     };
   }
 
-  fetchStories () {
+  fetchStories (query) {
+
+    // Clear stories state before continuing
+    this.setState({
+      stories: undefined
+    });
 
     const storyService = client.service('stories');
     const postService = client.service('posts');
@@ -58,26 +64,26 @@ class Stories extends Component {
 
     // Stories
     promises.push(storyService.find({
-      query: {
+      query: Object.assign({
         $sort: {
           createdAt: -1
         }
-      }
+      }, query)
     }));
 
     // Posts not assigned to any story
     promises.push(postService.find({
-      query: {
+      query: Object.assign({
         storyId: {
-          $in: [false,undefined,null]
+          $in: [undefined,null,false]
         },
         $sort: {
           sentAt: -1
         }
-      }
+      }, query)
     }));
 
-    Promise.all(promises).then(res => {
+    return Promise.all(promises).then(res => {
       // Concat stories and storified posts
       const stories = res[0].data.concat(this.handlePosts(res[1].data));
       this.setState({
@@ -86,39 +92,94 @@ class Stories extends Component {
           return -(new Date(a.createdAt) - new Date(b.createdAt))
         })
       });
+      return Promise.resolve();
     });
 
   }
 
-  componentDidMount () {
+  shouldComponentUpdate (nextProps, nextState) {
+    return nextState.query !== this.state.query || nextState.stories !== this.state.stories;
+  }
 
-    const postService = client.service('posts');
-    const storyService = client.service('stories');
+  componentWillReceiveProps (nextProps) {
+    if(JSON.stringify(nextProps.match.params) !== JSON.stringify(this.state.query)) {
+      this.setState(Object.assign({}, {
+        query: nextProps.match.params
+      }));
+    }
+  }
 
-    this.fetchStories();
+  matchQuery (data) {
+    const { query } = this.state;
+    let match = true;
+    for(var key in query) {
+      if(data[key] != query[key]) {
+        match = false;
+      }
+    }
+    return match;
+  }
 
-    // Add new single-post story
-    postService.on('created', newPost => {
-      const { stories } = this.state;
+  newPost (newPost) {
+    const { stories } = this.state;
+    if(this.matchQuery(newPost)) {
       if(!newPost.storyId) {
         const newStories = stories.slice();
         newStories.unshift(this.storifyPost(newPost));
         return this.setState({stories: newStories});
       }
-    });
+    }
+  }
 
-    // Add new story
-    storyService.on('created', newStory => {
-      const { stories } = this.state;
+  newStory (newStory) {
+    const { stories } = this.state;
+    if(this.matchQuery(newStory)) {
       const newStories = stories.slice();
       newStories.unshift(newStory);
       return this.setState({stories: newStories});
+    }
+  }
+
+  componentDidMount () {
+
+    const query = this.props.match.params;
+
+    this.fetchStories(query).then(() => {
+      const postService = client.service('posts');
+      const storyService = client.service('stories');
+      // Add new single-post story
+      postService.on('created', this.newPost.bind(this));
+      // Add new story
+      storyService.on('created', this.newStory.bind(this));
+    });
+
+    this.setState({
+      query: Object.assign({}, query)
     });
 
   }
 
+  componentWillUnmount () {
+    client.service('posts').off('created');
+    client.service('stories').off('created');
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    const { query } = this.state;
+    if(query !== prevState.query) {
+      if(query.chatId) {
+        client.service('chats').get(query.chatId).then(chat => {
+          this.setState({ chat });
+          this.fetchStories(query);
+        })
+      } else {
+        this.fetchStories(query);
+      }
+    }
+  }
+
   render () {
-    const { stories } = this.state;
+    const { stories, chat } = this.state;
     if(stories === undefined) {
       return <ReactLoading className="loader" type={'bubbles'} color={'#999'} width="50px" height="50px" />;
     } else if(!stories.length) {
@@ -134,6 +195,11 @@ class Stories extends Component {
         </Transition>;
       });
       return <StoriesWrapper className="stories">
+        {chat !== undefined &&
+          <header id="content-header">
+            <h2>{chat.title || chat.first_name}</h2>
+          </header>
+        }
         <TransitionGroup>
           {items}
         </TransitionGroup>

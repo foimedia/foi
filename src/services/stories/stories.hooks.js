@@ -3,7 +3,18 @@ const { when, populate, discard } = require('feathers-hooks-common');
 
 module.exports = {
   before: {
-    all: [],
+    all: [
+      // Parse int
+      hook => {
+        if(hook.params.query && hook.params.query.chatId) {
+          hook.params.query.chatId = parseInt(hook.params.query.chatId);
+        }
+        if(hook.params.query && hook.params.query.userId) {
+          hook.params.query.userId = parseInt(hook.params.query.userId);
+        }
+        return hook;
+      }
+    ],
     find: [],
     get: [
       // Fix integer ID

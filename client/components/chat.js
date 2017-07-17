@@ -1,12 +1,22 @@
 import { client } from '../main/feathers';
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import styleUtils from '../style-utils';
+
+import { Link } from 'react-router-dom';
 
 const ChatWrapper = styled.article`
   padding: .5rem 1rem;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  border-radius: ${styleUtils.radius}px;
   margin: 0 0 .5rem;
+  cursor: default;
+  &:hover {
+    border-color: #ccc;
+  }
+  a {
+    display: block;
+  }
 `
 
 class Chat extends Component {
@@ -28,7 +38,7 @@ class Chat extends Component {
     const { data } = this.state;
     return <ChatWrapper>
       {data !== undefined &&
-        <h4>{data.title || data.first_name}</h4>
+        <h4><Link to={`/c/${data.id}`}>{data.title || data.first_name}</Link></h4>
       }
     </ChatWrapper>;
   }

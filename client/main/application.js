@@ -2,17 +2,17 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Header from '../components/header';
 import Sidebar from '../components/sidebar';
+import Content from '../components/content';
 import Stories from './stories';
 import Chats from './chats';
 import { client } from './feathers';
 import styleUtils from '../style-utils';
 
+import { Route, Link } from 'react-router-dom';
+
 const AppContainer = styled.div`
   font-family: sans-serif;
   line-height: 1.5;
-  margin-top: 3rem;
-  margin-left: .5rem;
-  margin-right: .5rem;
   .loader {
     margin: 2rem auto;
   }
@@ -25,6 +25,21 @@ const AppContainer = styled.div`
   h4,
   p {
     margin: 0;
+  }
+  .brand {
+    padding-top: 4rem;
+    img {
+      display: block;
+      max-width: 5em;
+    }
+  }
+  a {
+    color: #525dbe;
+    text-decoration: none;
+    outline: none;
+    &:hover {
+      color: #333;
+    }
   }
 `;
 
@@ -57,7 +72,15 @@ class Application extends Component {
     const authorize = client.service('authorize');
     auth();
     client.on('authenticated', data => {
+      // Clear payload and user before continuing
+      this.setState({
+        payload: undefined,
+        user: undefined
+      });
       client.passport.verifyJWT(data.accessToken).then(payload => {
+        this.setState({
+          payload: payload
+        });
         if(payload.userId) {
           client.service('users').find({
             query: {
@@ -66,21 +89,29 @@ class Application extends Component {
           }).then(res => {
             if(res.data.length) {
               this.setState({
-                payload: payload,
                 user: res.data[0]
               });
             }
           })
-        } else {
-          this.setState({
-            payload: payload,
-            user: undefined
-          });
         }
       });
     });
     authorize.on('created', data => {
       auth(data.accessToken);
+    });
+    client.service('users').on('patched', data => {
+      if(data.id == this.state.payload.userId) {
+        this.setState({
+          user: data
+        });
+      }
+    });
+    client.service('users').on('updated', data => {
+      if(data.id == this.state.payload.userId) {
+        this.setState({
+          user: data
+        });
+      }
     });
   }
 
@@ -97,18 +128,24 @@ class Application extends Component {
     const self = this;
     const { user } = this.state;
     return <AppContainer>
-      <Header
-        {...this.state}
-        logout={logout => {
-          self.logout()
-        }}
-      />
-      {user !== undefined &&
-        <Sidebar>
-          <Chats {...this.state} />
-        </Sidebar>
-      }
-      <Stories />
+      <Sidebar>
+        <div className="brand">
+          <Link to="/">
+            <img src={require('../img/logo_black.svg')} alt="FOI" />
+          </Link>
+        </div>
+        <Header
+          {...this.state}
+          logout={logout => {
+            self.logout()
+          }}
+        />
+        <Chats {...this.state} />
+      </Sidebar>
+      <Content>
+        <Route exact path="/" component={Stories} />
+        <Route path="/c/:chatId" component={Stories} />
+      </Content>
     </AppContainer>;
   }
 

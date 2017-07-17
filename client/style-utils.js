@@ -31,6 +31,10 @@ export const margins = [
   1.5
 ];
 
+export const radius = 0;
+
+export const transition = 'linear';
+
 export const media = sizes.reduce((acc, size, index) => {
   const emSize = size.width / 16;
   acc[size.device] = (...args) => css`
@@ -47,5 +51,7 @@ export const media = sizes.reduce((acc, size, index) => {
 export default {
   sizes,
   margins,
+  radius,
+  transition,
   media
 };

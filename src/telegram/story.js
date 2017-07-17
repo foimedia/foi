@@ -12,6 +12,7 @@ module.exports = function () {
       id: message.message_id,
       title: title.trim(),
       userId: message.from.id,
+      chatId: message.chat.id,
       createdAt: message.getSentAt(),
       status: 'active'
     };

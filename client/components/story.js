@@ -9,14 +9,12 @@ import styleUtils from '../style-utils';
 const StoryBox = styled.article`
   border: 1px solid #e6e6e6;
   margin: 0 0 .5rem;
-  border-radius: 3px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.05);
+  border-radius: ${styleUtils.radius}px;
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
     margin-bottom: ${styleUtils.margins[i]}rem;
   `)}
   :hover {
     border-color: #d6d6d6;
-    box-shadow: 0 0 8px rgba(0,0,0,0.08);
   }
   .story-header {
     padding: 1.5rem;
