@@ -34,11 +34,7 @@ module.exports = function () {
         bot.sendMessage(chatId, 'You just started your "' + data.title.trim() + '" story!');
       })
       .catch(err => {
-        if(typeof err === 'string') {
-          bot.sendMessage(chatId, err);
-        } else {
-          throw new errors.GeneralError(err);
-        }
+        bot.sendMessage(chatId, err.message || err);
       });
   });
 

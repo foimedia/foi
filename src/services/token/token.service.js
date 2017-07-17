@@ -11,7 +11,7 @@ module.exports = function () {
     create (data, params) {
       const { user } = data;
       const payload = {
-        user,
+        userId: user.id,
         key: data.userKey
       };
       return passport.createJWT(payload, config).then(accessToken => {
@@ -26,7 +26,7 @@ module.exports = function () {
 
   service.hooks(hooks);
 
-  service.filter((data, connection, hook)  => {
+  service.filter((data, connection, hook) => {
     const { accessToken } = data;
     return app.passport.verifyJWT(accessToken, config).then(payload => {
       if(payload.key == connection.payload.key) {

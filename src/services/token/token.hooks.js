@@ -7,6 +7,7 @@ module.exports = {
       hook => {
         if(hook.params.provider)
           throw new errors.Forbidden();
+        return hook;
       },
       // Check userId req data
       hook => {

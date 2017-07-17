@@ -1,5 +1,6 @@
 const mkdirp = require('mkdirp');
 const errors = require('feathers-errors');
+const { when, iff, discard } = require('feathers-hooks-common');
 
 const fetch = () => hook => {
   const bot = hook.app.telegram.bot;
@@ -42,7 +43,9 @@ module.exports = {
   },
 
   after: {
-    all: [],
+    all: [
+      discard('_id')
+    ],
     find: [],
     get: [],
     create: [],

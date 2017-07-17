@@ -14,7 +14,7 @@ const HeaderWrapper = styled.header`
   font-size: .8em;
   background: #fff;
   color: #333;
-  z-index: 10;
+  z-index: 5;
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
     padding-left: ${styleUtils.margins[i]}rem;
     padding-right: ${styleUtils.margins[i]}rem;

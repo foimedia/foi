@@ -71,7 +71,7 @@ app.configure(middleware);
 app.configure(authentication);
 // Set up our services (see `services/index.js`)
 app.configure(services);
-// Set up Telegram Bot
+// Set up Telegram Bot (see `telegram/index.js`)
 app.configure(telegram);
 // Configure a middleware for 404s and the error handler
 app.use(notFound());

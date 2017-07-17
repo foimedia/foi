@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import Stories from './stories';
 import Header from '../components/header';
 import Sidebar from '../components/sidebar';
+import Stories from './stories';
+import Chats from './chats';
 import { client } from './feathers';
 import styleUtils from '../style-utils';
 
@@ -19,6 +20,12 @@ const AppContainer = styled.div`
     margin-left: ${styleUtils.margins[i]}rem;
     margin-right: ${styleUtils.margins[i]}rem;
   `)}
+  h2,
+  h3,
+  h4,
+  p {
+    margin: 0;
+  }
 `;
 
 const auth = (token = false) => {
@@ -51,10 +58,25 @@ class Application extends Component {
     auth();
     client.on('authenticated', data => {
       client.passport.verifyJWT(data.accessToken).then(payload => {
-        this.setState({
-          payload: payload,
-          user: payload.user
-        });
+        if(payload.userId) {
+          client.service('users').find({
+            query: {
+              id: payload.userId
+            }
+          }).then(res => {
+            if(res.data.length) {
+              this.setState({
+                payload: payload,
+                user: res.data[0]
+              });
+            }
+          })
+        } else {
+          this.setState({
+            payload: payload,
+            user: undefined
+          });
+        }
       });
     });
     authorize.on('created', data => {
@@ -63,10 +85,6 @@ class Application extends Component {
   }
 
   logout () {
-    this.setState({
-      payload: undefined,
-      user: undefined
-    });
     client.logout().then(() => {
       client.authenticate({
         strategy: 'anonymous',
@@ -77,6 +95,7 @@ class Application extends Component {
 
   render () {
     const self = this;
+    const { user } = this.state;
     return <AppContainer>
       <Header
         {...this.state}
@@ -84,9 +103,11 @@ class Application extends Component {
           self.logout()
         }}
       />
-      <Sidebar>
-        
-      </Sidebar>
+      {user !== undefined &&
+        <Sidebar>
+          <Chats {...this.state} />
+        </Sidebar>
+      }
       <Stories />
     </AppContainer>;
   }
