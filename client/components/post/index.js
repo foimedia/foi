@@ -15,17 +15,27 @@ class Post extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.service = client.service('posts');
+    this.updatePost = this.updatePost.bind(this);
+  }
+
+  updatePost (newPost) {
+    const { post } = this.props;
+    if(newPost.id == post.id) {
+      this.setState({ post: newPost });
+    }
   }
 
   componentDidMount() {
     const { post } = this.props;
-    const postService = client.service('posts');
     this.setState({ post: Object.assign({}, post) });
-    postService.on('patched', patchedPost => {
-      if(patchedPost.id == post.id) {
-        this.setState({ post: patchedPost });
-      }
-    });
+    this.service.on('patched', this.updatePost);
+    this.service.on('updated', this.updatePost);
+  }
+
+  componentWillUnmount () {
+    this.service.off('patched', this.updatePost);
+    this.service.off('updated', this.updatePost);
   }
 
   shouldComponentUpdate(nextProps) {

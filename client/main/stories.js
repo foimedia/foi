@@ -28,6 +28,8 @@ class Stories extends Component {
     this.state = {
       query: {}
     };
+    this.newPost = this.newPost.bind(this);
+    this.newStory = this.newStory.bind(this);
   }
 
   handlePosts (posts) {
@@ -148,9 +150,9 @@ class Stories extends Component {
       const postService = client.service('posts');
       const storyService = client.service('stories');
       // Add new single-post story
-      postService.on('created', this.newPost.bind(this));
+      postService.on('created', this.newPost);
       // Add new story
-      storyService.on('created', this.newStory.bind(this));
+      storyService.on('created', this.newStory);
     });
 
     this.setState({
@@ -160,8 +162,8 @@ class Stories extends Component {
   }
 
   componentWillUnmount () {
-    client.service('posts').off('created');
-    client.service('stories').off('created');
+    client.service('posts').off('created', this.newPost);
+    client.service('stories').off('created', this.newStory);
   }
 
   componentDidUpdate (prevProps, prevState) {

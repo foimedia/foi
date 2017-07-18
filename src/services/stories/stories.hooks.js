@@ -64,7 +64,7 @@ module.exports = {
               service: 'users',
               parentField: 'userId',
               childField: 'id',
-              provider: undefined
+              useInnerPopulate: true
             },
             {
               nameAs: 'posts',
@@ -73,6 +73,7 @@ module.exports = {
               childField: 'storyId',
               asArray: true,
               paginate: false,
+              useInnerPopulate: true,
               query: {
                 $sort: {
                   sentAt: 1

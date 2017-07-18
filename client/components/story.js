@@ -45,6 +45,10 @@ class Story extends Component {
   constructor (props) {
     super(props);
     this.state = {};
+    this.storyService = client.service('stories');
+    this.postService = client.service('posts');
+    this.updateStory = this.updateStory.bind(this);
+    this.newStoryPost = this.newStoryPost.bind(this);
   }
 
   getPosts () {
@@ -53,6 +57,23 @@ class Story extends Component {
       return story.posts;
     else
       return [];
+  }
+
+  updateStory (newStory) {
+    const { story } = this.props;
+    if(newStory.id == story.id) {
+      this.setState({ story: newStory });
+    }
+  }
+
+  newStoryPost (newPost) {
+    const { story } = this.state;
+    if(newPost.storyId == story.id) {
+      const { posts } = this.state;
+      const newPosts = posts.slice();
+      newPosts.push(newPost);
+      return this.setState({posts: newPosts});
+    }
   }
 
   componentDidMount () {
@@ -64,22 +85,15 @@ class Story extends Component {
       posts: Array.isArray(story.posts) ? story.posts.slice() : []
     });
 
-    const storyService = client.service('stories');
-    const postService = client.service('posts');
-    storyService.on('patched', patchedStory => {
-      if(patchedStory.id == story.id) {
-        this.setState({ story: patchedStory });
-      }
-    });
-    postService.on('created', newPost => {
-      const { story } = this.state;
-      if(newPost.storyId == story.id) {
-        const { posts } = this.state;
-        const newPosts = posts.slice();
-        newPosts.push(newPost);
-        return this.setState({posts: newPosts});
-      }
-    });
+    this.storyService.on('patched', this.updateStory);
+    this.storyService.on('updated', this.updateStory);
+    this.postService.on('created', this.newStoryPost);
+  }
+
+  componentWillUnmount () {
+    this.storyService.off('patched', this.updateStory);
+    this.storyService.off('updated', this.updateStory);
+    this.postService.off('created', this.newStoryPost);
   }
 
   shouldComponentUpdate (nextProps) {

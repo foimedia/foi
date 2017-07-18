@@ -19,7 +19,7 @@ module.exports = function () {
     const message = new Message(data);
     return user.createMessageUsers(message)
       .then(chat.createMessageChats)
-      .then(user.validatePrivateChat)
+      .then(chat.validatePrivateChat)
       .then(() => createToken(message, match))
       .then(data => {
         bot.sendMessage(chatId, 'You are authenticated.');

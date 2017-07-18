@@ -23,7 +23,7 @@ const firstUser = () => hook => {
 module.exports = {
   before: {
     all: [],
-    find: [ authenticate('jwt') ],
+    find: [],
     get: [
       // Fix integer ID
       hook => {
@@ -40,7 +40,8 @@ module.exports = {
   after: {
     all: [
       discard('_id'),
-      discard('chats')
+      discard('chats'),
+      discard('language_code')
     ],
     find: [],
     get: [],

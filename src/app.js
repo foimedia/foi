@@ -28,27 +28,6 @@ const app = feathers();
 const env = app.get('env');
 const webpackConfig = require(`../config/webpack/${env}`);
 
-if(env !== 'production') {
-  const history = require('connect-history-api-fallback');
-  const webpack = require('webpack');
-  const compiler = webpack(webpackConfig);
-  const webpackDev = require('webpack-dev-middleware');
-  const hmr = require("webpack-hot-middleware");
-  app.use(history()); // pushState
-  app.use(webpackDev(compiler, {
-    noInfo: true,
-    publicPath: webpackConfig.output.publicPath
-  }));
-  app.use(hmr(compiler, {
-    log: console.log,
-    path: "/__webpack_hmr",
-    heartbeat: 2000
-  }));
-} else {
-  app.use(feathers.static(webpackConfig.output.path));
-}
-
-
 // Load app configuration
 app.configure(configuration(path.join(__dirname, '..')));
 // Enable CORS, security, compression, favicon and body parsing
@@ -78,8 +57,25 @@ app.configure(telegram);
 // Configure a middleware for the error handler
 app.use(handler());
 
-// Allow pushState
-if(env === 'production') {
+if(env !== 'production') {
+  const history = require('connect-history-api-fallback');
+  const webpack = require('webpack');
+  const compiler = webpack(webpackConfig);
+  const webpackDev = require('webpack-dev-middleware');
+  const hmr = require("webpack-hot-middleware");
+  app.use(history()); // pushState
+  app.use(webpackDev(compiler, {
+    noInfo: true,
+    publicPath: webpackConfig.output.publicPath
+  }));
+  app.use(hmr(compiler, {
+    log: console.log,
+    path: "/__webpack_hmr",
+    heartbeat: 2000
+  }));
+} else {
+  app.use(feathers.static(webpackConfig.output.path));
+  // Allow pushState
   app.get('/*', function(req, res) {
     res.sendFile(path.join(webpackConfig.output.path, 'index.html'));
   });

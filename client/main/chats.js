@@ -34,16 +34,19 @@ class Chats extends Component {
       chats: []
     };
     this.service = client.service('chats');
+    this.newChat = this.newChat.bind(this);
+  }
+
+  newChat (chat) {
+    const newChats = this.state.chats.slice();
+    newChats.push(chat);
+    this.setState({chats: newChats});
   }
 
   componentDidMount () {
     this.setState(Object.assign({}, this.props));
 
-    this.service.on('created', chat => {
-      const newChats = this.state.chats.slice();
-      newChats.push(chat);
-      this.setState({chats: newChats});
-    });
+    this.service.on('created', this.newChat);
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -75,6 +78,10 @@ class Chats extends Component {
         chats: []
       });
     }
+  }
+
+  componentWillUnmount () {
+    this.service.off('created', this.newChat);
   }
 
   hasChats() {

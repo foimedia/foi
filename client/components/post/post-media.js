@@ -15,11 +15,13 @@ class PostMedia extends Component {
   getFile(index = null) {
     const { data } = this.props;
     let file;
-    if(Array.isArray(data)) {
-      index = index || data.length - 1;
-      file = data[index];
-    } else {
-      file = data;
+    if(data !== undefined) {
+      if(Array.isArray(data)) {
+        index = index || data.length - 1;
+        file = data[index];
+      } else {
+        file = data;
+      }
     }
     return file;
   }
@@ -34,7 +36,11 @@ class PostMedia extends Component {
 
   getMime() {
     const { data } = this.props;
-    return data.mime_type;
+    let mime;
+    if(data !== undefined) {
+      mime = data.mime_type;
+    }
+    return mime;
   }
 
 }

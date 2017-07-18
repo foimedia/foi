@@ -85,21 +85,22 @@ module.exports = {
               service: 'users',
               parentField: 'userId',
               childField: 'id',
-              provider: undefined
+              useInnerPopulate: true
             },
             {
               nameAs: 'creator',
               service: 'users',
               parentField: 'creatorId',
               childField: 'id',
-              provider: undefined
+              useInnerPopulate: true
             },
             {
               nameAs: 'media',
               service: 'media',
               parentField: 'mediaId',
               childField: 'file_id',
-              asArray: true
+              asArray: true,
+              useInnerPopulate: true
             }
           ]
         }

@@ -28,9 +28,9 @@ module.exports = function () {
   bot.onText(/\/story( .+)?/, (data, match) => {
     const chatId = data.chat.id;
     const message = new Message(data);
-    return chat.createMessageUsers(message)
+    return user.createMessageUsers(message)
       .then(chat.createMessageChats)
-      .then(user.validatePrivateChat)
+      .then(chat.validatePrivateChat)
       .then(() => createStory(message, match))
       .then(data => {
         bot.sendMessage(chatId, 'You just started your "' + data.title.trim() + '" story!');
