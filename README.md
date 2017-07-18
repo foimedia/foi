@@ -4,11 +4,15 @@
 
 ## About
 
-FOI is a bot-based Telegram publisher app. It is focused on real-time coverage of events, made for journalists and activists.
+FOI is a bot-based Telegram publisher app.
+
+It is focused on real-time coverage of events made for journalists and activists.
+
+---
 
 This project uses [Feathers](http://feathersjs.com). An open source web framework for building modern real-time applications.
 
-## Concepts and suported media
+## Concepts and supported media
 
 The content published is organized by **chats**. Every conversation the bot participates is a chat, being a *private chat* or a *group chat*. If you'd like to create a new coverage or simply start a new publishing page, create a new telegram group and invite the bot and people you'd like to contribute to the coverage.
 
