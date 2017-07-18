@@ -37,14 +37,14 @@ module.exports = function () {
           if(media.thumb) {
             promises.push(createMedia(media.thumb));
           }
-        } else {
-          return Promise.all(promises).then(() => {
-            return message;
-          });
         }
+        return Promise.all(promises).then(() => {
+          return message;
+        });
       }
+    } else {
+      return Promise.resolve(message);
     }
-    return Promise.resolve(message);
   };
 
   return Object.assign(app.telegram || {}, {
