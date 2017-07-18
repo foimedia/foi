@@ -1,54 +1,54 @@
 # FOI
 
-> Telegram Publisher Bot
+> Telegram Publisher
 
 ## About
 
+FOI is a bot-based Telegram publisher app. It is focused on real-time coverage of events, made for journalists and activists.
+
 This project uses [Feathers](http://feathersjs.com). An open source web framework for building modern real-time applications.
 
-## Getting Started
+## Concepts and suported media
 
-Getting up and running is as easy as 1, 2, 3.
+The content published is organized by **chats**. Every conversation the bot participates is a chat, being a *private chat* or a *group chat*. If you'd like to create a new coverage or simply start a new publishing page, create a new telegram group and invite the bot and people you'd like to contribute to the coverage.
 
-1. Make sure you have [NodeJS](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed.
-2. Install your dependencies
+FOI currently supports publishing the following Telegram available media:
 
-    ```
-    cd path/to/foi; npm install
-    ```
+ - Text
+ - Voice
+ - Audio
+ - Photo
+ - Location
+ - Video
+ - Video note
+ - Stickers (*available for Chrome only*)
 
-3. Start your app
+### Stories
 
-    ```
-    npm start
-    ```
+Coming soon...
 
-## Testing
+### Authentication
 
-Simply run `npm test` and all your tests in the `test/` directory will be run.
+Coming soon...
 
-## Scaffolding
+## Installing
 
-Feathers has a powerful command line interface. Here are a few things it can do:
+First you need to [create a bot](https://telegram.me/botfather). After creating and retrieving the bot token and username, paste it into `config/default.json`:
+
+```json
+"telegram": {
+  "username": "Your_Bot",
+  "token": "[your-token-here]"
+}
+```
+
+We recommend using docker for development and production environments. With docker and docker-compose installed you can run:
 
 ```
-$ npm install -g feathers-cli             # Install Feathers CLI
-
-$ feathers generate service               # Generate a new Service
-$ feathers generate hook                  # Generate a new Hook
-$ feathers generate model                 # Generate a new Model
-$ feathers help                           # Show all commands
+$ docker-compose up
 ```
 
-## Help
-
-For more information on all the things you can do with Feathers visit [docs.feathersjs.com](http://docs.feathersjs.com).
-
-## Changelog
-
-__0.1.0__
-
-- Initial release
+Access http://localhost:3030 and start talking to your bot!
 
 ## License
 

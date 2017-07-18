@@ -58,7 +58,7 @@ module.exports = function () {
     } else if(message.new_chat_members) {
       let isBotInvite = false;
       message.new_chat_members.forEach(member => {
-        if(member.username == app.get('telegram').botName) {
+        if(member.username == app.get('telegram').username) {
           isBotInvite = true;
         }
       });

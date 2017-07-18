@@ -9,7 +9,7 @@
   },
   "mongodb": "mongodb://mongo:27017/foi",
   "telegram": {
-    "botName": "Your_Bot",
+    "username": "Your_Bot",
     "token": "[your-token-here]"
   },
   "authentication": {

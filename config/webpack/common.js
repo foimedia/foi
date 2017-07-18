@@ -35,7 +35,7 @@ module.exports = {
       },
       'foi': {
         'url': JSON.stringify(config.get('url')),
-        'botName': JSON.stringify(config.get('telegram').botName)
+        'botName': JSON.stringify(config.get('telegram').username)
       }
     })
   ],
