@@ -20,9 +20,9 @@ module.exports = function () {
 
   function createMessageMedia (message) {
     const type = message.getType();
+    let promises = [];
     if(type !== undefined) {
       const media = message[type];
-      let promises = [];
       if(typeof media !== 'string') {
         if(Array.isArray(media) && media[0].file_id) {
           media.forEach(file => {
@@ -39,12 +39,8 @@ module.exports = function () {
           }
         }
       }
-      return Promise.all(promises).then(() => {
-        return message;
-      });
-    } else {
-      return Promise.resolve(message);
     }
+    return Promise.all(promises).then(() => message);
   };
 
   return Object.assign(app.telegram || {}, {

@@ -32,9 +32,7 @@ module.exports = function () {
     }
     if(message.forwarded_from_chat)
       promises.push(updateChat(message.forwarded_from_chat));
-    return Promise.all(promises).then(() => {
-      return message;
-    });
+    return Promise.all(promises).then(() => message);
   }
 
   function validatePrivateChat (message) {

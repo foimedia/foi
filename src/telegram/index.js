@@ -18,8 +18,8 @@ module.exports = function () {
     bot
   });
 
-  app.configure(auth);
   app.configure(post);
   app.configure(story);
+  app.configure(auth);
 
 };
