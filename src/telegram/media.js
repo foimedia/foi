@@ -22,8 +22,8 @@ module.exports = function () {
     const type = message.getType();
     if(type !== undefined) {
       const media = message[type];
+      let promises = [];
       if(typeof media !== 'string') {
-        let promises = [];
         if(Array.isArray(media) && media[0].file_id) {
           media.forEach(file => {
             service
@@ -38,10 +38,10 @@ module.exports = function () {
             promises.push(createMedia(media.thumb));
           }
         }
-        return Promise.all(promises).then(() => {
-          return message;
-        });
       }
+      return Promise.all(promises).then(() => {
+        return message;
+      });
     } else {
       return Promise.resolve(message);
     }

@@ -37,11 +37,17 @@ module.exports = function () {
   };
 
   const createPost = message => {
-    const post = message.toPost();
-    if(post) {
-      return service.create(post).then(() => {
-        return message;
-      });
+    if(message !== undefined) {
+      const post = message.toPost();
+      if(post) {
+        return service.create(post).then(() => {
+          return message;
+        });
+      } else {
+        return Promise.reject('Unexpected error occurred');
+      }
+    } else {
+      return Promise.reject('Unexpected error occurred');
     }
   };
 

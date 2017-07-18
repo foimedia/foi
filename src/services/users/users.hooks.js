@@ -12,7 +12,7 @@ const restrict = [
 
 const firstUser = () => hook => {
   return hook.service.find({$limit: 1}).then(users => {
-    if(users.total === 0 || users.total === 1) {
+    if(users.total <= 1) {
       hook.firstUser = true;
       hook.data.roles = ['admin', 'publisher'];
     }
