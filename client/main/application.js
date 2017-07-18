@@ -43,76 +43,85 @@ const AppContainer = styled.div`
   }
 `;
 
-const auth = (token = false) => {
-  if(!token) {
-    return client.authenticate().catch(() => {
-      return client.authenticate({
-        strategy: 'anonymous',
-        accessToken: null
-      });
-    });
-  } else {
-    return client.logout().then(() => {
-      return client.authenticate({
-        strategy: 'jwt',
-        accessToken: token
-      });
-    });
-  }
-};
-
 class Application extends Component {
 
   constructor (props) {
     super(props);
     this.state = {};
+    this.doAuth = this.doAuth.bind(this);
+    this.handleAuth = this.handleAuth.bind(this);
+    this.updateUser = this.updateUser.bind(this);
+  }
+
+  doAuth (token = false) {
+    // No token, attempt stored token and catch with anon auth
+    if(!token) {
+      return client.authenticate().catch(() => {
+        return client.authenticate({
+          strategy: 'anonymous',
+          accessToken: null
+        });
+      });
+    // With token, logout from previous session (mostly anon) and start new one with token
+    } else {
+      token = token.accessToken || token;
+      return client.logout().then(() => {
+        return client.authenticate({
+          strategy: 'jwt',
+          accessToken: token
+        });
+      });
+    }
+  }
+
+  handleAuth (data) {
+    // Clear payload and user before continuing
+    this.setState({
+      payload: undefined,
+      user: undefined
+    });
+    client.passport.verifyJWT(data.accessToken).then(payload => {
+      this.setState({
+        payload: payload
+      });
+      if(payload.userId) {
+        client.service('users').find({
+          query: {
+            id: payload.userId
+          }
+        }).then(res => {
+          if(res.data.length) {
+            this.setState({
+              user: res.data[0]
+            });
+          }
+        })
+      }
+    });
+  }
+
+  updateUser (data) {
+    if(data.id == this.state.payload.userId) {
+      this.setState({
+        user: data
+      });
+    }
   }
 
   componentDidMount () {
     const authorize = client.service('authorize');
-    auth();
-    client.on('authenticated', data => {
-      // Clear payload and user before continuing
-      this.setState({
-        payload: undefined,
-        user: undefined
-      });
-      client.passport.verifyJWT(data.accessToken).then(payload => {
-        this.setState({
-          payload: payload
-        });
-        if(payload.userId) {
-          client.service('users').find({
-            query: {
-              id: payload.userId
-            }
-          }).then(res => {
-            if(res.data.length) {
-              this.setState({
-                user: res.data[0]
-              });
-            }
-          })
-        }
-      });
-    });
-    authorize.on('created', data => {
-      auth(data.accessToken);
-    });
-    client.service('users').on('patched', data => {
-      if(data.id == this.state.payload.userId) {
-        this.setState({
-          user: data
-        });
-      }
-    });
-    client.service('users').on('updated', data => {
-      if(data.id == this.state.payload.userId) {
-        this.setState({
-          user: data
-        });
-      }
-    });
+    this.doAuth();
+    client.on('authenticated', this.handleAuth);
+    authorize.on('created', this.doAuth);
+    client.service('users').on('patched', this.updateUser);
+    client.service('users').on('updated', this.updateUser);
+  }
+
+  componentWillUnmount () {
+    client.off('authenticated', this.handleAuth);
+    authorize.off('created', this.doAuth);
+    client.service('users').off('patched', this.updateUser);
+    client.service('users').off('updated', this.updateUser);
   }
 
   logout () {
