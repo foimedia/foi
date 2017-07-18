@@ -1,11 +1,13 @@
-import { client } from './feathers';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import styleUtils from '../style-utils';
-import Story from '../components/story';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import Transition from 'react-transition-group/Transition';
 import ReactLoading from 'react-loading';
+
+import { client } from 'services/feathers';
+import styleUtils from 'services/style-utils';
+
+import Story from './components/story';
 
 const StoriesWrapper = styled.section`
   .fade {
@@ -28,6 +30,10 @@ class Stories extends Component {
     this.state = {
       query: {}
     };
+
+    this.postService = client.service('posts');
+    this.storyService = client.service('stories');
+
     this.newPost = this.newPost.bind(this);
     this.newStory = this.newStory.bind(this);
   }
@@ -59,13 +65,10 @@ class Stories extends Component {
       stories: undefined
     });
 
-    const storyService = client.service('stories');
-    const postService = client.service('posts');
-
     const promises = [];
 
     // Stories
-    promises.push(storyService.find({
+    promises.push(this.storyService.find({
       query: Object.assign({
         $sort: {
           createdAt: -1
@@ -74,7 +77,7 @@ class Stories extends Component {
     }));
 
     // Posts not assigned to any story
-    promises.push(postService.find({
+    promises.push(this.postService.find({
       query: Object.assign({
         storyId: {
           $in: [undefined,null,false]
@@ -104,9 +107,9 @@ class Stories extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if(JSON.stringify(nextProps.match.params) !== JSON.stringify(this.state.query)) {
+    if(JSON.stringify(nextProps.query) !== JSON.stringify(this.state.query)) {
       this.setState(Object.assign({}, {
-        query: nextProps.match.params
+        query: nextProps.query
       }));
     }
   }
@@ -144,44 +147,33 @@ class Stories extends Component {
 
   componentDidMount () {
 
-    const query = this.props.match.params;
+    const { query } = this.props;
 
     this.fetchStories(query).then(() => {
-      const postService = client.service('posts');
-      const storyService = client.service('stories');
       // Add new single-post story
-      postService.on('created', this.newPost);
+      this.postService.on('created', this.newPost);
       // Add new story
-      storyService.on('created', this.newStory);
+      this.storyService.on('created', this.newStory);
     });
 
-    this.setState({
-      query: Object.assign({}, query)
-    });
+    this.setState({ query: Object.assign({}, query) });
 
   }
 
   componentWillUnmount () {
-    client.service('posts').off('created', this.newPost);
-    client.service('stories').off('created', this.newStory);
+    this.postService.off('created', this.newPost);
+    this.storyService.off('created', this.newStory);
   }
 
   componentDidUpdate (prevProps, prevState) {
     const { query } = this.state;
     if(query !== prevState.query) {
-      if(query.chatId) {
-        client.service('chats').get(query.chatId).then(chat => {
-          this.setState({ chat });
-          this.fetchStories(query);
-        })
-      } else {
-        this.fetchStories(query);
-      }
+      this.fetchStories(query);
     }
   }
 
   render () {
-    const { stories, chat } = this.state;
+    const { stories } = this.state;
     if(stories === undefined) {
       return <ReactLoading className="loader" type={'bubbles'} color={'#999'} width="50px" height="50px" />;
     } else if(!stories.length) {
@@ -197,11 +189,6 @@ class Stories extends Component {
         </Transition>;
       });
       return <StoriesWrapper className="stories">
-        {chat !== undefined &&
-          <header id="content-header">
-            <h2>{chat.title || chat.first_name}</h2>
-          </header>
-        }
         <TransitionGroup>
           {items}
         </TransitionGroup>

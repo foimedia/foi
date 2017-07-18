@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import styleUtils from '../style-utils';
+
+import styleUtils from 'services/style-utils';
 
 const ContentWrapper = styled.section`
   margin: 4rem auto;

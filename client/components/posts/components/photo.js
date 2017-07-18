@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import styleUtils from '../../style-utils';
-import PostMedia from './post-media';
 import { ProgressiveImage } from 'react-progressive-image-loading';
+
+import styleUtils from 'services/style-utils';
+
+import PostMedia from '../media';
 
 const PhotoBox = styled.div`
   img, .img {

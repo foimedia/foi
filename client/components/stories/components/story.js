@@ -1,10 +1,12 @@
-import { client } from '../main/feathers';
 import React, { Component } from 'react';
 import styled from 'styled-components';
+
+import { client } from 'services/feathers';
+import styleUtils from 'services/style-utils';
+
+import Post from 'components/posts';
+
 import StoryFooter from './story-footer';
-import Post from './post/index';
-import styleUtils from '../style-utils';
-// import Transition from 'react-transition-group/Transition';
 
 const StoryBox = styled.article`
   border: 1px solid #e6e6e6;

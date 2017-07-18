@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import styleUtils from '../../style-utils';
 import { Twemoji } from 'react-emoji-render';
+
+import styleUtils from 'services/style-utils';
 
 const TextBox = styled.div`
   margin: .5rem;

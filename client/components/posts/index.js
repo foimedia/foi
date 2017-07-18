@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 import ReactLoading from 'react-loading';
-import { client } from '../../main/feathers';
 
-import PostText from './post-text';
-import PostPhoto from './post-photo';
-import PostAudio from './post-audio';
-import PostVideo from './post-video';
-import PostLocation from './post-location';
+import { client } from 'services/feathers';
+
+import PostText from './components/text';
+import PostPhoto from './components/photo';
+import PostAudio from './components/audio';
+import PostVideo from './components/video';
+import PostLocation from './components/location';
 
 class Post extends Component {
 

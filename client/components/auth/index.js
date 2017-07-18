@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import styleUtils from '../style-utils';
 
-class Header extends Component {
+import styleUtils from 'services/style-utils';
+
+class Auth extends Component {
 
   constructor (props) {
     super(props);
@@ -26,4 +27,4 @@ class Header extends Component {
 
 }
 
-export default Header;
+export default Auth;

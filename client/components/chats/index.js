@@ -1,8 +1,10 @@
-import { client } from './feathers';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import styleUtils from '../style-utils';
-import Chat from '../components/chat';
+
+import { client } from 'services/feathers';
+import styleUtils from 'services/style-utils';
+
+import Chat from './components/chat';
 
 const ChatsWrapper = styled.section`
   header {

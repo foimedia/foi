@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import styleUtils from '../style-utils';
+
+import styleUtils from 'services/style-utils';
 
 const StoryFooterBox = styled.footer`
   padding: 0 .5rem .5rem;

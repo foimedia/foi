@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import Header from '../components/header';
-import Sidebar from '../components/sidebar';
-import Content from '../components/content';
-import Stories from './stories';
-import Chats from './chats';
-import { client } from './feathers';
-import styleUtils from '../style-utils';
+
+import { client } from 'services/feathers';
+import styleUtils from 'services/style-utils';
+
+import Sidebar from 'components/sidebar';
+import Content from 'components/content';
+import Auth from 'components/auth';
+import Stories from 'components/stories';
+import Chats from 'components/chats';
+
+import Home from 'scenes/home';
+import Chat from 'scenes/chat';
 
 import { Route, Link } from 'react-router-dom';
 
@@ -48,6 +53,10 @@ class Application extends Component {
   constructor (props) {
     super(props);
     this.state = {};
+
+    this.authorizeService = client.service('authorize');
+    this.userService = client.service('users');
+
     this.doAuth = this.doAuth.bind(this);
     this.handleAuth = this.handleAuth.bind(this);
     this.updateUser = this.updateUser.bind(this);
@@ -109,19 +118,18 @@ class Application extends Component {
   }
 
   componentDidMount () {
-    const authorize = client.service('authorize');
     this.doAuth();
     client.on('authenticated', this.handleAuth);
-    authorize.on('created', this.doAuth);
-    client.service('users').on('patched', this.updateUser);
-    client.service('users').on('updated', this.updateUser);
+    this.authorizeService.on('created', this.doAuth);
+    this.userService.on('patched', this.updateUser);
+    this.userService.on('updated', this.updateUser);
   }
 
   componentWillUnmount () {
     client.off('authenticated', this.handleAuth);
-    authorize.off('created', this.doAuth);
-    client.service('users').off('patched', this.updateUser);
-    client.service('users').off('updated', this.updateUser);
+    this.authorizeService.off('created', this.doAuth);
+    this.userService.off('patched', this.updateUser);
+    this.userService.off('updated', this.updateUser);
   }
 
   logout () {
@@ -140,10 +148,10 @@ class Application extends Component {
       <Sidebar>
         <div className="brand">
           <Link to="/">
-            <img src={require('../img/logo_black.svg')} alt="FOI" />
+            <img src={require('images/logo_black.svg')} alt="FOI" />
           </Link>
         </div>
-        <Header
+        <Auth
           {...this.state}
           logout={logout => {
             self.logout()
@@ -152,8 +160,8 @@ class Application extends Component {
         <Chats {...this.state} />
       </Sidebar>
       <Content>
-        <Route exact path="/" component={Stories} />
-        <Route path="/c/:chatId" component={Stories} />
+        <Route exact path="/" component={Home} />
+        <Route path="/c/:chatId" component={Chat} />
       </Content>
     </AppContainer>;
   }

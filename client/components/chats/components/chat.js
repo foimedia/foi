@@ -1,9 +1,9 @@
-import { client } from '../main/feathers';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import styleUtils from '../style-utils';
-
 import { Link } from 'react-router-dom';
+
+import { client } from 'services/feathers';
+import styleUtils from 'services/style-utils';
 
 const ChatWrapper = styled.article`
   padding: .5rem 1rem;

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import PostMedia from './post-media';
-import styleUtils from '../../style-utils';
+
+import styleUtils from 'services/style-utils';
+
+import PostMedia from '../media';
 
 const AudioBox = styled.div`
   width: 100%;
