@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import { client } from 'services/feathers';
+import client from 'services/feathers';
 import styleUtils from 'services/style-utils';
 
 import Sidebar from 'components/sidebar';
@@ -18,9 +18,6 @@ import { Route, Link } from 'react-router-dom';
 const AppContainer = styled.div`
   font-family: sans-serif;
   line-height: 1.5;
-  .loader {
-    margin: 2rem auto;
-  }
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
     margin-left: ${styleUtils.margins[i]}rem;
     margin-right: ${styleUtils.margins[i]}rem;

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import moment from 'moment';
 import ReactLoading from 'react-loading';
 
-import { client } from 'services/feathers';
+import client from 'services/feathers';
 
 import PostText from './components/text';
 import PostPhoto from './components/photo';

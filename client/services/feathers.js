@@ -14,4 +14,4 @@ client.configure(authentication({
   storage: window.localStorage
 }));
 
-export { client };
+export default client;

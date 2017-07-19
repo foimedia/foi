@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import ReactLoading from 'react-loading';
 
-import { client } from 'services/feathers';
+import client from 'services/feathers';
 import styleUtils from 'services/style-utils';
 
 import Stories from 'components/stories';
+
+import { getTitle } from 'services/chats';
 
 class Chat extends Component {
   constructor (props) {
@@ -18,6 +20,10 @@ class Chat extends Component {
   }
 
   getChat () {
+    // Clear chat before continuing
+    this.setState({
+      chat: undefined
+    });
     const { chatId } = this.state;
     this.service.get(chatId).then(chat => {
       this.setState({ chat });
@@ -50,7 +56,7 @@ class Chat extends Component {
     if(chat !== undefined) {
       return <section id="chat-{chat.id}">
         <header id="content-header">
-          <h2>{chat.title || chat.first_name}</h2>
+          <h2>{getTitle(chat)}</h2>
         </header>
         <Stories query={{chatId: chat.id}} />
       </section>;

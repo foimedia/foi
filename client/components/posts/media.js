@@ -3,16 +3,16 @@ import styled from 'styled-components';
 
 class PostMedia extends Component {
 
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {};
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const { data } = this.props;
   }
 
-  getFile(index = null) {
+  getFile (index = null) {
     const { data } = this.props;
     let file;
     if(data !== undefined) {
@@ -26,7 +26,7 @@ class PostMedia extends Component {
     return file;
   }
 
-  getFileUrl(index = null) {
+  getFileUrl (index = null) {
     const file = this.getFile(index);
     if(file !== undefined)
       return '/files/' + file.file_id + '/' + file.file_name;
@@ -34,13 +34,20 @@ class PostMedia extends Component {
       return '';
   }
 
-  getMime() {
+  getMime () {
     const { data } = this.props;
     let mime;
     if(data !== undefined) {
       mime = data.mime_type;
     }
     return mime;
+  }
+
+  getVideoSrc () {
+    return [{
+      src: this.getFileUrl(),
+      type: this.getMime()
+    }]
   }
 
 }

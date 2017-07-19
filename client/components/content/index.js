@@ -12,6 +12,9 @@ const ContentWrapper = styled.section`
   ${styleUtils.media.desktopHD`
     width: 670px;
   `}
+  .loader {
+    margin: 2rem auto;
+  }
   #content-header {
     margin: 0 0 2rem;
     line-height: 1;

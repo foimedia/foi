@@ -69,6 +69,7 @@
     "react-transition-group": "^2.0.2",
     "serve-favicon": "^2.4.3",
     "styled-components": "^2.1.0",
+    "video.js": "^6.2.0",
     "winston": "^2.3.1"
   },
   "devDependencies": {

@@ -4,7 +4,7 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import Transition from 'react-transition-group/Transition';
 import ReactLoading from 'react-loading';
 
-import { client } from 'services/feathers';
+import client from 'services/feathers';
 import styleUtils from 'services/style-utils';
 
 import Story from './components/story';
@@ -28,7 +28,8 @@ class Stories extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      query: {}
+      query: {},
+      stories: undefined
     };
 
     this.postService = client.service('posts');
@@ -106,14 +107,6 @@ class Stories extends Component {
     return nextState.query !== this.state.query || nextState.stories !== this.state.stories;
   }
 
-  componentWillReceiveProps (nextProps) {
-    if(JSON.stringify(nextProps.query) !== JSON.stringify(this.state.query)) {
-      this.setState(Object.assign({}, {
-        query: nextProps.query
-      }));
-    }
-  }
-
   matchQuery (data) {
     const { query } = this.state;
     let match = true;
@@ -149,14 +142,17 @@ class Stories extends Component {
 
     const { query } = this.props;
 
+    this.setState({
+      query: Object.assign({}, query),
+      stories: undefined
+    });
+
     this.fetchStories(query).then(() => {
       // Add new single-post story
       this.postService.on('created', this.newPost);
       // Add new story
       this.storyService.on('created', this.newStory);
     });
-
-    this.setState({ query: Object.assign({}, query) });
 
   }
 
@@ -167,7 +163,7 @@ class Stories extends Component {
 
   componentDidUpdate (prevProps, prevState) {
     const { query } = this.state;
-    if(query !== prevState.query) {
+    if(JSON.stringify(query) != JSON.stringify(prevState.query)) {
       this.fetchStories(query);
     }
   }

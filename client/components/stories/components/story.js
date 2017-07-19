@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import { client } from 'services/feathers';
+import client from 'services/feathers';
 import styleUtils from 'services/style-utils';
 
 import Post from 'components/posts';

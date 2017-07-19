@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import { client } from 'services/feathers';
+import client from 'services/feathers';
 import styleUtils from 'services/style-utils';
 
 import Chat from './components/chat';
@@ -87,13 +87,17 @@ class Chats extends Component {
   }
 
   hasChats() {
-    const { user, chats } = this.state;
-    return user !== undefined && (this.hasPrivateChat() || chats.length);
+    return this.hasPrivateChat() || this.hasGroupChats();
   }
 
   hasPrivateChat() {
-    const { user, chats } = this.state;
-    return user.roles.indexOf('publisher') !== -1;
+    const { user } = this.state;
+    return user !== undefined && user.roles.indexOf('publisher') !== -1;
+  }
+
+  hasGroupChats() {
+    const { chats } = this.state;
+    return chats !== undefined && chats.length;
   }
 
   render () {
@@ -110,7 +114,7 @@ class Chats extends Component {
               <Chat data={user} />
             </li>
           }
-          {chats.length && chats.map(chat =>
+          {this.hasGroupChats() && chats.map(chat =>
             <li key={chat.id}>
               <Chat data={chat} />
             </li>
