@@ -2,8 +2,6 @@
 
 > Telegram Publisher
 
-## About
-
 FOI is a bot-based Telegram publisher app.
 
 Made for journalists and activists, it is focused on real-time coverage of events.
