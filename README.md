@@ -14,7 +14,7 @@ This project uses [Feathers](http://feathersjs.com). An open source web framewor
 
 ## Concepts and supported media
 
-The content published is organized by **chats**. Every conversation the bot participates is a chat, being a *private chat* or a *group chat*. If you'd like to create a new coverage or simply start a new publishing page, create a new telegram group and invite the bot and people you'd like to contribute to the coverage.
+The content is organized by **chats**. Every conversation the bot participates is a chat, being a *private chat* or a *group chat*. If you'd like to create a new coverage or simply start a new publishing page, create a new telegram group and invite the bot and people you'd like to contribute to the coverage.
 
 FOI currently supports publishing the following Telegram available media:
 
