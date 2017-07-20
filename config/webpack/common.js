@@ -10,13 +10,9 @@ module.exports = {
   ],
   resolve: {
     modules: [
-      path.resolve(__dirname, '../../', 'client'),
+      path.resolve('client'),
       'node_modules'
     ],
-    // alias: {
-    //   Components: path.resolve('client/components/'),
-    //   Services: path.resolve('client/services/')
-    // }
   },
   output: {
     path: path.resolve('public'),

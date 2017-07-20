@@ -17,7 +17,9 @@ class Post extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      post: undefined
+    };
     this.service = client.service('posts');
     this.updatePost = this.updatePost.bind(this);
   }
