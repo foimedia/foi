@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import Transition from 'react-transition-group/Transition';
-import ReactLoading from 'react-loading';
 
 import client from 'services/feathers';
 import styleUtils from 'services/style-utils';
+
+import Loader from 'components/loader';
 
 import Story from './components/story';
 
@@ -28,7 +29,7 @@ class Stories extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      query: {},
+      query: Object.assign({}, props.query),
       stories: undefined
     };
 
@@ -140,12 +141,7 @@ class Stories extends Component {
 
   componentDidMount () {
 
-    const { query } = this.props;
-
-    this.setState({
-      query: Object.assign({}, query),
-      stories: undefined
-    });
+    const { query } = this.state;
 
     this.fetchStories(query).then(() => {
       // Add new single-post story
@@ -171,7 +167,7 @@ class Stories extends Component {
   render () {
     const { stories } = this.state;
     if(stories === undefined) {
-      return <ReactLoading className="loader" type={'bubbles'} color={'#999'} width="50px" height="50px" />;
+      return <Loader size={50} />;
     } else if(!stories.length) {
       return <h2>No posts were found</h2>;
     } else {

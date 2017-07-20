@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import ReactLoading from 'react-loading';
 
 import client from 'services/feathers';
 
+import Loader from 'components/loader';
 import Bundle from 'components/bundle';
 
 import loadPostText from 'bundle-loader?lazy!./components/text';
@@ -50,7 +50,7 @@ class Post extends Component {
     const { post } = this.state;
 
     if(post == undefined) {
-      return <ReactLoading className="loader" type={'bubbles'} color={'#999'} width="30px" height="30px" />;
+      return <Loader size={30} />;
     } else {
       return <article className="post">
         {post.type == 'text' &&
@@ -89,7 +89,7 @@ class Post extends Component {
           </Bundle>
         }
         {(post.type == 'document') &&
-          <ReactLoading className="loader" type={'bubbles'} color={'#999'} width="30px" height="30px" />
+          <Loader size={30} />
         }
       </article>;
     }

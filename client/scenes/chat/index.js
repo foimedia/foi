@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import ReactLoading from 'react-loading';
 
 import client from 'services/feathers';
 import styleUtils from 'services/style-utils';
 
+import Loader from 'components/loader';
 import Stories from 'components/stories';
 
 import { getTitle } from 'services/chats';
@@ -61,7 +61,7 @@ class Chat extends Component {
         <Stories query={{chatId: chat.id}} />
       </section>;
     } else {
-      return <ReactLoading className="loader" type={'bubbles'} color={'#999'} width="50px" height="50px" />;
+      return <Loader size={50} />;
     }
   }
 
