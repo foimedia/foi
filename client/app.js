@@ -4,11 +4,13 @@ import styled from 'styled-components';
 import client from 'services/feathers';
 import styleUtils from 'services/style-utils';
 
+import Bundle from 'components/bundle';
+
 import Sidebar from 'components/sidebar';
 import Content from 'components/content';
 import Auth from 'components/auth';
-import Stories from 'components/stories';
-import Chats from 'components/chats';
+
+import loadChats from 'bundle-loader?lazy!components/chats';
 
 import Home from 'scenes/home';
 import Chat from 'scenes/chat';
@@ -154,7 +156,13 @@ class Application extends Component {
             self.logout()
           }}
         />
-        <Chats {...this.state} />
+        {user !== undefined &&
+          <Bundle load={loadChats}>
+            {Chats => (
+              <Chats {...this.state} />
+            )}
+          </Bundle>
+        }
       </Sidebar>
       <Content>
         <Route exact path="/" component={Home} />

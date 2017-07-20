@@ -5,11 +5,13 @@ import ReactLoading from 'react-loading';
 
 import client from 'services/feathers';
 
-import PostText from './components/text';
-import PostPhoto from './components/photo';
-import PostAudio from './components/audio';
-import PostVideo from './components/video';
-import PostLocation from './components/location';
+import Bundle from 'components/bundle';
+
+import loadPostText from 'bundle-loader?lazy!./components/text';
+import loadPostPhoto from 'bundle-loader?lazy!./components/photo';
+import loadPostAudio from 'bundle-loader?lazy!./components/audio';
+import loadPostVideo from 'bundle-loader?lazy!./components/video';
+import loadPostLocation from 'bundle-loader?lazy!./components/location';
 
 class Post extends Component {
 
@@ -52,19 +54,39 @@ class Post extends Component {
     } else {
       return <article className="post">
         {post.type == 'text' &&
-          <PostText data={post.content} />
+          <Bundle load={loadPostText}>
+            {PostText => (
+              <PostText data={post.content} />
+            )}
+          </Bundle>
         }
         {(post.type == 'location' || post.type == 'venue') &&
-          <PostLocation data={post.content} />
+          <Bundle load={loadPostLocation}>
+            {PostLocation => (
+              <PostLocation data={post.content} />
+            )}
+          </Bundle>
         }
         {(post.type == 'photo' || post.type == 'sticker') &&
-          <PostPhoto data={post.media} caption={post.content} />
+          <Bundle load={loadPostPhoto}>
+            {PostPhoto => (
+              <PostPhoto data={post.media} caption={post.content} />
+            )}
+          </Bundle>
         }
         {(post.type == 'video' || post.type == 'video_note') &&
-          <PostVideo data={post.media} caption={post.content} type={post.type} />
+          <Bundle load={loadPostVideo}>
+            {PostVideo => (
+              <PostVideo data={post.media} caption={post.content} type={post.type} />
+            )}
+          </Bundle>
         }
         {(post.type == 'audio' || post.type == 'voice') &&
-          <PostAudio data={post.media} />
+          <Bundle load={loadPostAudio}>
+            {PostAudio => (
+              <PostAudio data={post.media} />
+            )}
+          </Bundle>
         }
         {(post.type == 'document') &&
           <ReactLoading className="loader" type={'bubbles'} color={'#999'} width="30px" height="30px" />
