@@ -31,14 +31,16 @@ const AppContainer = styled.div`
     margin: 0;
   }
   .brand {
-    padding-top: 4rem;
+    padding: 4rem;
+    background: #111;
     img {
       display: block;
-      max-width: 5em;
+      max-width: 6em;
+      margin: 0 auto;
     }
   }
   a {
-    color: #525dbe;
+    color: #ff4646;
     text-decoration: none;
     outline: none;
     &:hover {
@@ -147,7 +149,7 @@ class Application extends Component {
       <Sidebar>
         <div className="brand">
           <Link to="/">
-            <img src={require('images/logo_black.svg')} alt="FOI" />
+            <img src={require('images/logo_white.svg')} alt="FOI" />
           </Link>
         </div>
         <Auth

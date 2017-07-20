@@ -9,7 +9,6 @@ import Chat from './components/chat';
 const ChatsWrapper = styled.section`
   header {
     margin: 0 0 1rem;
-    color: #777;
   }
   ul {
     max-width: 300px;
@@ -24,7 +23,7 @@ const ChatsWrapper = styled.section`
   footer {
     font-size: .9em;
     font-style: italic;
-    color: #777;
+    color: #999;
   }
 `;
 

@@ -14,6 +14,7 @@ const PhotoBox = styled.div`
     max-height: 400px;
     display: block;
     margin: 0 auto .5rem;
+    border-radius: ${styleUtils.radius}px ${styleUtils.radius}px 0 0;
     overflow: hidden;
     box-sizing: border-box;
     ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`

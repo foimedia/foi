@@ -13,6 +13,8 @@ const VideoBox = styled.div`
     margin: 0 auto .5rem;
     display: block;
     outline: none;
+    border-radius: ${styleUtils.radius}px ${styleUtils.radius}px 0 0;
+    overflow: hidden;
     ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
       margin-bottom: ${styleUtils.margins[i]}rem;
     `)}

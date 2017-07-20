@@ -15,7 +15,7 @@ L.Icon.Default.mergeOptions({
 
 const MapContainer = styled.div`
   overflow: hidden;
-  border-radius: 3px 3px 0 0;
+  border-radius: ${styleUtils.radius}px ${styleUtils.radius}px 0 0;
   margin: 0 0 .5rem;
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
     margin-bottom: ${styleUtils.margins[i]}rem;

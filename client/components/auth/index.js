@@ -18,7 +18,7 @@ class Auth extends Component {
       }
       {user !== undefined &&
         <div>
-          <h2>Hello, {user.first_name}.</h2>
+          <h3>Hello, {user.first_name}.</h3>
           <a href="javascript:void(0);" onClick={this.logout.bind(this)}>Logout</a>
         </div>
       }

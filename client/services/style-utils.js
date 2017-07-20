@@ -31,7 +31,7 @@ export const margins = [
   1.5
 ];
 
-export const radius = 0;
+export const radius = 15;
 
 export const transition = 'linear';
 

@@ -17,11 +17,11 @@ const SidebarWrapper = styled.div`
     bottom: 0;
     overflow: auto;
     font-size: .8em;
-    border-right: 1px solid #ddd;
+    border-right: 1px solid #eee;
     > * {
-      border-bottom: 1px solid #ddd;
-      padding-top: 2rem;
-      padding-bottom: 2rem;
+      border-bottom: 1px solid #eee;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
       margin: 0;
       max-width: 100%:
       box-sizing: border-box;
@@ -42,15 +42,18 @@ const SidebarWrapper = styled.div`
     position: fixed;
     top: 0;
     left: 0;
+    right: 0;
+    background: #111;
+    color: #fff;
     z-index: 10;
-    line-height: 4rem;
+    line-height: 3rem;
     font-size: 1em;
     a {
-      color: #333;
+      color: #fff;
     }
     ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
-      margin-left: ${styleUtils.margins[i]}rem;
-      margin-right: ${styleUtils.margins[i]}rem;
+      padding-left: ${styleUtils.margins[i]}rem;
+      padding-right: ${styleUtils.margins[i]}rem;
     `)}
   }
   &.active {
