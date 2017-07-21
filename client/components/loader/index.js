@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
-import ReactLoading from 'react-loading';
 
 const rotate = keyframes`
   from {

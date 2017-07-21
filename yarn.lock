@@ -4462,10 +4462,6 @@ react-leaflet@^1.4.0:
     lodash "^4.0.0"
     warning "^3.0.0"
 
-react-loading@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/react-loading/-/react-loading-0.1.4.tgz#b329ff2b870f1dc26c7068e91a1574f7dda27e67"
-
 react-progressive-image-loading@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/react-progressive-image-loading/-/react-progressive-image-loading-3.0.0.tgz#d9151ed84d9b0b2094824f89448a0726b65af390"
