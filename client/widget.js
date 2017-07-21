@@ -7,7 +7,7 @@ const nodes = document.getElementsByClassName('foi-widget');
 
 if(nodes && nodes.length) {
   for(var i = 0; i < nodes.length; i++) {
-    (function() {
+    (function(i) {
       const node = nodes[i];
       const chatId = node.dataset.chat;
       const xhr = new XMLHttpRequest();
