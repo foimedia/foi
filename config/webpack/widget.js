@@ -2,10 +2,14 @@ const config = require('./common');
 const path = require('path');
 const webpack = require('webpack');
 
-config.devtool = 'source-map';
+config.entry = {
+  widget: './client/widget'
+};
 
-config.output.filename = '[name]-[chunkhash].js';
+config.output.filename = '[name].js';
 config.output.chunkFilename = '[name]-[chunkhash].js';
+
+config.devtool = 'source-map';
 
 config.plugins = config.plugins.concat([
   new webpack.NoEmitOnErrorsPlugin(),

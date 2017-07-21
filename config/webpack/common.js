@@ -5,26 +5,29 @@ const env = process.env.NODE_ENV || 'development';
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: [
-    './client/index'
-  ],
+  entry: {
+    main: ['./client/index']
+  },
   resolve: {
     modules: [
       path.resolve('client'),
       'node_modules'
     ],
+    alias: {
+      'react': 'preact-compat',
+      'react-dom': 'preact-compat'
+    }
   },
   output: {
     path: path.resolve('public'),
-    publicPath: '/',
-    filename: '[name]-[chunkhash].js',
-    chunkFilename: '[name]-[chunkhash].js'
+    publicPath: config.get('url') + '/'
   },
   plugins: [
     new HTMLWebpackPlugin({
       template: path.resolve('client', 'index.html'),
       filename: 'index.html',
-      inject: 'body'
+      inject: 'body',
+      excludeChunks: ['widget']
     }),
     new webpack.DefinePlugin({
       'process.env': {

@@ -11,7 +11,7 @@ export default class Bundle extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.load(this.props)
   }
 

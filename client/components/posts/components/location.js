@@ -8,16 +8,12 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 L.Icon.Default.imagePath = foi.url;
 L.Icon.Default.mergeOptions({
-    iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-    iconUrl: require('leaflet/dist/images/marker-icon.png'),
-    shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+    iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png').split(foi.url)[1],
+    iconUrl: require('leaflet/dist/images/marker-icon.png').split(foi.url)[1],
+    shadowUrl: require('leaflet/dist/images/marker-shadow.png').split(foi.url)[1],
 });
 
 const MapContainer = styled.div`
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-  border-radius: ${styleUtils.radius}px ${styleUtils.radius}px 0 0;
   margin: 0 0 .5rem;
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
     margin-bottom: ${styleUtils.margins[i]}rem;
