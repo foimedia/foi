@@ -13,7 +13,6 @@ config.devtool = 'source-map';
 
 config.plugins = config.plugins.concat([
   new webpack.NoEmitOnErrorsPlugin(),
-  new webpack.optimize.DedupePlugin(),
   new webpack.optimize.UglifyJsPlugin({
     compressor: {
       warnings: false
