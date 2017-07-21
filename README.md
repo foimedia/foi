@@ -43,6 +43,22 @@ Coming soon...
 
 Coming soon...
 
+### Widget
+
+FOI also provides a **widget** for embedding the real-time feed on another website.
+
+Place `widget.js` on `<head />` or `<body />`:
+
+```html
+<script type="text/javascript" src="https://your-foi-app.com/widget.js" async></script>
+```
+
+Place the `div` with the chat id:
+
+```html
+<div class="foi-widget" data-chat="[chatId]"></div>
+```
+
 ## Installing
 
 ### Configuration
