@@ -13,7 +13,7 @@ const rotate = keyframes`
 const LoaderWrapper = styled.div`
   img {
     animation ${rotate} 1s linear infinite;
-    opacity: .2;
+    opacity: 1;
     margin: auto;
     height: auto;
     display: block;

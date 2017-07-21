@@ -167,7 +167,7 @@ class Stories extends Component {
   render () {
     const { stories } = this.state;
     if(stories === undefined) {
-      return <Loader size={40} />;
+      return <Loader size={20} />;
     } else if(!stories.length) {
       return <h2>No posts were found</h2>;
     } else {
