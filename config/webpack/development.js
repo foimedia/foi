@@ -10,6 +10,8 @@ config.devtool = 'cheap-eval-source-map';
 config.output.filename = '[name].js';
 config.output.chunkFilename = '[name].js';
 
+config.plugins.unshift(require('./html'));
+
 config.plugins = config.plugins.concat([
   new webpack.HotModuleReplacementPlugin(),
   new webpack.NoEmitOnErrorsPlugin()
