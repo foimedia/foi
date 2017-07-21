@@ -27,7 +27,7 @@ module.exports = {
       template: path.resolve('client', 'index.html'),
       filename: 'index.html',
       inject: 'body',
-      excludeChunks: ['widget']
+      chunks: ['main']
     }),
     new webpack.DefinePlugin({
       'process.env': {

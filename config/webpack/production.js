@@ -9,7 +9,6 @@ config.output.chunkFilename = '[name]-[chunkhash].js';
 
 config.plugins = config.plugins.concat([
   new webpack.NoEmitOnErrorsPlugin(),
-  new webpack.optimize.DedupePlugin(),
   new webpack.optimize.UglifyJsPlugin({
     compressor: {
       warnings: false
