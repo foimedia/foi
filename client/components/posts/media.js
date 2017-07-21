@@ -8,10 +8,6 @@ class PostMedia extends Component {
     this.state = {};
   }
 
-  componentDidMount () {
-    const { data } = this.props;
-  }
-
   getFile (index = null) {
     const { data } = this.props;
     let file;
@@ -34,20 +30,13 @@ class PostMedia extends Component {
       return '';
   }
 
-  getMime () {
-    const { data } = this.props;
+  getMime (index = null) {
+    const file = this.getFile(index);
     let mime;
-    if(data !== undefined) {
-      mime = data.mime_type;
+    if(file !== undefined) {
+      mime = file.mime_type;
     }
     return mime;
-  }
-
-  getVideoSrc () {
-    return [{
-      src: this.getFileUrl(),
-      type: this.getMime()
-    }]
   }
 
 }

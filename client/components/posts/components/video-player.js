@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
+import { omit } from 'lodash';
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
 
 export default class VideoPlayer extends Component {
   componentDidMount() {
-    // instantiate video.js
-    this.player = videojs(this.videoNode, this.props, function onPlayerReady() {
-      // console.log('onPlayerReady', this)
-    });
+    this.player = videojs(this.videoNode, omit(this.props, 'children'));
   }
 
   // destroy player on unmount

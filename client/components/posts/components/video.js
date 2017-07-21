@@ -63,26 +63,31 @@ class PostVideo extends PostMedia {
     ];
   }
 
+  getVideoSrc () {
+    return [{
+      src: this.getFileUrl(),
+      type: this.getMime()
+    }]
+  }
+
   render() {
     const { type, caption } = this.props;
-    const file = this.getFile();
-    const width = file.width || file['length'];
-    const height = file.height || file['length'];
+    const src = this.getVideoSrc();
     const ar = this.getAspectRatio();
-    return <VideoBox className={`type-${ type }`}>
-      <div className="video-container">
-        <VideoPlayer
-          width={width}
-          height={height}
-          aspectRatio={`${ar[0]}:${ar[1]}`}
-          controls={true}
-          sources={this.getVideoSrc()}
-          />
-      </div>
-      {typeof caption == 'string' &&
-        <p className="caption">{caption}</p>
-      }
-    </VideoBox>
+    return (
+      <VideoBox className={`type-${ type }`}>
+        <div className="video-container">
+          <VideoPlayer
+            aspectRatio={`${ar[0]}:${ar[1]}`}
+            controls={true}
+            sources={src}
+            />
+        </div>
+        {typeof caption == 'string' &&
+          <p className="caption">{caption}</p>
+        }
+      </VideoBox>
+    )
   }
 
 }
