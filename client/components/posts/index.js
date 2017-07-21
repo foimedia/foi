@@ -52,7 +52,7 @@ class Post extends Component {
     const { post } = this.state;
 
     if(post == undefined) {
-      return <Loader size={30} />;
+      return <Loader size={20} />;
     } else {
       return <article className="post">
         {post.type == 'text' &&
@@ -91,7 +91,7 @@ class Post extends Component {
           </Bundle>
         }
         {(post.type == 'document') &&
-          <Loader size={30} />
+          <Loader size={20} />
         }
       </article>;
     }

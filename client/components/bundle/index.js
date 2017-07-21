@@ -41,7 +41,7 @@ export default class Bundle extends Component {
         return this.props.children;
       }
     } else {
-      return <Loader size={30} />;
+      return <Loader size={20} />;
     }
   }
 }

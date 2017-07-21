@@ -61,7 +61,7 @@ class Chat extends Component {
         <Stories query={{chatId: chat.id}} />
       </section>;
     } else {
-      return <Loader size={50} />;
+      return <Loader size={40} />;
     }
   }
 
