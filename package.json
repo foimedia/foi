@@ -22,7 +22,7 @@
     "yarn": ">= 0.18.0"
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack --config config/webpack/production.js --progress",
+    "build:main": "cross-env NODE_ENV=production webpack --config config/webpack/production.js --progress",
     "build:widget": "cross-env NODE_ENV=production webpack --config config/webpack/widget.js --progress",
     "test": "npm run eslint && npm run mocha",
     "eslint": "eslint src/. test/. --config .eslintrc.json",
