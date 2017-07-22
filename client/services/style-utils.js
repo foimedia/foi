@@ -35,6 +35,8 @@ export const radius = 15;
 
 export const transition = 'linear';
 
+export const color = '#ff4646';
+
 export const media = sizes.reduce((acc, size, index) => {
   const emSize = size.width / 16;
   acc[size.device] = (...args) => css`
@@ -53,5 +55,6 @@ export default {
   margins,
   radius,
   transition,
+  color,
   media
 };

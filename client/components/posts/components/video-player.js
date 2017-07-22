@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { omit } from 'lodash';
+import omit from 'lodash/omit';
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
 

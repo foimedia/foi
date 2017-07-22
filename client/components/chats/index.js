@@ -11,7 +11,7 @@ const ChatsWrapper = styled.section`
     margin: 0 0 1rem;
   }
   ul {
-    max-width: 300px;
+    max-width: 400px;
     margin: 0 0 1rem;
     padding: 0;
     list-style: none;

@@ -22,6 +22,7 @@ module.exports = {
     publicPath: config.get('url') + '/'
   },
   plugins: [
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|pt-br/),
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify(env)

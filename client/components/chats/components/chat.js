@@ -17,7 +17,21 @@ const ChatWrapper = styled.article`
     border-color: #ccc;
   }
   a {
-    display: block;
+    display: inline-block;
+  }
+  .fa {
+    font-weight: normal;
+    float: right;
+    font-size: 1.5em;
+    color: #ddd;
+  }
+  &:hover {
+    .fa {
+      color: #999;
+      &:hover {
+        color: ${styleUtils.color}
+      }
+    }
   }
 `
 
@@ -40,7 +54,10 @@ class Chat extends Component {
     const { data } = this.state;
     return <ChatWrapper>
       {data !== undefined &&
-        <h4><Link to={`/c/${data.id}`}>{getTitle(data)}</Link></h4>
+        <h4>
+          <Link to={`/c/${data.id}`}>{getTitle(data)}</Link>
+          <Link to={`/c/${data.id}/manage`} className="fa fa-gear"></Link>
+        </h4>
       }
     </ChatWrapper>;
   }

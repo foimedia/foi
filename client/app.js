@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
+import { Route, Link, Switch } from 'react-router-dom';
+
 import client from 'services/feathers';
 import styleUtils from 'services/style-utils';
 
@@ -14,8 +16,6 @@ import loadChats from 'bundle-loader?lazy!components/chats';
 
 import Home from 'scenes/home';
 import Chat from 'scenes/chat';
-
-import { Route, Link } from 'react-router-dom';
 
 const AppContainer = styled.div`
   font-family: sans-serif;
@@ -167,8 +167,13 @@ class Application extends Component {
         }
       </Sidebar>
       <Content>
-        <Route exact path="/" component={Home} />
-        <Route path="/c/:chatId" component={Chat} />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/c/:chatId" component={Chat} />
+          <Route render={() => (
+            <h2>Not found</h2>
+          )} />
+        </Switch>
       </Content>
     </AppContainer>;
   }

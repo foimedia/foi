@@ -41,10 +41,21 @@ module.exports = {
         }).then(res => {
           if(res.data.length) {
             hook.data.storyId = res.data[0].id;
+            return hook;
+          } else {
+            // Create single-post story
+            return storyService.create({
+              id: hook.data.id,
+              title: '',
+              userId: hook.data.userId,
+              chatId: hook.data.chatId,
+              createdAt: hook.data.sentAt,
+              status: 'finished'
+            }).then(data => {
+              hook.data.storyId = data.id;
+              return hook;
+            });
           }
-          return hook;
-        }).catch(res => {
-          return hook;
         });
       }
     ],

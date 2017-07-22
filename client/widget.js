@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import Bundle from 'components/bundle';
-import loadStories from 'bundle-loader?lazy!./components/stories';
+import loadChat from 'bundle-loader?lazy!scenes/chat';
 
 document.addEventListener('DOMContentLoaded', function() {
   const nodes = document.getElementsByClassName('foi-widget');
@@ -15,13 +15,18 @@ document.addEventListener('DOMContentLoaded', function() {
         xhr.send();
         xhr.addEventListener('load', function() {
           if(this.status == 200) {
-            const query = {
-              chatId: chatId
+            const props = {
+              match: {
+                params: {
+                  chatId: chatId
+                }
+              },
+              header: false
             };
             ReactDom.render(
-              <Bundle load={loadStories}>
-                {Stories => (
-                  <Stories query={query} />
+              <Bundle load={loadChat}>
+                {Chat => (
+                  <Chat {...props} />
                 )}
               </Bundle>,
               node

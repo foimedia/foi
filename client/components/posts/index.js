@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import moment from 'moment';
 
 import client from 'services/feathers';
 
