@@ -20,6 +20,13 @@ const firstUser = () => hook => {
   });
 };
 
+const defaultRoles = () => hook => {
+  if(!hook.data.role) {
+    hook.data.roles = hook.app.get('defaultUserRoles') || [];
+  }
+  return hook;
+}
+
 module.exports = {
   before: {
     all: [],
@@ -31,7 +38,10 @@ module.exports = {
         return hook;
       }
     ],
-    create: [ firstUser(), ],
+    create: [
+      defaultRoles(),
+      firstUser()
+    ],
     update: [ ...restrict ],
     patch: [ ...restrict ],
     remove: [ ...restrict ]

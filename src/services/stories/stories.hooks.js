@@ -45,9 +45,27 @@ module.exports = {
         });
       }
     ],
-    update: [],
-    patch: [],
-    remove: []
+    update: [
+      hook => {
+        if(hook.params.provider)
+          throw new errors.Forbidden('Stories can only be updated internally');
+        return hook;
+      }
+    ],
+    patch: [
+      hook => {
+        if(hook.params.provider)
+          throw new errors.Forbidden('Stories can only be patched internally');
+        return hook;
+      }
+    ],
+    remove: [
+      hook => {
+        if(hook.params.provider)
+          throw new errors.Forbidden('Stories can only be removed internally');
+        return hook;
+      }
+    ]
   },
 
   after: {

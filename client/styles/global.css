@@ -1,0 +1,28 @@
+body {
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-size: 1.2em;
+  line-height: 1.5;
+}
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+h2,
+h3,
+h4,
+button,
+.button,
+a.button {
+  font-family: 'Inconsolata', monospace;
+  letter-spacing: 0.06em;
+}
+a {
+  color: #ff4646;
+  text-decoration: none;
+  outline: none;
+  &:hover {
+    color: #333;
+  }
+}

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 
 import client from 'services/feathers';
 import styleUtils from 'services/style-utils';
@@ -22,7 +23,6 @@ const ChatsWrapper = styled.section`
   }
   footer {
     font-size: .9em;
-    font-style: italic;
     color: #999;
   }
 `;
@@ -59,13 +59,23 @@ class Chats extends Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
-    const { user } = this.state;
-    if(user !== undefined) {
-      if(this.state.user !== prevState.user) {
+    const { auth } = this.props;
+    if(auth.user !== null && auth.user.first_name) {
+      if(this.props.auth.user !== prevProps.auth.user) {
         this.service.find({
           query: {
-            users: {
-              $in: [user.id]
+            $or: [
+              {
+                users: {
+                  $in: [auth.user.id]
+                }
+              },
+              {
+                id: auth.user.id
+              }
+            ],
+            $sort: {
+              id: -1
             }
           }
         }).then(res => {
@@ -85,22 +95,18 @@ class Chats extends Component {
     this.service.off('created', this.newChat);
   }
 
+  isPublisher() {
+    const { auth } = this.props;
+    return auth.isSignedIn && auth.user.roles.indexOf('publisher') !== -1;
+  }
+
   hasChats() {
-    return this.hasPrivateChat() || this.hasGroupChats();
-  }
-
-  hasPrivateChat() {
-    const { user } = this.state;
-    return user !== undefined && user.roles.indexOf('publisher') !== -1;
-  }
-
-  hasGroupChats() {
-    const { chats } = this.state;
-    return chats !== undefined && chats.length;
+    const { chats } = this.props;
+    return chats.length;
   }
 
   render () {
-    const { user, chats } = this.state;
+    const { auth, chats } = this.props;
     if(this.hasChats()) {
       return <ChatsWrapper>
         <header>
@@ -108,19 +114,14 @@ class Chats extends Component {
           <p>These are the chats you are connected to.</p>
         </header>
         <ul>
-          {this.hasPrivateChat() &&
-            <li key={user.id}>
-              <Chat data={user} />
-            </li>
-          }
-          {this.hasGroupChats() && chats.map(chat =>
+          {this.hasChats() && chats.map(chat =>
             <li key={chat.id}>
-              <Chat data={chat} />
+              <Chat data={chat} user={auth.user} />
             </li>
           )}
         </ul>
         <footer>
-          {this.hasPrivateChat() &&
+          {this.isPublisher() &&
             <p>Invite <strong>@{foi.botName}</strong> to a group for more chats!</p>
           }
         </footer>
@@ -132,4 +133,10 @@ class Chats extends Component {
 
 }
 
-export default Chats;
+function mapStateToProps (state) {
+  return {
+    auth: state.auth
+  }
+}
+
+export default connect(mapStateToProps)(Chats);

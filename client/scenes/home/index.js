@@ -1,53 +1,63 @@
 import React, { Component } from 'react';
-
+import styled from 'styled-components';
+import { connect } from 'react-redux';
 import client from 'services/feathers';
+import Button, { ButtonGroup } from 'components/button';
 
-import Bundle from 'components/bundle';
-import loadStories from 'bundle-loader?lazy!components/stories';
+const HomeWrapper = styled.section`
+  p {
+    margin: 0 0 2rem;
+  }
+`
 
 class Home extends Component {
   constructor (props) {
     super(props);
-    this.storyService = client.service('stories');
-    this.newStory = this.newStory.bind(this);
-  }
-
-  newStory (newStory) {
-    const { stories, chatId } = this.state;
-    const newStories = stories.slice();
-    newStories.unshift(newStory);
-    this.setState({stories: newStories});
   }
 
   componentDidMount () {
-    this.storyService.find({
-      query: {
-        $sort: {
-          createdAt: -1
-        }
-      }
-    }).then(res => {
-      this.setState({
-        stories: res.data
-      });
-      this.storyService.on('created', this.newStory);
-    });
   }
 
-  componentWillUnmount () {
-    this.storyService.off('created', this.newStory);
+  componentWillReceiveProps (nextProps) {
+    // console.log(nextProps);
   }
 
   render () {
-    const { stories } = this.state;
+    const { auth } = this.props;
     return (
-      <Bundle load={loadStories}>
-        {Stories => (
-          <Stories stories={stories} />
-        )}
-      </Bundle>
+      <HomeWrapper id="home">
+        <header id="content-header">
+          <h2>FOI is a publishing bot</h2>
+        </header>
+        <p>Made for journalists and activists, it is focused on real-time coverage of events.</p>
+        <ButtonGroup>
+          <Button
+            href="https://github.com/miguelpeixe/foi"
+            target="_blank"
+            rel="external">
+            <span class="fa fa-github"></span>
+            Learn more
+          </Button>
+          {(auth.isSignedIn && auth.user.anonymous) &&
+            <Button
+              primary
+              href={`https://telegram.me/${foi.botName}?start=${auth.token}`}
+              target="_blank"
+              rel="external">
+              <span class="fa fa-unlock-alt"></span>
+              Authenticate with Telegram
+            </Button>
+          }
+        </ButtonGroup>
+      </HomeWrapper>
     )
   }
 }
 
-export default Home;
+function mapStateToProps (state) {
+  return {
+    auth: state.auth
+  }
+}
+
+export default connect(mapStateToProps)(Home);

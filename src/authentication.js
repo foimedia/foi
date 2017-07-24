@@ -1,6 +1,7 @@
 const authentication = require('feathers-authentication');
 const jwt = require('feathers-authentication-jwt');
 
+const _ = require('lodash');
 const crypto = require('crypto');
 const AnonymousStrategy = require('passport-anonymous').Strategy;
 
@@ -40,6 +41,7 @@ module.exports = function () {
       create: [
         authentication.hooks.authenticate(config.strategies),
         hook => {
+          // console.log(hook.data);
           if(hook.data.strategy == 'anonymous') {
             // make sure params.payload exists
             hook.params.payload = hook.params.payload || {};
@@ -47,6 +49,8 @@ module.exports = function () {
             if(hook.params.payload.userId) {
               delete hook.params.payload.userId;
               delete hook.params.payload.key;
+              delete hook.params.user;
+              delete hook.params.data;
             }
             // merge in `key` token property
             if(!hook.params.payload.key) {
@@ -58,6 +62,19 @@ module.exports = function () {
       ],
       remove: [
         authentication.hooks.authenticate('jwt')
+      ]
+    },
+    after: {
+      create: [
+        hook => {
+          hook.result.token = hook.params.payload.key || hook.params.token;
+          if(!_.isEmpty(hook.params.user)) {
+            hook.result.data = hook.params.user;
+          } else {
+            hook.result.data = {anonymous: true};
+          }
+          return hook;
+        }
       ]
     }
   });

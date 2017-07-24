@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-
+import { connect } from 'react-redux';
 import styleUtils from 'services/style-utils';
 
 class Auth extends Component {
@@ -11,20 +11,27 @@ class Auth extends Component {
   }
 
   render () {
-    const { user, payload } = this.props;
-    return <nav id="auth">
-      {(user === undefined && payload !== undefined) &&
-        <a href={`https://telegram.me/${foi.botName}?start=${payload.key}`} target="_blank">Authenticate</a>
-      }
-      {user !== undefined &&
-        <div>
-          <h3>Hello, {user.first_name}.</h3>
-          <a href="javascript:void(0);" onClick={this.logout.bind(this)}>Logout</a>
-        </div>
-      }
-    </nav>;
+    const { auth } = this.props;
+    if(auth.isSignedIn && !auth.user.anonymous) {
+      return (
+        <nav id="auth">
+          <div>
+            <h3>Hello, {auth.user.first_name}.</h3>
+            <a href="javascript:void(0);" onClick={this.logout.bind(this)}>Logout</a>
+          </div>
+        </nav>
+      )
+    } else {
+      return null;
+    }
   }
 
 }
 
-export default Auth;
+function mapStateToProps (state) {
+  return {
+    auth: state.auth
+  }
+}
+
+export default connect(mapStateToProps)(Auth);

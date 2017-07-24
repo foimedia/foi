@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+import Button from 'components/button';
+
 import client from 'services/feathers';
 import styleUtils from 'services/style-utils';
 
-import { getTitle } from 'services/chats';
+import { getTitle, canManage } from 'services/chats';
 
 const ChatWrapper = styled.article`
   padding: .5rem 1rem;
@@ -52,11 +54,14 @@ class Chat extends Component {
 
   render () {
     const { data } = this.state;
+    const { user } = this.props;
     return <ChatWrapper>
       {data !== undefined &&
         <h4>
           <Link to={`/c/${data.id}`}>{getTitle(data)}</Link>
-          <Link to={`/c/${data.id}/manage`} className="fa fa-gear"></Link>
+          {canManage(data, user) &&
+            <Link to={`/c/${data.id}/settings`} className="fa fa-gear"></Link>
+          }
         </h4>
       }
     </ChatWrapper>;

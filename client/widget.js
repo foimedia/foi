@@ -1,5 +1,10 @@
 import React from 'react';
 import ReactDom from 'react-dom';
+
+// import { BrowserRouter as Router } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from 'services/feathers';
+
 import Bundle from 'components/bundle';
 import loadChat from 'bundle-loader?lazy!scenes/chat';
 
@@ -16,19 +21,17 @@ document.addEventListener('DOMContentLoaded', function() {
         xhr.addEventListener('load', function() {
           if(this.status == 200) {
             const props = {
-              match: {
-                params: {
-                  chatId: chatId
-                }
-              },
+              chatId: chatId,
               header: false
             };
             ReactDom.render(
-              <Bundle load={loadChat}>
-                {Chat => (
-                  <Chat {...props} />
-                )}
-              </Bundle>,
+              <Provider store={store}>
+                <Bundle load={loadChat}>
+                  {Chat => (
+                    <Chat {...props} />
+                  )}
+                </Bundle>
+              </Provider>,
               node
             );
           }

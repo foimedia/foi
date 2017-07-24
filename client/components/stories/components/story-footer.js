@@ -20,7 +20,6 @@ const StoryFooterBox = styled.footer`
     &.small,
     .small {
       font-size: .8em;
-      font-style: italic;
     }
     &:before {
       content: '\00b7';

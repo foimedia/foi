@@ -9,15 +9,28 @@ module.exports = function () {
   const userService = app.service('users');
 
   function updateChat (chat) {
+    let updatedPromise;
     return service.find({ query: { id: chat.id } }).then(res => {
       if(res.data.length) {
         chat.users = _.union(chat.users, res.data[0].users || []);
-        return service.patch(chat.id, chat);
+        updatePromise = service.patch(chat.id, chat);
       } else {
-        return service.create(chat);
+        updatePromise = service.create(chat);
       }
+      return updatePromise.then(populateChatAdmins);
     });
   }
+
+  function populateChatAdmins (chat) {
+    if(chat.type !== 'private' && !chat.all_members_are_administrators) {
+      return bot.getChatAdministrators(chat.id).then(res => {
+        const admins = res.map(admin => admin.user.id);
+        return service.patch(chat.id, { admins });
+      });
+    } else {
+      return service.patch(chat.id, { admins: null });
+    }
+  };
 
   function createMessageChats (message) {
     let promises = [];

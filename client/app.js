@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import { Route, Link, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { withRouter, Route, Link, Switch } from 'react-router-dom';
 
-import client from 'services/feathers';
+import client, { services, auth } from 'services/feathers';
 import styleUtils from 'services/style-utils';
 
 import Bundle from 'components/bundle';
@@ -17,35 +18,26 @@ import loadChats from 'bundle-loader?lazy!components/chats';
 import Home from 'scenes/home';
 import Chat from 'scenes/chat';
 
+import 'styles/global.css';
+
 const AppContainer = styled.div`
-  font-family: sans-serif;
-  line-height: 1.5;
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
     margin-left: ${styleUtils.margins[i]}rem;
     margin-right: ${styleUtils.margins[i]}rem;
   `)}
-  h2,
-  h3,
-  h4,
-  p {
-    margin: 0;
-  }
   .brand {
     padding: 4rem;
+    box-sizing: border-box;
     background: #111;
-    img {
-      display: block;
-      max-width: 6em;
-      margin: 0 auto;
+    height: 225px;
+    &.full {
+      height: 100%;
     }
   }
-  a {
-    color: #ff4646;
-    text-decoration: none;
-    outline: none;
-    &:hover {
-      color: #333;
-    }
+  .brand img {
+    display: block;
+    max-width: 6em;
+    margin: 0 auto;
   }
 `;
 
@@ -53,21 +45,20 @@ class Application extends Component {
 
   constructor (props) {
     super(props);
+
     this.state = {};
 
     this.authorizeService = client.service('authorize');
-    this.userService = client.service('users');
 
     this.doAuth = this.doAuth.bind(this);
-    this.handleAuth = this.handleAuth.bind(this);
-    this.updateUser = this.updateUser.bind(this);
   }
 
   doAuth (token = false) {
+    const { authenticate, logout } = this.props;
     // No token, attempt stored token and catch with anon auth
     if(!token) {
-      return client.authenticate().catch(() => {
-        return client.authenticate({
+      return authenticate().catch(() => {
+        return authenticate({
           strategy: 'anonymous',
           accessToken: null
         });
@@ -75,79 +66,76 @@ class Application extends Component {
     // With token, logout from previous session (mostly anon) and start new one with token
     } else {
       token = token.accessToken || token;
-      return client.logout().then(() => {
-        return client.authenticate({
-          strategy: 'jwt',
-          accessToken: token
-        });
+      logout();
+      return authenticate({
+        strategy: 'jwt',
+        accessToken: token
       });
     }
   }
 
-  handleAuth (data) {
-    // Clear payload and user before continuing
-    this.setState({
-      payload: undefined,
-      user: undefined
-    });
-    client.passport.verifyJWT(data.accessToken).then(payload => {
-      this.setState({
-        payload: payload
-      });
-      if(payload.userId) {
-        client.service('users').find({
-          query: {
-            id: payload.userId
+  fetchUserChats (userId = false) {
+    return client.service('chats').find({
+      query: {
+        $or: [
+          {
+            users: {
+              $in: [userId]
+            }
+          },
+          {
+            id: userId
           }
-        }).then(res => {
-          if(res.data.length) {
-            this.setState({
-              user: res.data[0]
-            });
-          }
-        })
+        ],
+        $sort: {
+          id: -1
+        }
       }
     });
   }
 
-  updateUser (data) {
-    if(data.id == this.state.payload.userId) {
-      this.setState({
-        user: data
-      });
+  componentDidMount () {
+    const { auth } = this.props;
+    this.doAuth();
+    this.authorizeService.on('created', this.doAuth);
+  }
+
+  componentWillUpdate (nextProps) {
+    if(nextProps.auth !== this.props.auth) {
+      if(nextProps.auth.user) {
+        this.fetchUserChats(nextProps.auth.user.id).then(res => {
+          this.setState({
+            userChats: res.data
+          })
+        });
+      } else {
+        this.setState({
+          userChats: undefined
+        });
+      }
     }
   }
 
-  componentDidMount () {
-    this.doAuth();
-    client.on('authenticated', this.handleAuth);
-    this.authorizeService.on('created', this.doAuth);
-    this.userService.on('patched', this.updateUser);
-    this.userService.on('updated', this.updateUser);
-  }
-
   componentWillUnmount () {
-    client.off('authenticated', this.handleAuth);
     this.authorizeService.off('created', this.doAuth);
-    this.userService.off('patched', this.updateUser);
-    this.userService.off('updated', this.updateUser);
   }
 
   logout () {
-    client.logout().then(() => {
-      client.authenticate({
-        strategy: 'anonymous',
-        acesssToken: null
-      });
+    const { authenticate, logout } = this.props;
+    logout();
+    return authenticate({
+      strategy: 'anonymous',
+      accessToken: null
     });
   }
 
   render () {
     const self = this;
-    const { user } = this.state;
+    const { auth } = this.props;
+    const { userChats } = this.state;
     return <AppContainer>
       <Sidebar>
-        <div className="brand">
+        <div className={`brand ${(!auth.isSignedIn || auth.user.anonymous) ? 'full' : ''}`}>
           <Link to="/">
             <img src={require('images/logo_white.svg')} alt="FOI" />
           </Link>
@@ -158,10 +146,10 @@ class Application extends Component {
             self.logout()
           }}
         />
-        {user !== undefined &&
+        {userChats !== undefined &&
           <Bundle load={loadChats}>
             {Chats => (
-              <Chats {...this.state} />
+              <Chats chats={userChats} />
             )}
           </Bundle>
         }
@@ -180,4 +168,13 @@ class Application extends Component {
 
 }
 
-export default Application;
+const mapStateToProps = (state, ownProps) => {
+  return { auth: state.auth }
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  authenticate: (credentials) => dispatch(auth.authenticate(credentials)),
+  logout: () => dispatch(auth.logout())
+})
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Application));

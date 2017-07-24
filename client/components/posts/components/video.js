@@ -33,7 +33,6 @@ const VideoBox = styled.div`
     margin: 0 .5rem .5rem;
     color: #666;
     font-size: .8em;
-    font-size: italic;
     ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
       margin-left: ${styleUtils.margins[i]}rem;
       margin-right: ${styleUtils.margins[i]}rem;
