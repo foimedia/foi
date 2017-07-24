@@ -60,8 +60,7 @@ class Chat extends Component {
   }
 
   componentWillUnmount () {
-    this.realtime.disconnect();
-    this.realtime = null;
+    this.resetRealtime();
   }
 
   componentDidUpdate (prevProps, prevState) {
