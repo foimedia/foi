@@ -80,7 +80,7 @@ class Story extends Component {
       const { posts } = this.state;
       const newPosts = posts.slice();
       newPosts.push(newPost);
-      return this.setState({posts: newPosts});
+      return this.setState({ posts: newPosts });
     }
   }
 
@@ -102,10 +102,6 @@ class Story extends Component {
     this.storyService.off('patched', this.updateStory);
     this.storyService.off('updated', this.updateStory);
     this.postService.off('created', this.newStoryPost);
-  }
-
-  shouldComponentUpdate (nextProps) {
-    return nextProps.story !== this.state.story;
   }
 
   render () {
