@@ -11,10 +11,13 @@ import StoryFooter from './story-footer';
 const StoryBox = styled.article`
   border: 1px solid #e6e6e6;
   margin: 0 0 .5rem;
-  border-radius: ${styleUtils.radius}px;
+  border-radius: ${styleUtils.radius/3}px;
   position: relative;
   z-index: 1;
   overflow: hidden;
+  ${styleUtils.media.desktop`
+    border-radius: ${styleUtils.radius}px;
+  `}
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
     margin-bottom: ${styleUtils.margins[i]}rem;
   `)}

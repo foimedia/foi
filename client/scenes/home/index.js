@@ -2,24 +2,40 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import client from 'services/feathers';
+import styleUtils from 'services/style-utils';
 import Button, { ButtonGroup } from 'components/button';
 
 const HomeWrapper = styled.section`
+  max-width: 600px;
+  margin: 0 auto;
+  header {
+    border-bottom: 1px solid #000;
+    ${styleUtils.media.desktop`
+      height: 10rem;
+    `}
+    h2 {
+      max-width: 200px;
+      padding-top: 1rem;
+      padding-bottom: 2rem;
+      line-height: 1.2;
+      font-size: 3em;
+      text-transform: uppercase;
+      ${styleUtils.media.desktop`
+        padding-top: 0;
+      `}
+    }
+  }
+  h2 {
+  }
   p {
     margin: 0 0 2rem;
+    font-size: 1.6em;
   }
 `
 
 class Home extends Component {
   constructor (props) {
     super(props);
-  }
-
-  componentDidMount () {
-  }
-
-  componentWillReceiveProps (nextProps) {
-    // console.log(nextProps);
   }
 
   render () {

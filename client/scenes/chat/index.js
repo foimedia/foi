@@ -99,7 +99,6 @@ class Chat extends Component {
   Settings () {
     // Not on proper cycle
     const { chat, auth } = this.props;
-    console.log(JSON.stringify(chat));
     if(chat.isFinished) {
       if(auth.isSignedIn && !auth.user.anonymous && canManage(chat.data, auth.user)) {
         return (

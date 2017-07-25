@@ -35,7 +35,7 @@ const Button = styled.a`
 
 export const ButtonGroup = styled.nav`
   display: block;
-  max-width: 350px;
+  max-width: 300px;
   margin: 0 auto;
   a {
     display: block;

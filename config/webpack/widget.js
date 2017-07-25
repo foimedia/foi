@@ -1,11 +1,15 @@
 const config = require('./common');
 const path = require('path');
 const webpack = require('webpack');
+const appConfig = require('config');
 
 config.entry = {
   widget: './client/widget'
 };
 
+
+config.output.path = path.resolve('public', 'widget');
+config.output.publicPath = appConfig.get('url') + '/widget/';
 config.output.filename = '[name].js';
 config.output.chunkFilename = '[name]-[chunkhash].js';
 

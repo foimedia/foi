@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import styleUtils from 'services/style-utils';
 
 const maxWidth = 300;
 
 const SidebarWrapper = styled.div`
+  font-size: 1.2em;
   .sidebar-content {
     position: fixed;
     z-index: 5;
@@ -84,8 +86,22 @@ class Sidebar extends Component {
     this.toggle = this.toggle.bind(this);
   }
 
+
+
   componentWillReceiveProps (nextProps) {
+    const nextUser = nextProps.auth.user;
+    const thisUser = this.props.auth.user;
     if(nextProps.location !== this.props.location) {
+      this.setState({
+        active: false
+      });
+    }
+    if(nextUser && !nextUser.anonymous && nextUser !== thisUser) {
+      this.setState({
+        active: true
+      });
+    }
+    if(nextUser && nextUser.anonymous && nextUser !== thisUser) {
       this.setState({
         active: false
       });
@@ -125,4 +141,8 @@ class Sidebar extends Component {
 
 };
 
-export default withRouter(Sidebar);
+const mapStateToProps = state => {
+  return { auth: state.auth };
+};
+
+export default withRouter(connect(mapStateToProps)(Sidebar));
