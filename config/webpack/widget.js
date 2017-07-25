@@ -7,9 +7,6 @@ config.entry = {
   widget: './client/widget'
 };
 
-
-config.output.path = path.resolve('public', 'widget');
-config.output.publicPath = appConfig.get('url') + '/widget/';
 config.output.filename = '[name].js';
 config.output.chunkFilename = '[name]-[chunkhash].js';
 

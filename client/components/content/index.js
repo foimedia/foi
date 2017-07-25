@@ -29,9 +29,11 @@ class Content extends Component {
   render () {
     const { children } = this.props;
     if(children !== undefined) {
-      return <ContentWrapper id="content">
-        {children}
-      </ContentWrapper>;
+      return (
+        <ContentWrapper id="content">
+          {children}
+        </ContentWrapper>
+      );
     } else {
       return null;
     }

@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import styleUtils from 'services/style-utils';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import Transition from 'react-transition-group/Transition';
-
-import client from 'services/feathers';
-import styleUtils from 'services/style-utils';
-
 import Loader from 'components/loader';
-
-import Story from './components/story';
 
 const StoriesWrapper = styled.section`
   .fade {
@@ -31,29 +26,22 @@ class Stories extends Component {
   }
 
   render () {
-    const { stories } = this.props;
-    if(stories === undefined) {
-      return <Loader size={20} />;
-    } else if(!stories.length) {
-      return <h2>No posts were found</h2>;
-    } else {
-      const items = stories.map(story => {
-        return <Transition key={`story-${story.id}`} timeout={200}>
-          {(status) => (
-            <div className={`fade fade-${status}`}>
-              <Story story={story} />
-            </div>
-          )}
-        </Transition>;
-      });
-      return <StoriesWrapper className="stories">
+    return (
+      <StoriesWrapper className="stories">
         <TransitionGroup>
-          {items}
+          {this.props.children.map((child, i) =>
+            <Transition key={child.key} timeout={200}>
+              {(status) => (
+                <div className={`fade fade-${status}`}>
+                  {child}
+                </div>
+              )}
+            </Transition>
+          )}
         </TransitionGroup>
-      </StoriesWrapper>;
-    }
+      </StoriesWrapper>
+    );
   }
-
 }
 
 export default Stories;

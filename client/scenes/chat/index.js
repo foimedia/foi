@@ -1,19 +1,10 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
-
 import { connect } from 'react-redux';
 // import { withRouter, Route, Link, Switch, Redirect } from 'react-router-dom';
-
-import Realtime from 'feathers-offline-realtime';
-
 import client, { services } from 'services/feathers';
-import styleUtils from 'services/style-utils';
-
 import Loader from 'components/loader';
 import Bundle from 'components/bundle';
-
-import loadStories from 'bundle-loader?lazy!components/stories';
-
+import loadStories from 'bundle-loader?lazy!containers/stories';
 import { getTitle, canManage } from 'services/chats';
 
 class Chat extends Component {
@@ -22,51 +13,59 @@ class Chat extends Component {
     this.state = {
       chatId: props.chatId || props.match.params.chatId
     };
-    this.service = client.service('chats');
     this.storyService = client.service('stories');
 
     // Components
     this.Stories = this.Stories.bind(this);
     this.Settings = this.Settings.bind(this);
+
+    // Data
+    this.newStory = this.newStory.bind(this);
   }
 
-  resetRealtime (force = false) {
-    if(this.realtime) {
-      if(force)
-        this.props.resetStories();
-      this.realtime.disconnect();
-      this.realtime = null;
-    }
-  }
-
-  realtimeStories (chatId) {
-    this.resetRealtime(true);
-    this.realtime = new Realtime(this.storyService, {
+  getStories(chatId) {
+    // Clear stories before continuing
+    this.setState({
+      stories: undefined
+    });
+    this.storyService.find({
       query: {
-        chatId: chatId
-      },
-      sort: Realtime.multiSort({ createdAt: -1 })
+        chatId: chatId,
+        $sort: {
+          createdAt: -1
+        }
+      }
+    }).then(res => {
+      this.setState({
+        stories: res.data
+      });
     });
-    this.realtime.on('events', (records, last) => {
-      this.props.realtimeStories(this.realtime.connected, last, records);
-    });
-    this.realtime.connect();
+  }
+
+  newStory (newStory) {
+    const { stories, chatId } = this.state;
+    if(newStory.chatId == chatId) {
+      const newStories = stories.slice();
+      newStories.unshift(newStory);
+      this.setState({stories: newStories});
+    }
   }
 
   componentDidMount () {
     const { chatId } = this.state;
-    this.realtimeStories(chatId);
+    this.getStories(chatId);
     this.props.fetchChat(chatId);
+    this.storyService.on('created', this.newStory);
   }
 
   componentWillUnmount () {
-    this.resetRealtime(false);
+    this.storyService.off('created', this.newStory);
   }
 
   componentDidUpdate (prevProps, prevState) {
     const { chatId } = this.state;
     if(chatId !== prevState.chatId) {
-      this.realtimeStories(chatId);
+      this.getStories(chatId);
       this.props.fetchChat(chatId);
     }
   }
@@ -115,7 +114,8 @@ class Chat extends Component {
   }
 
   render () {
-    const { match, chat, stories } = this.props;
+    const { match, chat } = this.props;
+    const { stories } = this.state;
     if(chat.isFinished) {
       return (
         <section id="chat-{chat.data.id}">
@@ -124,10 +124,10 @@ class Chat extends Component {
               <h2>{getTitle(chat.data)}</h2>
             </header>
           }
-          {stories.store &&
+          {(stories !== undefined && stories.length) &&
             <Bundle load={loadStories}>
               {Stories => (
-                <Stories stories={stories.store.records} />
+                <Stories stories={stories} />
               )}
             </Bundle>
           }
@@ -147,28 +147,11 @@ class Chat extends Component {
 function mapStateToProps (state, ownProps) {
   return {
     auth: state.auth,
-    stories: state.stories,
     chat: state.chats
   };
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchStories: (chatId) => {
-    dispatch(services.stories.find({
-      query: {
-        chatId: chatId,
-        $sort: {
-          createdAt: -1
-        }
-      }
-    }))
-  },
-  resetStories: () => {
-    dispatch(services.stories.reset())
-  },
-  realtimeStories: (connected, last, records) => {
-    dispatch(services.stories.store({connected: connected, last, records}))
-  },
   fetchChat: (chatId) => {
     dispatch(services.chats.get(chatId))
   }

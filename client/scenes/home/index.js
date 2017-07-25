@@ -6,8 +6,6 @@ import styleUtils from 'services/style-utils';
 import Button, { ButtonGroup } from 'components/button';
 
 const HomeWrapper = styled.section`
-  max-width: 600px;
-  margin: 0 auto;
   header {
     border-bottom: 1px solid #000;
     ${styleUtils.media.desktop`
@@ -27,7 +25,7 @@ const HomeWrapper = styled.section`
   }
   h2 {
   }
-  p {
+  .description {
     margin: 0 0 2rem;
     font-size: 1.5em;
   }
@@ -45,7 +43,10 @@ class Home extends Component {
         <header id="content-header">
           <h2>FOI is a publishing bot</h2>
         </header>
-        <p>Made for journalists and activists, it is focused on real-time coverage of events.</p>
+        <div className="description">
+          <p>Made for journalists and activists.</p>
+          <p>Focused on real-time coverage of events.</p>
+        </div>
         <ButtonGroup>
           <Button
             href="https://github.com/miguelpeixe/foi"

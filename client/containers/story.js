@@ -1,52 +1,8 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
-
 import client from 'services/feathers';
-import styleUtils from 'services/style-utils';
-
-import Post from 'components/posts';
-
-import StoryFooter from './story-footer';
-
-const StoryBox = styled.article`
-  border: 1px solid #e6e6e6;
-  margin: 0 0 .5rem;
-  border-radius: ${styleUtils.radius/3}px;
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-  ${styleUtils.media.desktop`
-    border-radius: ${styleUtils.radius}px;
-  `}
-  ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
-    margin-bottom: ${styleUtils.margins[i]}rem;
-  `)}
-  :hover {
-    border-color: #d6d6d6;
-  }
-  .story-header {
-    padding: 1.5rem;
-    ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
-      padding: ${styleUtils.margins[i]}rem;
-    `)}
-    h2 {
-      margin: 0;
-    }
-    border-bottom: 1px solid #eee;
-  }
-  .post {
-    margin: 0 0 .5rem;
-    ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
-      margin-bottom: ${styleUtils.margins[i]}rem;
-    `)}
-    &:last-child {
-      margin: 0;
-    }
-    .loader {
-      margin: 2rem auto;
-    }
-  }
-`;
+import Loader from 'components/loader';
+import StoryComponent from 'components/stories/story';
+import Post from 'containers/post';
 
 class Story extends Component {
 
@@ -107,21 +63,15 @@ class Story extends Component {
   render () {
     const { story, posts } = this.state;
     if(story === undefined) {
-      return <p>Loading story...</p>;
+      return <Loader size={20} />;
     } else if(posts !== undefined && posts.length) {
-      return <StoryBox>
-        {story.title &&
-          <header className="story-header">
-            <h2>{story.title}</h2>
-          </header>
-        }
-        <section className="story-posts">
+      return (
+        <StoryComponent story={story} posts={posts}>
           {posts.map(post =>
             <Post key={`post-${post.id}`} post={post} />
           )}
-        </section>
-        <StoryFooter story={story} posts={posts} />
-      </StoryBox>;
+        </StoryComponent>
+      );
     } else {
       return null;
     }

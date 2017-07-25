@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { serviceMap } from 'services/feathers';
-import { routerReducer } from 'react-router-redux';
+// import { routerReducer } from 'react-router-redux';
 
 export default function (services) {
   const reducers = {};
@@ -10,6 +10,6 @@ export default function (services) {
   return combineReducers({
     ...reducers,
     auth: services.auth.reducer,
-    router: routerReducer,
+    // router: routerReducer
   });
 }
