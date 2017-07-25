@@ -18,15 +18,15 @@ client.configure(authenticationClient({
   storage: window.localStorage
 }));
 
-export const serviceList = [
-  'chats',
-  'posts',
-  'media',
-  'stories',
-  'users'
-];
+export const serviceMap = {
+  chats: 'chats',
+  posts: 'posts',
+  media: 'media',
+  stories: 'stories',
+  users: 'users'
+};
 
-export const services = reduxifyServices(client, serviceList);
+export const services = reduxifyServices(client, serviceMap);
 export const auth = reduxifyAuthentication(client);
 export const store = configureStore({...services, auth});
 
