@@ -34,6 +34,9 @@ const SidebarWrapper = styled.div`
       &:last-child {
         border-bottom: 0;
       }
+      h3 {
+        margin: 0 0 .5rem;
+      }
     }
     img {
       max-width: 100%;

@@ -16,13 +16,31 @@ const ChatsWrapper = styled.section`
     margin: 0 0 1rem;
     padding: 0;
     list-style: none;
+    border: 1px solid ${styleUtils.color};
+    border-radius: 5px;
+    font-family: "Inconsolata";
+    font-size: .8em;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    ${styleUtils.media.desktop`
+      border-radius: ${styleUtils.radius/2}px;
+    `}
     li {
       margin: 0;
       padding: 0;
+      span {
+        padding: .75rem;
+        border-bottom: 1px solid ${styleUtils.color};
+      }
+      &:last-child {
+        span {
+          border-bottom: 0;
+        }
+      }
     }
   }
   footer {
-    font-size: .9em;
+    font-size: .8em;
     color: #999;
   }
 `;

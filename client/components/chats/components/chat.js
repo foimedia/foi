@@ -9,17 +9,9 @@ import styleUtils from 'services/style-utils';
 
 import { getTitle, canManage } from 'services/chats';
 
-const ChatWrapper = styled.article`
-  padding: .5rem 1rem;
-  border: 1px solid #ddd;
-  border-radius: ${styleUtils.radius}px;
-  margin: 0 0 .5rem;
-  cursor: default;
-  &:hover {
-    border-color: #ccc;
-  }
-  a {
-    display: inline-block;
+const ChatWrapper = styled.p`
+  span {
+    display: block;
   }
   .fa {
     font-weight: normal;
@@ -57,12 +49,12 @@ class Chat extends Component {
     const { user } = this.props;
     return <ChatWrapper>
       {data !== undefined &&
-        <h4>
+        <span>
           <Link to={`/c/${data.id}`}>{getTitle(data)}</Link>
           {canManage(data, user) &&
             <Link to={`/c/${data.id}/settings`} className="fa fa-gear"></Link>
           }
-        </h4>
+        </span>
       }
     </ChatWrapper>;
   }

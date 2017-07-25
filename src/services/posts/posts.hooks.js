@@ -41,21 +41,10 @@ module.exports = {
         }).then(res => {
           if(res.data.length) {
             hook.data.storyId = res.data[0].id;
-            return hook;
           } else {
-            // Create single-post story
-            return storyService.create({
-              id: hook.data.id,
-              title: '',
-              userId: hook.data.userId,
-              chatId: hook.data.chatId,
-              createdAt: hook.data.sentAt,
-              status: 'finished'
-            }).then(data => {
-              hook.data.storyId = data.id;
-              return hook;
-            });
+            hook.data.storyId = hook.data.id;
           }
+          return hook;
         });
       }
     ],
@@ -119,7 +108,23 @@ module.exports = {
     ],
     find: [],
     get: [],
-    create: [],
+    create: [
+      hook => {
+        const storyService = hook.app.service('stories');
+        if(hook.result.id == hook.result.storyId) {
+          // Create single-post story
+          storyService.create({
+            id: hook.result.id,
+            title: '',
+            userId: hook.result.userId,
+            chatId: hook.result.chatId,
+            createdAt: hook.result.sentAt,
+            status: 'finished'
+          });
+        }
+        return hook;
+      }
+    ],
     update: [],
     patch: [],
     remove: []

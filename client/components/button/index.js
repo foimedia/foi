@@ -31,6 +31,9 @@ const Button = styled.a`
       color: rgba(255,255,255,0.7);
     }
   `}
+  ${props => props.block && css`
+    display: block;
+  `}
 `
 
 export const ButtonGroup = styled.nav`

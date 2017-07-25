@@ -29,7 +29,7 @@ const HomeWrapper = styled.section`
   }
   p {
     margin: 0 0 2rem;
-    font-size: 1.6em;
+    font-size: 1.5em;
   }
 `
 
