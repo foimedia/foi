@@ -41,7 +41,6 @@ module.exports = function () {
       create: [
         authentication.hooks.authenticate(config.strategies),
         hook => {
-          // console.log(hook.data);
           if(hook.data.strategy == 'anonymous') {
             // make sure params.payload exists
             hook.params.payload = hook.params.payload || {};

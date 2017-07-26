@@ -47,18 +47,31 @@ class Application extends Component {
     this.authorizeService = client.service('authorize');
 
     this.doAuth = this.doAuth.bind(this);
+    this.doAnonAuth = this.doAnonAuth.bind(this);
+  }
+
+  doAnonAuth () {
+    const { authenticate } = this.props;
+    return authenticate({
+      strategy: 'anonymous',
+      accessToken: null
+    });
   }
 
   doAuth (token = false) {
     const { authenticate, logout } = this.props;
     // No token, attempt stored token and catch with anon auth
     if(!token) {
-      return authenticate().catch(() => {
-        return authenticate({
-          strategy: 'anonymous',
-          accessToken: null
+      if(window.localStorage['feathers-jwt']) {
+        return authenticate().catch(() => {
+          return this.doAnonAuth();
         });
-      });
+      } else {
+        return this.doAnonAuth().then(() => {
+          client.io.disconnect();
+          return client.io.connect();
+        });
+      }
     // With token, logout from previous session (mostly anon) and start new one with token
     } else {
       token = token.accessToken || token;
@@ -119,10 +132,7 @@ class Application extends Component {
   logout () {
     const { authenticate, logout } = this.props;
     logout();
-    return authenticate({
-      strategy: 'anonymous',
-      accessToken: null
-    });
+    return this.doAnonAuth();
   }
 
   render () {
