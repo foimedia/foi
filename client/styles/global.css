@@ -1,7 +1,8 @@
 body {
-  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Helvetica', 'Open Sans', 'Arial', sans-serif;
   font-size: 1em;
   line-height: 1.5;
+  background: #f0f0f0;
 }
 h2,
 h3,
@@ -18,6 +19,11 @@ a.button {
   font-family: 'Inconsolata', monospace;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+h2,
+h3,
+h4 {
+  font-weight: normal;
 }
 button,
 .button,

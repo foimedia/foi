@@ -24,14 +24,14 @@ export const sizes = [
 ];
 
 export const margins = [
-  .5,
-  .75,
+  .8,
   1,
-  1.25,
-  1.5
+  1.15,
+  1.3,
+  1.4
 ];
 
-export const radius = 20;
+export const radius = 14;
 
 export const transition = 'linear';
 

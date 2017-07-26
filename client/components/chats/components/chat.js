@@ -9,26 +9,6 @@ import styleUtils from 'services/style-utils';
 
 import { getTitle, canManage } from 'services/chats';
 
-const ChatWrapper = styled.p`
-  span {
-    display: block;
-  }
-  .fa {
-    font-weight: normal;
-    float: right;
-    font-size: 1.5em;
-    color: #ddd;
-  }
-  &:hover {
-    .fa {
-      color: #999;
-      &:hover {
-        color: ${styleUtils.color}
-      }
-    }
-  }
-`
-
 class Chat extends Component {
 
   constructor (props) {
@@ -47,7 +27,7 @@ class Chat extends Component {
   render () {
     const { data } = this.state;
     const { user } = this.props;
-    return <ChatWrapper>
+    return <p>
       {data !== undefined &&
         <span>
           <Link to={`/c/${data.id}`}>{getTitle(data)}</Link>
@@ -56,7 +36,7 @@ class Chat extends Component {
           }
         </span>
       }
-    </ChatWrapper>;
+    </p>;
   }
 
 }

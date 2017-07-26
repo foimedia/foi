@@ -5,38 +5,14 @@ import { connect } from 'react-redux';
 import client from 'services/feathers';
 import styleUtils from 'services/style-utils';
 
+import ButtonedList from 'components/buttoned-list'
 import Chat from './components/chat';
 
 const ChatsWrapper = styled.section`
   header {
     margin: 0 0 1rem;
-  }
-  ul {
-    max-width: 400px;
-    margin: 0 0 1rem;
-    padding: 0;
-    list-style: none;
-    border: 1px solid ${styleUtils.color};
-    border-radius: 5px;
-    font-family: "Inconsolata";
-    font-size: .8em;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    ${styleUtils.media.desktop`
-      border-radius: ${styleUtils.radius/2}px;
-    `}
-    li {
-      margin: 0;
-      padding: 0;
-      span {
-        padding: .75rem;
-        border-bottom: 1px solid ${styleUtils.color};
-      }
-      &:last-child {
-        span {
-          border-bottom: 0;
-        }
-      }
+    p {
+      max-width: 200px;
     }
   }
   footer {
@@ -131,13 +107,13 @@ class Chats extends Component {
           <h3>Your chats</h3>
           <p>These are the chats you are connected to.</p>
         </header>
-        <ul>
+        <ButtonedList dark>
           {this.hasChats() && chats.map(chat =>
             <li key={chat.id}>
               <Chat data={chat} user={auth.user} />
             </li>
           )}
-        </ul>
+        </ButtonedList>
         <footer>
           {this.isPublisher() &&
             <p>Invite <strong>@{foi.botName}</strong> to a group for more chats!</p>

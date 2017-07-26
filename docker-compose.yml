@@ -1,18 +1,27 @@
 version: '2'
 services:
   app:
+    image: miguelpeixe/foi:latest
     build: .
-    command: nodemon src/
+    # Uncomment below to watch for code changes
+    # command: nodemon src/
     links:
       - mongo
     ports:
     - 3030:3030
     volumes:
-    - /src/node_modules
-    - .:/src
+    # Uncomment below for development
+    # - /src/node_modules
+    # - .:/src
+    # Uncomment below to persist app data
+    # - ./.data/files:/src/files
+    # - ./.data/public:/src/public
     environment:
       NODE_ENV: development
   mongo:
     image: mongo
+    volumes:
+    # Uncomment below to persist database
+    # - ./.data/database:/data/db
     ports:
     - 27018:27017

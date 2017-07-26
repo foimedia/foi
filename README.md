@@ -72,12 +72,56 @@ First you need to [create a bot](https://telegram.me/botfather). Once you send y
 }
 ```
 
+### Install dependencies
+
+Install dependencies through npm or yarn:
+
+```
+$ npm install
+```
+
+or
+
+```
+$ yarn install
+```
+
+### Bundle assets
+
+```
+$ npm run build
+```
+
+### Start the application
+
+```
+$ npm start
+```
+
 ### Running on docker
 
 We recommend using docker for development and production environments. With docker and docker-compose installed you can run:
 
 ```
 $ docker-compose up
+```
+
+Only use the custom command `nodemon src/` on development environment. This command is used for watching code changes and restarting the server.
+
+#### Docker volumes
+
+On [docker-compose.yml](docker-compose.yml) you'll see the development volumes and the app data volumes.
+
+By persisting the root and node_modules directory while using `nodemon src/` command you'll be able to develop using docker while it watches for code changes.
+
+Persisting mongo database, uploaded files and the assets you will make sure that the data won't disappear on image upgrades and container renewals. **This is important for production use!**
+
+#### Bundling assets
+
+After the app container is created, you should run the command that generates the static content:
+
+```
+docker exec -it [foi_app_container_name] yarn run build
 ```
 
 Access http://localhost:3030 and start talking to your bot!

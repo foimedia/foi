@@ -28,11 +28,7 @@ const AppContainer = styled.div`
   .brand {
     padding: 4rem;
     box-sizing: border-box;
-    background: #111;
     height: 225px;
-    &.full {
-      height: 100%;
-    }
   }
   .brand img {
     display: block;
@@ -135,7 +131,7 @@ class Application extends Component {
     const { userChats } = this.state;
     return <AppContainer>
       <Sidebar>
-        <div className={`brand ${(!auth.isSignedIn || auth.user.anonymous) ? 'full' : ''}`}>
+        <div className={`brand`}>
           <Link to="/">
             <img src={require('images/logo_white.svg')} alt="FOI" />
           </Link>

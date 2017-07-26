@@ -2,6 +2,13 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import styleUtils from 'services/style-utils';
+import Button from 'components/button';
+
+const AuthWrapper = styled.div`
+  nav {
+    float: right;
+  }
+`
 
 class Auth extends Component {
 
@@ -14,12 +21,12 @@ class Auth extends Component {
     const { auth } = this.props;
     if(auth.isSignedIn && !auth.user.anonymous) {
       return (
-        <nav id="auth">
-          <div>
-            <h3>Hello, {auth.user.first_name}.</h3>
-            <a href="javascript:void(0);" onClick={this.logout.bind(this)}>Logout</a>
-          </div>
-        </nav>
+        <AuthWrapper>
+          <nav id="auth">
+            <Button primary small href="javascript:void(0);" onClick={this.logout.bind(this)}>Logout</Button>
+          </nav>
+          <h3>Hello, {auth.user.first_name}.</h3>
+        </AuthWrapper>
       )
     } else {
       return null;

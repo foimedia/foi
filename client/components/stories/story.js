@@ -5,7 +5,7 @@ import client from 'services/feathers';
 import StoryFooter from './components/story-footer';
 
 const StoryBox = styled.article`
-  border: 1px solid #e6e6e6;
+  border: 1px solid #ddd;
   margin: 0 0 .5rem;
   border-radius: ${styleUtils.radius/3}px;
   position: relative;

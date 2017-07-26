@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import styleUtils from 'services/style-utils';
 
-const maxWidth = 300;
+const maxWidth = 330;
 
 const SidebarWrapper = styled.div`
   font-size: 1.2em;
@@ -14,16 +14,16 @@ const SidebarWrapper = styled.div`
     z-index: 5;
     top: 0;
     left: 0;
-    background: #fff;
+    background: #222;
+    color: #999;
     width: 0;
     bottom: 0;
     overflow: auto;
     font-size: .8em;
-    border-right: 1px solid #eee;
     > * {
-      border-bottom: 1px solid #eee;
-      padding-top: 1rem;
-      padding-bottom: 1rem;
+      border-bottom: 1px solid #333;
+      padding-top: 1.5rem;
+      padding-bottom: 1.5rem;
       margin: 0;
       max-width: 100%:
       box-sizing: border-box;
@@ -35,7 +35,8 @@ const SidebarWrapper = styled.div`
         border-bottom: 0;
       }
       h3 {
-        margin: 0 0 .5rem;
+        ${'' /* margin: 0 0 .5rem; */}
+        color: #fff;
       }
     }
     img {
@@ -48,13 +49,16 @@ const SidebarWrapper = styled.div`
     top: 0;
     left: 0;
     right: 0;
-    background: #111;
-    color: #fff;
+    background: #222;
+    color: #f0f0f0;
     z-index: 10;
     line-height: 3rem;
     font-size: 1em;
     a {
       color: #fff;
+      background: #222;
+      padding: .5rem;
+      margin: -.5rem;
     }
     ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
       padding-left: ${styleUtils.margins[i]}rem;
@@ -65,6 +69,9 @@ const SidebarWrapper = styled.div`
     .sidebar-content {
       width: 100%;
     }
+    nav.sidebar-nav {
+      background: transparent;
+    }
   }
   ${styleUtils.media.desktop`
     nav.sidebar-nav {
@@ -72,7 +79,7 @@ const SidebarWrapper = styled.div`
     }
     &.active .sidebar-content,
     .sidebar-content {
-      width: 20%;
+      width: 22%;
       max-width: ${maxWidth}px;
       min-width: 225px;
     }
@@ -88,8 +95,6 @@ class Sidebar extends Component {
     };
     this.toggle = this.toggle.bind(this);
   }
-
-
 
   componentWillReceiveProps (nextProps) {
     const nextUser = nextProps.auth.user;

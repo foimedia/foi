@@ -6,22 +6,25 @@ import styleUtils from 'services/style-utils';
 const ContentWrapper = styled.section`
   margin: 4rem auto;
   transition: width 200ms ${styleUtils.transition};
-  ${styleUtils.media.desktop`
-    width: 500px;
-  `}
-  ${styleUtils.media.desktopHD`
-    width: 670px;
-  `}
   .loader {
     margin: 2rem auto;
   }
   #content-header {
-    margin: 0 0 2rem;
-    line-height: 1;
+    margin: 0 0 1rem;
     h2 {
       font-size: 2em;
     }
   }
+  ${styleUtils.media.desktop`
+    width: 500px;
+    margin: 4rem auto;
+    #content-header {
+      margin: 0 0 2rem;
+    }
+  `}
+  ${styleUtils.media.desktopHD`
+    width: 600px;
+  `}
 `;
 
 class Content extends Component {

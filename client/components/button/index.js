@@ -31,6 +31,9 @@ const Button = styled.a`
       color: rgba(255,255,255,0.7);
     }
   `}
+  ${props => props.small && css`
+    padding: .2rem 1rem;
+  `}
   ${props => props.block && css`
     display: block;
   `}
@@ -38,7 +41,6 @@ const Button = styled.a`
 
 export const ButtonGroup = styled.nav`
   display: block;
-  max-width: 300px;
   margin: 0 auto;
   a {
     display: block;
