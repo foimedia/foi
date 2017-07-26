@@ -147,7 +147,7 @@ class Home extends Component {
           </code></pre>
           <p>Use the <code>{`<div />`}</code> below where you'd like to display your feed, changing the <code>data-chat</code> property to your chat id:</p>
           <pre><code>
-            {`<div class="foi-widget" data-chat="[your-chat-id]">`}
+            {`<div class="foi-widget" data-chat="[your-chat-id]"></div>`}
           </code></pre>
         </div>
       </HomeWrapper>
