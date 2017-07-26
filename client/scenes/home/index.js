@@ -29,32 +29,54 @@ const HomeWrapper = styled.section`
   }
   .main-actions {
     margin: 0 0 2rem;
-    padding: 0 0 2rem;
-    border-bottom: 1px solid #ccc;
     ${styleUtils.media.desktop`
-      padding: 0 0 6rem;
+      margin: 0 0 6rem;
     `}
   }
   .extended-description {
     color: #444;
     font-size: 1.2rem;
     h3 {
+      border-top: 1px solid #ccc;
       color: #999;
-      margin: 0 0 2rem;
+      margin: 2rem 0;
+      padding: 2rem 0 0;
     }
     p {
       margin: 0 0 1rem;
     }
+    pre,
     ul,
     ol {
-      ${'' /* border: 1px solid #ccc; */}
-      background: ${styleUtils.color};
-      color: #fff;
-      margin: 2rem auto;
+      font-family: 'Inconsolata', monospace;
+      margin: 2rem 0;
+      border-radius: ${styleUtils.radius/2}px;
+    }
+    code {
+      font-family: 'Inconsolata', monospace;
+      padding: .2rem .5rem;
+      background: #f7f7f7;
+      color: #999;
+      border-radius: ${styleUtils.radius/2}px;
+      font-size: .8em;
+    }
+    pre {
+      padding: 1rem 1.5rem;
+      font-size: .8em;
+      overflow: auto;
+      white-space: normal;
+      background: #f7f7f7;
+      color: #999;
+      code {
+        background: transparent;
+        padding: 0;
+        font-size: inherit;
+      }
+    }
+    ul,
+    ol {
       padding: 1rem 1rem 1rem 3rem;
       font-size: .9em;
-      font-family: "Inconsolata";
-      border-radius: ${styleUtils.radius/2}px;
       li {
         margin: 0 0 1rem;
         padding-left: .5rem;
@@ -89,6 +111,7 @@ class Home extends Component {
         </div>
         <ButtonGroup className="main-actions">
           <Button
+            primary={!auth.user || !auth.user.anonymous}
             href="https://github.com/miguelpeixe/foi"
             target="_blank"
             rel="external">
@@ -116,6 +139,15 @@ class Home extends Component {
             <li>That's it!</li>
           </ol>
           <p>If the invitation is sent by an authorized publisher the bot will start watching the group and publish its content in real-time.</p>
+          <h3>Publish your feed</h3>
+          <p>To publish your live feed on your website you can use a widget! Paste the code below right before the <code>{`</body>`}</code> closing tag:</p>
+          <pre><code>
+            {`<script type="text/javascript" src="${foi.url}/widget.js" async></script>`}
+          </code></pre>
+          <p>Use the <code>{`<div />`}</code> below where you'd like to display your feed, changing the <code>data-chat</code> property to your chat id:</p>
+          <pre><code>
+            {`<div class="foi-widget" data-chat="[your-chat-id]">`}
+          </code></pre>
         </div>
       </HomeWrapper>
     )
