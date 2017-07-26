@@ -19,6 +19,7 @@ import Home from 'scenes/home';
 import Chat from 'scenes/chat';
 
 import 'styles/global.css';
+import 'styles/scrollbar.css';
 
 const AppContainer = styled.div`
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
