@@ -39,7 +39,7 @@ const HomeWrapper = styled.section`
     h3 {
       border-top: 1px solid #ccc;
       color: #999;
-      margin: 2rem 0;
+      margin: 4rem 0 2rem;
       padding: 2rem 0 0;
     }
     p {
@@ -131,6 +131,7 @@ class Home extends Component {
         </ButtonGroup>
         <div className="extended-description">
           <h3>How it works</h3>
+          <p>FOI is both a bot and a web app. The bot takes the messages it receives and sends it to the app, where its organized, stored and displayed in real-time.</p>
           <p><strong>The content is organized by the chats the bot participates in.</strong> They are your private chat with the bot and the group chats the bot is invited to.</p>
           <p>Creating a new coverage or simply starting a new publishing page is as easy as creating a Telegram group:</p>
           <ol>
