@@ -8,7 +8,7 @@ const Button = styled.a`
   display: inline-block;
   padding: .5rem 1.5rem;
   border: 1px solid ${styleUtils.color};
-  border-radius: ${styleUtils.radius}px;
+  border-radius: 2em;
   margin: 0 0 .5rem;
   cursor: pointer;
   font-size: .8em;

@@ -114,7 +114,7 @@ On [docker-compose.yml](docker-compose.yml) you'll see the development volumes a
 
 By persisting the root and node_modules directory while using `nodemon src/` command you'll be able to develop using docker while it watches for code changes.
 
-Persisting mongo database, uploaded files and the assets you will make sure that the data won't disappear on image upgrades and container renewals. **This is important for production use!**
+Persisting mongo database, uploaded files and the public directory (bundled assets) you will make sure that the data won't disappear on image upgrades and container renewals. **This is important for production use!**
 
 #### Bundling assets
 
