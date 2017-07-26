@@ -2,7 +2,7 @@ body {
   font-family: 'Helvetica', 'Open Sans', 'Arial', sans-serif;
   font-size: 1em;
   line-height: 1.5;
-  background: #f0f0f0;
+  background: #f3f3f3;
 }
 h2,
 h3,
@@ -37,4 +37,8 @@ a {
   &:hover {
     color: #333;
   }
+}
+
+.story-item {
+  background: #f7f7f7;
 }

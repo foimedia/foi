@@ -26,9 +26,12 @@ const AppContainer = styled.div`
     margin-right: ${styleUtils.margins[i]}rem;
   `)}
   .brand {
-    padding: 4rem;
+    padding: 2rem;
     box-sizing: border-box;
-    height: 225px;
+    ${styleUtils.media.desktop`
+      padding: 4rem;
+      height: 225px;
+    `}
   }
   .brand img {
     display: block;
@@ -152,13 +155,15 @@ class Application extends Component {
             self.logout()
           }}
         />
-        {userChats !== undefined &&
-          <Bundle load={loadChats}>
-            {Chats => (
-              <Chats chats={userChats} />
-            )}
-          </Bundle>
-        }
+        <div className="sidebar-inner">
+          {userChats !== undefined &&
+            <Bundle load={loadChats}>
+              {Chats => (
+                <Chats chats={userChats} />
+              )}
+            </Bundle>
+          }
+        </div>
       </Sidebar>
       <Content>
         <Switch>

@@ -29,9 +29,6 @@ const HomeWrapper = styled.section`
   }
   .main-actions {
     margin: 0 0 2rem;
-    ${styleUtils.media.desktop`
-      margin: 0 0 6rem;
-    `}
   }
   .extended-description {
     color: #444;
@@ -39,8 +36,11 @@ const HomeWrapper = styled.section`
     h3 {
       border-top: 1px solid #ccc;
       color: #999;
-      margin: 4rem 0 2rem;
       padding: 2rem 0 0;
+      margin: 2rem 0;
+      ${styleUtils.media.desktop`
+        margin: 4rem 0 2rem;
+      `}
     }
     p {
       margin: 0 0 1rem;

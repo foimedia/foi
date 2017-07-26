@@ -49,7 +49,7 @@ class Story extends Component {
   render () {
     const { story } = this.props;
     return (
-      <StoryBox>
+      <StoryBox className="story-item">
         {story.title &&
           <header className="story-header">
             <h2>{story.title}</h2>

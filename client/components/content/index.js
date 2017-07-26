@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import styleUtils from 'services/style-utils';
 
 const ContentWrapper = styled.section`
-  margin: 4rem auto;
+  margin: 1rem auto;
   transition: width 200ms ${styleUtils.transition};
   .loader {
     margin: 2rem auto;
@@ -16,14 +16,12 @@ const ContentWrapper = styled.section`
     }
   }
   ${styleUtils.media.desktop`
-    width: 500px;
-    margin: 4rem auto;
+    margin: 4rem 0 4rem 35%;
+    width: 55%;
+    max-width: 800px;
     #content-header {
       margin: 0 0 2rem;
     }
-  `}
-  ${styleUtils.media.desktopHD`
-    width: 600px;
   `}
 `;
 

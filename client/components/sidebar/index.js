@@ -5,20 +5,19 @@ import { connect } from 'react-redux';
 
 import styleUtils from 'services/style-utils';
 
-const maxWidth = 330;
-
 const SidebarWrapper = styled.div`
-  font-size: 1.2em;
+  position: relative;
+  ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+    margin-left: -${styleUtils.margins[i]}rem;
+    margin-right: -${styleUtils.margins[i]}rem;
+  `)}
   .sidebar-content {
-    position: fixed;
+    position: relative;
     z-index: 5;
-    top: 0;
-    left: 0;
     background: #222;
     color: #999;
-    width: 0;
-    bottom: 0;
-    overflow: auto;
+    top: 0;
+    left: 0;
     font-size: .8em;
     > * {
       border-bottom: 1px solid #333;
@@ -44,16 +43,17 @@ const SidebarWrapper = styled.div`
       height: auto;
     }
   }
+  .sidebar-inner {
+    display: none;
+  }
   nav.sidebar-nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: #222;
-    color: #f0f0f0;
-    z-index: 10;
     line-height: 3rem;
     font-size: 1em;
+    text-align: right;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 10;
     a {
       color: #fff;
       background: #222;
@@ -66,23 +66,31 @@ const SidebarWrapper = styled.div`
     `)}
   }
   &.active {
-    .sidebar-content {
-      width: 100%;
+    .sidebar-inner {
+      display: block;
     }
     nav.sidebar-nav {
       background: transparent;
     }
   }
   ${styleUtils.media.desktop`
+    margin: 0;
     nav.sidebar-nav {
       display: none;
     }
     &.active .sidebar-content,
     .sidebar-content {
-      width: 22%;
-      max-width: ${maxWidth}px;
-      min-width: 225px;
+      width: 25%;
+      position: fixed;
+      bottom: 0;
+      overflow: auto;
+      .sidebar-inner {
+        display: block;
+      }
     }
+  `}
+  ${styleUtils.media.desktopHD`
+    font-size: 1.2em;
   `}
 `;
 
@@ -102,11 +110,6 @@ class Sidebar extends Component {
     if(nextProps.location !== this.props.location) {
       this.setState({
         active: false
-      });
-    }
-    if(nextUser && !nextUser.anonymous && nextUser !== thisUser) {
-      this.setState({
-        active: true
       });
     }
     if(nextUser && nextUser.anonymous && nextUser !== thisUser) {
@@ -131,13 +134,15 @@ class Sidebar extends Component {
   }
 
   render () {
-    const { children } = this.props;
+    const { auth, children } = this.props;
     const { active } = this.state;
     if(this.hasChildren()) {
       return <SidebarWrapper id="sidebar" className={active ? 'active' : ''}>
-        <nav className="sidebar-nav">
-          <a className="toggle fa fa-bars" onClick={this.toggle} href="javascript:void(0);" title="Menu"></a>
-        </nav>
+        {(auth.user && !auth.user.anonymous) &&
+          <nav className="sidebar-nav">
+            <a className="toggle fa fa-bars" onClick={this.toggle} href="javascript:void(0);" title="Menu"></a>
+          </nav>
+        }
         <div className="sidebar-content">
           {children}
         </div>
