@@ -61,12 +61,16 @@ const HomeWrapper = styled.section`
       font-size: .8em;
     }
     pre {
-      padding: 1rem 1.5rem;
+      padding: 1rem 1.2rem;
       font-size: .8em;
       overflow: auto;
       white-space: normal;
       background: #f7f7f7;
+      border: 1px solid #e7e7e7;
       color: #999;
+      &:hover {
+        border-color: #d7d7d7;
+      }
       code {
         background: transparent;
         padding: 0;
@@ -133,7 +137,7 @@ class Home extends Component {
           <h3>How it works</h3>
           <p>FOI is both a bot and a web app. The bot takes the messages it receives and sends it to the app, where its organized, stored and displayed in real-time.</p>
           <p><strong>The content is organized by the chats the bot participates in.</strong> They are your private chat with the bot and the group chats the bot is invited to.</p>
-          <p>Creating a new coverage or simply starting a new publishing page is as easy as creating a Telegram group:</p>
+          <p>Creating a new coverage or simply starting a live feed is as easy as creating a Telegram group:</p>
           <ol>
             <li>Create your new Telegram group inviting the people you'd like to contribute with;</li>
             <li>Invite the bot;</li>
