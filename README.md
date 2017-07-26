@@ -16,7 +16,7 @@ FOI is both a bot and a web app. The bot takes the messages it receives and send
 
 The content is organized by the **chats** the bot participates in. They are your *private chat* with the bot and the *group chats* the bot is invited to..
 
-Creating a new coverage or simply starting a new publishing page is as easy as creating a Telegram group:
+Creating a new coverage or simply starting a new live feed is as easy as creating a Telegram group:
 
  - Create your new Telegram group inviting the people you'd like to contribute with;
  - Invite the bot;
