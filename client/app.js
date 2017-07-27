@@ -27,17 +27,20 @@ const AppContainer = styled.div`
     margin-right: ${styleUtils.margins[i]}rem;
   `)}
   .brand {
-    padding: 2rem;
+    padding: 1rem;
     box-sizing: border-box;
+    img {
+      max-width: 1.5em;
+      display: block;
+    }
     ${styleUtils.media.desktop`
       padding: 4rem;
       height: 225px;
+      img {
+        max-width: 6em;
+        margin: 0 auto;
+      }
     `}
-  }
-  .brand img {
-    display: block;
-    max-width: 6em;
-    margin: 0 auto;
   }
 `;
 

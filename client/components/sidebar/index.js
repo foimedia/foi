@@ -21,11 +21,15 @@ const SidebarWrapper = styled.div`
     font-size: .8em;
     > * {
       border-bottom: 1px solid #333;
-      padding-top: 1.5rem;
-      padding-bottom: 1.5rem;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
       margin: 0;
       max-width: 100%:
       box-sizing: border-box;
+      ${styleUtils.media.desktopHD`
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+      `}
       ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
         padding-left: ${styleUtils.margins[i]}rem;
         padding-right: ${styleUtils.margins[i]}rem;
@@ -48,7 +52,7 @@ const SidebarWrapper = styled.div`
   }
   nav.sidebar-nav {
     line-height: 3rem;
-    font-size: 1em;
+    font-size: 1.5em;
     text-align: right;
     position: absolute;
     top: 0;
