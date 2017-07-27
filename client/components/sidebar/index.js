@@ -20,11 +20,11 @@ const SidebarWrapper = styled.div`
     left: 0;
     font-size: .8em;
     > * {
+      max-width: calc(700px + 2.5rem);
+      margin: 0 auto;
       border-bottom: 1px solid #333;
       padding-top: 1rem;
       padding-bottom: 1rem;
-      margin: 0;
-      max-width: 100%:
       box-sizing: border-box;
       ${styleUtils.media.desktopHD`
         padding-top: 1.5rem;
@@ -141,16 +141,18 @@ class Sidebar extends Component {
     const { auth, children } = this.props;
     const { active } = this.state;
     if(this.hasChildren()) {
-      return <SidebarWrapper id="sidebar" className={active ? 'active' : ''}>
-        {(auth.user && !auth.user.anonymous) &&
-          <nav className="sidebar-nav">
-            <a className="toggle fa fa-bars" onClick={this.toggle} href="javascript:void(0);" title="Menu"></a>
-          </nav>
-        }
-        <div className="sidebar-content">
-          {children}
-        </div>
-      </SidebarWrapper>;
+      return (
+        <SidebarWrapper id="sidebar" className={active ? 'active' : ''}>
+          {(auth.user && !auth.user.anonymous) &&
+            <nav className="sidebar-nav">
+              <a className="toggle fa fa-bars" onClick={this.toggle} href="javascript:void(0);" title="Menu"></a>
+            </nav>
+          }
+          <div className="sidebar-content">
+            {children}
+          </div>
+        </SidebarWrapper>
+      )
     } else {
       return null;
     }
