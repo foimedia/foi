@@ -11,9 +11,6 @@ import Chat from './components/chat';
 const ChatsWrapper = styled.section`
   header {
     margin: 0 0 1rem;
-    p {
-      max-width: 200px;
-    }
   }
   footer {
     font-size: .8em;

@@ -49,7 +49,7 @@ const HomeWrapper = styled.section`
     ul,
     ol {
       font-family: 'Inconsolata', monospace;
-      margin: 2rem 0;
+      margin: 1rem 0;
       border-radius: ${styleUtils.radius/2}px;
     }
     code {
@@ -79,8 +79,8 @@ const HomeWrapper = styled.section`
     }
     ul,
     ol {
+      max-width: 500px;
       padding: 1rem 1rem 1rem 3rem;
-      font-size: .9em;
       li {
         margin: 0 0 1rem;
         padding-left: .5rem;
@@ -89,7 +89,7 @@ const HomeWrapper = styled.section`
         }
       }
       ${styleUtils.media.desktop`
-        padding: 2rem 4rem;
+        padding: 2rem 3rem;
         li {
           padding-left: 1rem;
         }
@@ -140,7 +140,7 @@ class Home extends Component {
           <p>Creating a new coverage or simply starting a live feed is as easy as creating a Telegram group:</p>
           <ol>
             <li>Create your new Telegram group inviting the people you'd like to contribute with;</li>
-            <li>Invite the bot;</li>
+            <li>Invite <a href="tg://resolve?domain=QAPBot">@{foi.botName}</a>;</li>
             <li>That's it!</li>
           </ol>
           <p>If the invitation is sent by an authorized publisher the bot will start watching the group and publish its content in real-time.</p>
