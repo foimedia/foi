@@ -23,6 +23,7 @@ const HomeWrapper = styled.section`
     }
   }
   .description {
+    max-width: 500px;
     margin: 0 0 2rem;
     font-size: 1.8em;
     font-family: "Inconsolata";
@@ -88,12 +89,6 @@ const HomeWrapper = styled.section`
           margin: 0;
         }
       }
-      ${styleUtils.media.desktop`
-        padding: 2rem 3rem;
-        li {
-          padding-left: 1rem;
-        }
-      `}
     }
   }
 `
