@@ -124,7 +124,7 @@ class Chat extends Component {
               <h2>{getTitle(chat.data)}</h2>
             </header>
           }
-          {(stories !== undefined && stories.length) &&
+          {stories !== undefined &&
             <Bundle load={loadStories}>
               {Stories => (
                 <Stories stories={stories} />

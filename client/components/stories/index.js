@@ -26,10 +26,12 @@ class Stories extends Component {
   }
 
   render () {
+    const { children } = this.props;
+    const childrenArray = Array.isArray(children) ? children : [children];
     return (
       <StoriesWrapper className="stories">
         <TransitionGroup>
-          {this.props.children.map((child, i) =>
+          {childrenArray.map((child, i) =>
             <Transition key={child.key} timeout={200}>
               {(status) => (
                 <div className={`fade fade-${status}`}>

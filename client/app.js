@@ -70,6 +70,7 @@ class Application extends Component {
     // No token, attempt stored token and catch with anon auth
     if(!token) {
       if(window.localStorage['feathers-jwt']) {
+        // User not found auth error is not returning client error
         return authenticate().catch(() => {
           return this.doAnonAuth();
         });
