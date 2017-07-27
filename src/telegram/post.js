@@ -40,14 +40,12 @@ module.exports = function () {
     if(message !== undefined) {
       const post = message.toPost();
       if(post) {
-        return service.create(post).then(() => {
-          return message;
-        });
+        return service.create(post).then(() => message);
       } else {
-        return Promise.reject('Unexpected error occurred');
+        return Promise.resolve();
       }
     } else {
-      return Promise.reject('Unexpected error occurred');
+      return Promise.resolve();
     }
   };
 
