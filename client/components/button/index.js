@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
 import styleUtils from 'services/style-utils';
+import { Link } from 'react-router-dom';
 
-const Button = styled.a`
+const styles = css`
   font-family: 'Inconsolata', monospace;
   letter-spacing: 0.06em;
   display: inline-block;
@@ -14,20 +15,26 @@ const Button = styled.a`
   font-size: .8em;
   text-transform: uppercase;
   text-align: center;
-  &:hover {
+  &:hover,
+  &:active,
+  &:focus {
     color: #333;
+    border-color: ${styleUtils.color};
   }
   .fa {
     float: left;
-    line-height: 1.3;
-    font-size: 1.2em;
     margin-right: 1rem;
-    margin-left: -.4rem;
+    font-size: 1.5em;
+    margin-left: -.8rem;
+    line-height: 1;
   }
   ${props => props.primary && css`
     background: ${styleUtils.color};
     color: #fff;
-    &:hover {
+    &:hover,
+    &:active,
+    &:focus {
+      border-color: ${styleUtils.color};
       color: rgba(255,255,255,0.7);
     }
   `}
@@ -37,6 +44,23 @@ const Button = styled.a`
   ${props => props.block && css`
     display: block;
   `}
+  ${props => props.dark && css`
+    border-color: #444;
+    color: #fff;
+    &:hover,
+    &:active,
+    &:focus {
+      color: #aaa;
+      border-color: #444;
+      .fa {
+        color: ${styleUtils.color};
+      }
+    }
+  `}
+`
+
+const Button = styled.a`
+  ${styles}
 `
 
 export const ButtonGroup = styled.nav`
@@ -45,14 +69,26 @@ export const ButtonGroup = styled.nav`
   a {
     display: block;
     margin: 0 0 1rem;
+    &:last-child {
+      margin: 0;
+    }
   }
   ${styleUtils.media.phablet`
     max-width: none;
     a {
       display: inline-block;
-      margin: 0 1rem 1rem 0rem;
+      margin: 0 2rem 0 0rem;
     }
   `}
+  ${props => props.alignright && css`
+    ${styleUtils.media.phablet`
+      text-align: right;
+    `}
+  `}
+`
+
+export const ButtonLink = styled(Link)`
+  ${styles}
 `
 
 export default Button;

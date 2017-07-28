@@ -7,10 +7,6 @@ import styleUtils from 'services/style-utils';
 
 const SidebarWrapper = styled.div`
   position: relative;
-  ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
-    margin-left: -${styleUtils.margins[i]}rem;
-    margin-right: -${styleUtils.margins[i]}rem;
-  `)}
   .sidebar-content {
     position: relative;
     z-index: 5;
@@ -20,25 +16,15 @@ const SidebarWrapper = styled.div`
     left: 0;
     font-size: .8em;
     > * {
-      max-width: calc(700px + 2.5rem);
-      margin: 0 auto;
       border-bottom: 1px solid #333;
-      padding-top: 1rem;
-      padding-bottom: 1rem;
       box-sizing: border-box;
-      ${styleUtils.media.desktopHD`
-        padding-top: 1.5rem;
-        padding-bottom: 1.5rem;
-      `}
       ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
-        padding-left: ${styleUtils.margins[i]}rem;
-        padding-right: ${styleUtils.margins[i]}rem;
+        padding: ${styleUtils.margins[i]}rem;
       `)}
       &:last-child {
         border-bottom: 0;
       }
       h3 {
-        ${'' /* margin: 0 0 .5rem; */}
         color: #fff;
       }
     }
@@ -47,7 +33,7 @@ const SidebarWrapper = styled.div`
       height: auto;
     }
   }
-  .sidebar-inner {
+  .inner {
     display: none;
   }
   nav.sidebar-nav {
@@ -70,7 +56,7 @@ const SidebarWrapper = styled.div`
     `)}
   }
   &.active {
-    .sidebar-inner {
+    .inner {
       display: block;
     }
     nav.sidebar-nav {
@@ -88,7 +74,7 @@ const SidebarWrapper = styled.div`
       position: fixed;
       bottom: 0;
       overflow: auto;
-      .sidebar-inner {
+      .inner {
         display: block;
       }
     }

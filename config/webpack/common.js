@@ -29,7 +29,8 @@ module.exports = {
       },
       'foi': {
         'url': JSON.stringify(config.get('url')),
-        'botName': JSON.stringify(config.get('telegram').username)
+        'botName': JSON.stringify(config.get('telegram').username),
+        'defaultUserRoles': JSON.stringify(config.get('defaultUserRoles'))
       }
     })
   ],

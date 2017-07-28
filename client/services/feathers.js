@@ -19,7 +19,8 @@ client.configure(authenticationClient({
 }));
 
 export const serviceMap = {
-  chats: 'chats'
+  chats: 'chats',
+  stories: 'stories'
 };
 
 export const services = reduxifyServices(client, serviceMap);

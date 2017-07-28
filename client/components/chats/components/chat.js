@@ -26,17 +26,19 @@ class Chat extends Component {
 
   render () {
     const { data } = this.state;
-    const { user } = this.props;
-    return <p>
-      {data !== undefined &&
-        <span>
-          <Link to={`/c/${data.id}`}>{getTitle(data)}</Link>
-          {canManage(data, user) &&
-            <Link to={`/c/${data.id}/settings`} className="fa fa-gear"></Link>
-          }
-        </span>
-      }
-    </p>;
+    const { auth } = this.props;
+    return (
+      <p>
+        {data !== undefined &&
+          <span>
+            <Link to={`/c/${data.id}`}>{getTitle(data)}</Link>
+            {canManage(data, auth) &&
+              <Link to={`/c/${data.id}/settings`} className="fa fa-gear"></Link>
+            }
+          </span>
+        }
+      </p>
+    )
   }
 
 }

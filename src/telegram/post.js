@@ -42,10 +42,10 @@ module.exports = function () {
       if(post) {
         return service.create(post).then(() => message);
       } else {
-        return Promise.resolve();
+        return Promise.resolve(message);
       }
     } else {
-      return Promise.resolve();
+      return Promise.resolve(message);
     }
   };
 
@@ -53,10 +53,10 @@ module.exports = function () {
     const message = new Message(data);
     const post = message.toPost();
     if(post) {
-      service.get(post.id).then(() => {
-        service.patch(post.id, post);
+      return service.get(post.id).then(() => {
+        return service.patch(post.id, post);
       }).catch(() => {
-        createPost(data);
+        return handleMessage(data);
       });
     }
   };

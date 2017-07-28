@@ -3,29 +3,32 @@ import styled from 'styled-components';
 
 import { connect } from 'react-redux';
 import { withRouter, Route, Link, Switch } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 import client, { services, auth } from 'services/feathers';
+import { hasRole } from 'services/auth';
 import styleUtils from 'services/style-utils';
 
 import Bundle from 'components/bundle';
 
 import Sidebar from 'components/sidebar';
 import Content from 'components/content';
+import Footer from 'components/footer';
 import Auth from 'components/auth';
+import Button, { ButtonLink } from 'components/button';
 
 import loadChats from 'bundle-loader?lazy!components/chats';
 
 import Home from 'scenes/home';
 import Chat from 'scenes/chat';
+import Story from 'scenes/story';
+import Admin from 'scenes/admin';
 
 import 'styles/global.css';
+import 'styles/lists-code.css';
 import 'styles/scrollbar.css';
 
 const AppContainer = styled.div`
-  ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
-    margin-left: ${styleUtils.margins[i]}rem;
-    margin-right: ${styleUtils.margins[i]}rem;
-  `)}
   .brand {
     padding: 1rem;
     box-sizing: border-box;
@@ -49,7 +52,9 @@ class Application extends Component {
   constructor (props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      userChats: undefined
+    };
 
     this.authorizeService = client.service('authorize');
 
@@ -147,39 +152,55 @@ class Application extends Component {
     const self = this;
     const { auth } = this.props;
     const { userChats } = this.state;
-    return <AppContainer>
-      <Sidebar>
-        <div className={`brand`}>
-          <Link to="/">
-            <img src={require('images/logo_white.svg')} alt="FOI" />
-          </Link>
-        </div>
-        <Auth
-          {...this.state}
-          logout={logout => {
-            self.logout()
-          }}
-        />
-        <div className="sidebar-inner">
+    return (
+      <AppContainer>
+        {/* <Helmet>
+          <title>FOI - Publishing Bot</title>
+        </Helmet> */}
+        <Sidebar>
+          <div className={`brand`}>
+            <Link to="/">
+              <img src={require('images/logo_white.svg')} alt="FOI" />
+            </Link>
+          </div>
+          <Auth
+            {...this.state}
+            logout={logout => {
+              self.logout()
+            }}
+          />
           {userChats !== undefined &&
-            <Bundle load={loadChats}>
-              {Chats => (
-                <Chats chats={userChats} />
-              )}
-            </Bundle>
+            <div className="inner">
+              <Bundle load={loadChats}>
+                {Chats => (
+                  <Chats chats={userChats} />
+                )}
+              </Bundle>
+            </div>
           }
-        </div>
-      </Sidebar>
-      <Content>
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/c/:chatId" component={Chat} />
-          <Route render={() => (
-            <h2>Not found</h2>
-          )} />
-        </Switch>
-      </Content>
-    </AppContainer>;
+          {hasRole(auth, 'admin') &&
+            <div className="inner">
+              <ButtonLink to="/admin" dark block>
+                <span className="fa fa-lock"></span>
+                Administration
+              </ButtonLink>
+            </div>
+          }
+        </Sidebar>
+        <Content>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/c/:chatId" component={Chat} />
+            <Route path="/s/:storyId" component={Story} />
+            <Route path="/admin" component={Admin} />
+            <Route render={() => (
+              <h2>Not found</h2>
+            )} />
+          </Switch>
+        </Content>
+        <Footer />
+      </AppContainer>
+    );
   }
 
 }

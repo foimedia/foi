@@ -34,11 +34,15 @@ a {
   color: #ff4646;
   text-decoration: none;
   outline: none;
-  &:hover {
-    color: #333;
-  }
 }
-
+a:hover,
+a:active,
+a:focus {
+  color: #333;
+}
+.small {
+  font-size: .8em;
+}
 .story-item {
-  background: #f7f7f7;
+  background: #f9f9f9;
 }

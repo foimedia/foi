@@ -8,7 +8,9 @@ class Story extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+      posts: []
+    };
     this.storyService = client.service('stories');
     this.postService = client.service('posts');
     this.updateStory = this.updateStory.bind(this);

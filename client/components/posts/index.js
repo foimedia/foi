@@ -15,46 +15,48 @@ class Post extends Component {
 
     const { post } = this.props;
 
-    return <article className="post">
-      {post.type == 'text' &&
-        <Bundle load={loadPostText}>
-          {PostText => (
-            <PostText data={post.content} />
-          )}
-        </Bundle>
-      }
-      {(post.type == 'location' || post.type == 'venue') &&
-        <Bundle load={loadPostLocation}>
-          {PostLocation => (
-            <PostLocation data={post.content} />
-          )}
-        </Bundle>
-      }
-      {(post.type == 'photo' || post.type == 'sticker') &&
-        <Bundle load={loadPostPhoto}>
-          {PostPhoto => (
-            <PostPhoto data={post.media} caption={post.content} />
-          )}
-        </Bundle>
-      }
-      {(post.type == 'video' || post.type == 'video_note') &&
-        <Bundle load={loadPostVideo}>
-          {PostVideo => (
-            <PostVideo data={post.media} caption={post.content} type={post.type} />
-          )}
-        </Bundle>
-      }
-      {(post.type == 'audio' || post.type == 'voice') &&
-        <Bundle load={loadPostAudio}>
-          {PostAudio => (
-            <PostAudio data={post.media} />
-          )}
-        </Bundle>
-      }
-      {(post.type == 'document') &&
-        <Loader size={20} />
-      }
-    </article>;
+    return (
+      <article className="post">
+        {post.type == 'text' &&
+          <Bundle load={loadPostText}>
+            {PostText => (
+              <PostText data={post.content} />
+            )}
+          </Bundle>
+        }
+        {(post.type == 'location' || post.type == 'venue') &&
+          <Bundle load={loadPostLocation}>
+            {PostLocation => (
+              <PostLocation data={post.content} />
+            )}
+          </Bundle>
+        }
+        {(post.type == 'photo' || post.type == 'sticker') &&
+          <Bundle load={loadPostPhoto}>
+            {PostPhoto => (
+              <PostPhoto data={post.media} caption={post.content} />
+            )}
+          </Bundle>
+        }
+        {(post.type == 'video' || post.type == 'video_note') &&
+          <Bundle load={loadPostVideo}>
+            {PostVideo => (
+              <PostVideo data={post.media} caption={post.content} type={post.type} />
+            )}
+          </Bundle>
+        }
+        {(post.type == 'audio' || post.type == 'voice') &&
+          <Bundle load={loadPostAudio}>
+            {PostAudio => (
+              <PostAudio data={post.media} />
+            )}
+          </Bundle>
+        }
+        {(post.type == 'document') &&
+          <Loader size={20} />
+        }
+      </article>
+    )
   }
 
 }

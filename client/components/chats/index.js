@@ -10,7 +10,9 @@ import Chat from './components/chat';
 
 const ChatsWrapper = styled.section`
   header {
-    margin: 0 0 1rem;
+    ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+      margin-bottom: ${styleUtils.margins[i]}rem;
+    `)}
   }
   footer {
     font-size: .8em;
@@ -99,24 +101,26 @@ class Chats extends Component {
   render () {
     const { auth, chats } = this.props;
     if(this.hasChats()) {
-      return <ChatsWrapper>
-        <header>
-          <h3>Your chats</h3>
-          <p>These are the chats you are connected to.</p>
-        </header>
-        <ButtonedList dark>
-          {this.hasChats() && chats.map(chat =>
-            <li key={chat.id}>
-              <Chat data={chat} user={auth.user} />
-            </li>
-          )}
-        </ButtonedList>
-        <footer>
-          {this.isPublisher() &&
-            <p>Invite <strong>@{foi.botName}</strong> to a group for more chats!</p>
-          }
-        </footer>
-      </ChatsWrapper>
+      return (
+        <ChatsWrapper>
+          <header>
+            <h3>Your chats</h3>
+            <p>These are the chats you are connected to.</p>
+          </header>
+          <ButtonedList dark>
+            {this.hasChats() && chats.map(chat =>
+              <li key={chat.id}>
+                <Chat data={chat} auth={auth} />
+              </li>
+            )}
+          </ButtonedList>
+          <footer>
+            {this.isPublisher() &&
+              <p>Invite <strong>@{foi.botName}</strong> to a group for more chats!</p>
+            }
+          </footer>
+        </ChatsWrapper>
+      )
     } else {
       return null;
     }

@@ -7,17 +7,13 @@ import Button, { ButtonGroup } from 'components/button';
 
 const HomeWrapper = styled.section`
   header {
-    border-bottom: 1px solid #000;
-    ${styleUtils.media.desktop`
-      height: 10rem;
-    `}
     h2 {
-      max-width: 200px;
-      padding-top: 1rem;
-      padding-bottom: 2rem;
-      line-height: 1.2;
-      font-size: 1em;
+      font-size: .8em;
+      line-height: .8;
+      padding-right: 53%;
       ${styleUtils.media.desktop`
+        font-size: 1em;
+        padding-right: 70%;
         padding-top: 0;
       `}
     }
@@ -25,70 +21,16 @@ const HomeWrapper = styled.section`
   .description {
     max-width: 500px;
     margin: 0 0 2rem;
-    font-size: 1.8em;
+    font-size: 1.5em;
     font-family: "Inconsolata";
   }
   .main-actions {
-    margin: 0 0 2rem;
+    padding: 0 0 2rem;
+    border-bottom: 1px solid #ccc;
   }
   .extended-description {
-    color: #444;
-    font-size: 1.2rem;
-    h3 {
-      border-top: 1px solid #ccc;
-      color: #999;
-      padding: 2rem 0 0;
-      margin: 2rem 0;
-      ${styleUtils.media.desktop`
-        margin: 4rem 0 2rem;
-      `}
-    }
     p {
       margin: 0 0 1rem;
-    }
-    pre,
-    ul,
-    ol {
-      font-family: 'Inconsolata', monospace;
-      margin: 1rem 0;
-      border-radius: ${styleUtils.radius/2}px;
-    }
-    code {
-      font-family: 'Inconsolata', monospace;
-      padding: .2rem .5rem;
-      background: #f7f7f7;
-      color: #999;
-      border-radius: ${styleUtils.radius/2}px;
-      font-size: .8em;
-    }
-    pre {
-      padding: 1rem 1.2rem;
-      font-size: .8em;
-      overflow: auto;
-      white-space: normal;
-      background: #f7f7f7;
-      border: 1px solid #e7e7e7;
-      color: #999;
-      &:hover {
-        border-color: #d7d7d7;
-      }
-      code {
-        background: transparent;
-        padding: 0;
-        font-size: inherit;
-      }
-    }
-    ul,
-    ol {
-      max-width: 500px;
-      padding: 1rem 1rem 1rem 3rem;
-      li {
-        margin: 0 0 1rem;
-        padding-left: .5rem;
-        &:last-child {
-          margin: 0;
-        }
-      }
     }
   }
 `
@@ -114,7 +56,7 @@ class Home extends Component {
             href="https://github.com/miguelpeixe/foi"
             target="_blank"
             rel="external">
-            <span class="fa fa-github"></span>
+            <span className="fa fa-github"></span>
             Learn more
           </Button>
           {(auth.isSignedIn && auth.user.anonymous) &&
@@ -123,13 +65,13 @@ class Home extends Component {
               href={`https://telegram.me/${foi.botName}?start=${auth.token}`}
               target="_blank"
               rel="external">
-              <span class="fa fa-unlock-alt"></span>
+              <span className="fa fa-telegram"></span>
               Authenticate with Telegram
             </Button>
           }
         </ButtonGroup>
         <div className="extended-description">
-          <h3>How it works</h3>
+          <h3>How does it work?</h3>
           <p>FOI is both a bot and a web app. The bot takes the messages it receives and sends it to the app, where its organized, stored and displayed in real-time.</p>
           <p><strong>The content is organized by the chats the bot participates in.</strong> They are your private chat with the bot and the group chats the bot is invited to.</p>
           <p>Creating a new coverage or simply starting a live feed is as easy as creating a Telegram group:</p>
@@ -139,8 +81,8 @@ class Home extends Component {
             <li>That's it!</li>
           </ol>
           <p>If the invitation is sent by an authorized publisher the bot will start watching the group and publish its content in real-time.</p>
-          <h3>Publish your feed</h3>
-          <p>To publish your live feed on your website you can use a widget! Paste the code below right before the <code>{`</body>`}</code> closing tag:</p>
+          <h3>Share your feed</h3>
+          <p>To publish your live feed on your website you can use our widget! Paste the code below right before the <code>{`</body>`}</code> closing tag:</p>
           <pre><code>
             {`<script type="text/javascript" src="${foi.url}/widget.js" async></script>`}
           </code></pre>

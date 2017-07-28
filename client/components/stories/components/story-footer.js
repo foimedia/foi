@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 import styleUtils from 'services/style-utils';
 
@@ -93,14 +94,16 @@ class StoryFooter extends Component {
 
   render() {
     const { story } = this.props;
-    return <StoryFooterBox>
-      <p>
-        {story.user.first_name} {story.user.last_name}
-      </p>
-      <p>
-        {this.getStoryDate()}
-      </p>
-    </StoryFooterBox>;
+    return (
+      <StoryFooterBox>
+        <p>
+          {story.user.first_name} {story.user.last_name}
+        </p>
+        <p>
+          <Link to={`/s/${story.id}`}>{this.getStoryDate()}</Link>
+        </p>
+      </StoryFooterBox>
+    )
   }
 }
 

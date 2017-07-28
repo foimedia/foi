@@ -1,0 +1,50 @@
+pre,
+ul,
+ol {
+  font-family: 'Inconsolata', monospace;
+  margin: 1rem 0;
+  border-radius: 7px;
+}
+code {
+  font-family: 'Inconsolata', monospace;
+  padding: .2rem .5rem;
+  background: #f7f7f7;
+  color: #999;
+  border-radius: 7px;
+  font-size: .8em;
+}
+pre {
+  padding: 1rem 1.2rem;
+  font-size: .8em;
+  overflow: auto;
+  white-space: normal;
+  background: #f7f7f7;
+  border: 1px solid #e7e7e7;
+  color: #999;
+}
+
+pre:hover {
+  border-color: #d7d7d7;
+}
+
+pre code {
+  background: transparent;
+  padding: 0;
+  font-size: inherit;
+}
+
+ul,
+ol {
+  padding: 1rem 1rem 1rem 3rem;
+}
+
+ul li,
+ol li {
+  margin: 0 0 1rem;
+  padding-left: .5rem;
+}
+
+ul li:last-child,
+ol li:last-child {
+  margin: 0;
+}

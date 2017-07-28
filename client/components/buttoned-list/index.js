@@ -32,9 +32,8 @@ const List = styled.ul`
     }
     &:hover {
       .fa {
-        color: #999;
         &:hover {
-          color: ${styleUtils.color}
+          color: ${styleUtils.color};
         }
       }
     }
@@ -44,14 +43,26 @@ const List = styled.ul`
       }
     }
   }
+  ${props => props.primary && css`
+    background-color: ${styleUtils.color};
+    li span {
+      border-color: rgba(255,255,255,0.2);
+      a {
+        color: #fff;
+      }
+      .fa {
+        color: #fff;
+      }
+    }
+  `}
   ${props => props.dark && css`
     border-color: #444;
     li span {
       border-color: #444;
       a {
-        color: #f0f0f0;
+        color: #fff;
         &:hover {
-          color: ${styleUtils.color};
+          color: #aaa;
         }
       }
     }

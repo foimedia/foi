@@ -5,20 +5,20 @@ import client from 'services/feathers';
 import StoryFooter from './components/story-footer';
 
 const StoryBox = styled.article`
-  border: 1px solid #ddd;
+  border: 1px solid #eee;
   margin: 0 0 .5rem;
   border-radius: ${styleUtils.radius/3}px;
   position: relative;
   z-index: 1;
   overflow: hidden;
   ${styleUtils.media.desktop`
-    border-radius: ${styleUtils.radius}px;
+    border-radius: ${styleUtils.radius/2}px;
   `}
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
     margin-bottom: ${styleUtils.margins[i]}rem;
   `)}
   :hover {
-    border-color: #d6d6d6;
+    border-color: #ddd;
   }
   .story-header {
     padding: 1.5rem;
@@ -49,7 +49,7 @@ class Story extends Component {
   render () {
     const { story } = this.props;
     return (
-      <StoryBox className="story-item">
+      <StoryBox id={`story-${story.id}`} className="story-item">
         {story.title &&
           <header className="story-header">
             <h2>{story.title}</h2>

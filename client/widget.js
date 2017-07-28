@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { store } from 'services/feathers';
 
 import Bundle from 'components/bundle';
-import loadChat from 'bundle-loader?lazy!scenes/chat';
+import loadChatStories from 'bundle-loader?lazy!containers/chat-stories';
 
 document.addEventListener('DOMContentLoaded', function() {
   const nodes = document.getElementsByClassName('foi-widget');
@@ -17,17 +17,16 @@ document.addEventListener('DOMContentLoaded', function() {
         const xhr = new XMLHttpRequest();
         xhr.open('GET', `${foi.url}/chats/${chatId}`, true);
         xhr.send();
-        xhr.addEventListener('load', function() {
+        xhr.addEventListener('load', function(res) {
           if(this.status == 200) {
             const props = {
-              chatId: chatId,
-              header: false
+              widgetChat: JSON.parse(res.target.response)
             };
             ReactDom.render(
               <Provider store={store}>
-                <Bundle load={loadChat}>
-                  {Chat => (
-                    <Chat {...props} />
+                <Bundle load={loadChatStories}>
+                  {ChatStories => (
+                    <ChatStories {...props} />
                   )}
                 </Bundle>
               </Provider>,
