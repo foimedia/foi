@@ -42,7 +42,7 @@ const FooterWrapper = styled.footer`
     }
   `}
   ${styleUtils.media.desktop`
-    margin: 4rem 0 0 35%;
+    margin: 4rem 0 4rem 35%;
     width: 55%;
   `}
 `
