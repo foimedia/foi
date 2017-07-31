@@ -80,8 +80,8 @@ class ChatSettings extends Component {
                 </p>
               </Form>
             </div>
-            <hr/>
             {chat.data.type !== 'private' &&
+              <hr/>
               <ButtonGroup alignright>
                 {!chat.data.archived &&
                   <Button onClick={this.archive}>Archive chat</Button>
