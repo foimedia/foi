@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import styleUtils from 'services/style-utils';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { services } from 'services/feathers';
 import StoryContainer from 'containers/story';
 
 const Wrapper = styled.section`
-  font-size: 1.2em;
+  ${styleUtils.media.desktopHD`
+    font-size: 1.2em;
+    .story-item {
+      margin-bottom: 4rem;
+    }
+  `}
 `
 
 const Footer = styled.footer`
@@ -44,7 +50,15 @@ class Story extends Component {
   }
   render () {
     const { story } = this.props;
-    if(story.data !== null) {
+    if(story.isError) {
+      return (
+        <section>
+          <header>
+            <h2>{story.isError.message}</h2>
+          </header>
+        </section>
+      )
+    } else if(story.data !== null) {
       return (
         <Wrapper className="single-story">
           <StoryContainer story={story.data} />

@@ -5,11 +5,9 @@ import { connect } from 'react-redux';
 import { withRouter, Route, Link, Switch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
-import client, { services, auth } from 'services/feathers';
+import client, { auth } from 'services/feathers';
 import { hasUser, hasRole } from 'services/auth';
 import styleUtils from 'services/style-utils';
-
-import Bundle from 'components/bundle';
 
 import Sidebar from 'components/sidebar';
 import Content from 'components/content';

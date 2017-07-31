@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import styleUtils from 'services/style-utils';
 
 const ContentWrapper = styled.section`
-  max-width: 700px;
+  max-width: 670px;
   margin: 2rem auto 0;
   transition: width 200ms ${styleUtils.transition};
   color: #444;
@@ -11,8 +11,8 @@ const ContentWrapper = styled.section`
   box-sizing: border-box;
   min-height: 80%;
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
-    margin-left: ${styleUtils.margins[i]}rem;
-    margin-right: ${styleUtils.margins[i]}rem;
+    padding-left: ${styleUtils.margins[i]}rem;
+    padding-right: ${styleUtils.margins[i]}rem;
   `)}
   .loader {
     margin: 2rem auto;
@@ -55,8 +55,12 @@ const ContentWrapper = styled.section`
       margin-bottom: 0;
     }
   }
+  ${styleUtils.media.tablet`
+    margin-top: 4rem;
+  `}
   ${styleUtils.media.desktop`
-    margin: 4rem 0 0 35%;
+    max-width: 700px;
+    margin-left: 35%;
     width: 55%;
   `}
   h3 {

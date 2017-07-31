@@ -29,12 +29,10 @@ const List = styled.ul`
       font-size: 1.2em;
       line-height: 1.4;
       color: #ddd;
-    }
-    &:hover {
-      .fa {
-        &:hover {
-          color: ${styleUtils.color};
-        }
+      &:hover,
+      &:active,
+      &:focus {
+        color: ${styleUtils.color};
       }
     }
     &:last-child {
@@ -61,7 +59,9 @@ const List = styled.ul`
       border-color: #444;
       a {
         color: #fff;
-        &:hover {
+        &:hover,
+        &:active,
+        &:focus {
           color: #aaa;
         }
       }
