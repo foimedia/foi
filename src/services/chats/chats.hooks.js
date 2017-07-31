@@ -40,7 +40,7 @@ const removeStories = () => hook => {
 }
 
 const parsePatch = () => hook => {
-  hook.data = _.pick(hook.data, ['description']);
+  hook.data = _.pick(hook.data, ['description', 'archived']);
   return hook;
 }
 
