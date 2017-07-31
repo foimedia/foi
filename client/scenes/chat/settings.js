@@ -2,35 +2,63 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { canManage } from 'services/chats';
-import client from 'services/feathers';
+import { services } from 'services/feathers';
 import { hasUser, hasRole } from 'services/auth';
 import Loader from 'components/loader';
-import Button, { ButtonGroup } from 'components/button';
+import Form from 'components/form';
+import Button, { InputButton, ButtonGroup } from 'components/button';
 
 class ChatSettings extends Component {
 
   constructor (props) {
     super(props);
-    this.service = client.service('chats');
-    this.removeChat = this.removeChat.bind(this);
-    this.archiveChat = this.archiveChat.bind(this);
+    this.state = {
+      formData: {}
+    };
+    this.remove = this.remove.bind(this);
+    this.archive = this.archive.bind(this);
+    this.unarchive = this.unarchive.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount () {
   }
 
-  removeChat () {
+  remove () {
+    const { chat, remove } = this.props;
     if(confirm('Are you sure? This will remove all chat data, including posts, stories and media!')) {
-      this.service.remove(this.props.chat.data.id);
+      remove(chat.data.id);
     }
   }
 
-  archiveChat () {
+  archive () {
+    const { chat, patch } = this.props;
+    patch(chat.data.id, { archived: true });
+  }
 
+  unarchive () {
+    const { chat, patch } = this.props;
+    patch(chat.data.id, { archived: false });
+  }
+
+  handleChange (event) {
+    const { formData } = this.state;
+    const { name, value } = event.target;
+    this.setState({
+      formData: Object.assign({}, formData, {[name]: value})
+    });
+  }
+
+  handleSubmit (event) {
+    const { chat, patch } = this.props;
+    patch(chat.data.id, this.state.formData);
+    event.preventDefault();
   }
 
   render () {
     const { chat, auth } = this.props;
+    const { formData } = this.state;
     if(chat.data !== null && auth.user !== null) {
       return (
         <section id="chat-settings">
@@ -40,11 +68,28 @@ class ChatSettings extends Component {
           <div className="sections">
             <div className="main-settings content-section">
               <h3>Chat settings</h3>
+              <Form onSubmit={this.handleSubmit}>
+                <p>
+                  <label>
+                    Description
+                    <textarea name="description" value={formData.description || chat.data.description} onChange={this.handleChange}></textarea>
+                  </label>
+                </p>
+                <p className="form-actions">
+                  <InputButton primary type="submit" value="Update chat" />
+                </p>
+              </Form>
             </div>
+            <hr/>
             {chat.data.type !== 'private' &&
               <ButtonGroup alignright>
-                <Button onClick={this.archiveChat}>Archive chat</Button>
-                <Button primary onClick={this.removeChat}>Delete chat</Button>
+                {!chat.data.archived &&
+                  <Button onClick={this.archive}>Archive chat</Button>
+                }
+                {chat.data.archived &&
+                  <Button onClick={this.unarchive}>Unarchive chat</Button>
+                }
+                <Button primary onClick={this.remove}>Delete chat</Button>
               </ButtonGroup>
             }
           </div>
@@ -64,4 +109,13 @@ const mapStateToProps = state => {
   }
 };
 
-export default connect(mapStateToProps)(ChatSettings);
+const mapDispatchToProps = (dispatch) => ({
+  patch: (chatId, data = {}) => {
+    dispatch(services.chats.patch(chatId, data))
+  },
+  remove: (chatId) => {
+    dispatch(services.chats.remove(chatId))
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatSettings);

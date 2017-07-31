@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const errors = require('feathers-errors');
 const { when, iffElse, discard, disallow } = require('feathers-hooks-common');
 const { restrictToAuthenticated, restrictToOwner } = require('feathers-authentication-hooks');
@@ -38,6 +39,11 @@ const removeStories = () => hook => {
   })
 }
 
+const parsePatch = () => hook => {
+  hook.data = _.pick(hook.data, ['description']);
+  return hook;
+}
+
 const restrict = [
   restrictToAuthenticated(),
   iffElse(
@@ -46,16 +52,28 @@ const restrict = [
       isChatMember()
     ],
     [
-      when(
+      iffElse(
         isPrivate(),
-        hook => {
-          throw new errors.Forbidden('You cannot delete a private chat.')
-        }
-      ),
-      restrictToOwner({
-        idField: 'id',
-        ownerField: 'admins'
-      })
+        [
+          restrictToOwner({
+            idField: 'id',
+            ownerField: 'id'
+          }),
+          hook => {
+            if(hook.method == 'remove') {
+              throw new errors.Forbidden('You cannot delete a private chat.')
+            } else {
+              return hook;
+            }
+          }
+        ],
+        [
+          restrictToOwner({
+            idField: 'id',
+            ownerField: 'admins'
+          })
+        ]
+      )
     ]
   )
 ];
@@ -86,10 +104,10 @@ module.exports = {
       disallow('external')
     ],
     update: [
-      when(hook => hook.params.provider, [...restrict])
+      disallow('external')
     ],
     patch: [
-      when(hook => hook.params.provider, [...restrict])
+      when(hook => hook.params.provider, [...restrict, parsePatch()])
     ],
     remove: [
       when(hook => hook.params.provider, [...restrict]),

@@ -3,16 +3,15 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import client from 'services/feathers';
 import styleUtils from 'services/style-utils';
+import ContentHeader from 'components/content/header';
 import Button, { ButtonGroup } from 'components/button';
 
 const HomeWrapper = styled.section`
-  header {
+  #content-header {
     h2 {
-      font-size: .8em;
       line-height: .8;
       padding-right: 53%;
       ${styleUtils.media.desktop`
-        font-size: 1em;
         padding-right: 70%;
         padding-top: 0;
       `}
@@ -44,9 +43,9 @@ class Home extends Component {
     const { auth } = this.props;
     return (
       <HomeWrapper id="home">
-        <header id="content-header">
+        <ContentHeader>
           <h2>FOI is a publishing bot</h2>
-        </header>
+        </ContentHeader>
         <div className="description">
           <p>Real-time coverage of events for journalists and activists.</p>
         </div>

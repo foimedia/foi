@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { hasUser, hasRole } from 'services/auth';
+import ContentHeader from 'components/content/header';
 import Loader from 'components/loader';
 
 import 'styles/tables.css';
@@ -23,9 +24,9 @@ class Admin extends Component {
           {!hasRole(auth, 'admin') &&
             <Redirect to="/" />
           }
-          <header id="content-header">
+          <ContentHeader>
             <h2>Administration</h2>
-          </header>
+          </ContentHeader>
           <div className="sections">
             <div className="env-info content-section">
               <h3>Environment information</h3>

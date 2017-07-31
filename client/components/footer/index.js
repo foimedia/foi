@@ -53,6 +53,7 @@ export default class Footer extends Component {
   render() {
     return (
       <FooterWrapper>
+        <hr/>
         <nav>
           <a href="https://github.com/miguelpeixe/foi/issues/new" rel="external" target="_blank">File an issue</a>
           <a href="https://github.com/miguelpeixe/foi" rel="external" target="_blank">Source code</a>

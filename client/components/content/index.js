@@ -16,24 +16,6 @@ const ContentWrapper = styled.section`
   .loader {
     margin: 2rem auto;
   }
-  #content-header {
-    width: 100%;
-    color: #000;
-    padding-bottom: 2rem;
-    ${styleUtils.media.desktop`
-      display: table;
-      height: 10rem;
-      padding-bottom: 4rem;
-      box-sizing: border-box;
-    `}
-    h2 {
-      font-size: 1.7em;
-      ${styleUtils.media.desktop`
-        display: table-cell;
-        vertical-align: middle;
-      `}
-    }
-  }
   .content-section {
     margin: 0 0 2rem;
     background: #f9f9f9;

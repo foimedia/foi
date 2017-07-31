@@ -6,6 +6,7 @@ import { services } from 'services/feathers';
 import { getTitle } from 'services/chats';
 import Stories from 'containers/chat-stories';
 import Settings from './settings';
+import ContentHeader from 'components/content/header';
 import Loader from 'components/loader';
 
 class Chat extends Component {
@@ -18,13 +19,13 @@ class Chat extends Component {
 
   componentDidMount () {
     const { chatId } = this.state;
-    this.props.fetchChat(chatId);
+    this.props.fetch(chatId);
   }
 
   componentDidUpdate (prevProps, prevState) {
     const { chatId } = this.state;
     if(chatId !== prevState.chatId) {
-      this.props.fetchChat(chatId);
+      this.props.fetch(chatId);
     }
   }
 
@@ -54,9 +55,12 @@ class Chat extends Component {
     } else if(chat.data !== null) {
       return (
         <section id={`chat-${chat.data.id}`}>
-          <header id="content-header">
+          <ContentHeader>
             <h2>{getTitle(chat.data)}</h2>
-          </header>
+            {chat.data.description &&
+              <p className="description">{chat.data.description}</p>
+            }
+          </ContentHeader>
           <Switch>
             <Route path={`${match.url}/settings`} component={Settings} />
             <Route component={Stories} />
@@ -77,7 +81,7 @@ function mapStateToProps (state, ownProps) {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchChat: (chatId) => {
+  fetch: (chatId) => {
     dispatch(services.chats.get(chatId))
   }
 });

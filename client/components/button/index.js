@@ -91,4 +91,8 @@ export const ButtonLink = styled(Link)`
   ${styles}
 `
 
+export const InputButton = styled.input`
+  ${styles}
+`
+
 export default Button;

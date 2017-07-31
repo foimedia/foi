@@ -46,3 +46,8 @@ a:focus {
 .story-item {
   background: #f9f9f9;
 }
+hr {
+  border-width: 0;
+  border-top: 1px solid #ddd;
+  margin: 4rem 0;
+}
