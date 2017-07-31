@@ -1,6 +1,53 @@
 const errors = require('feathers-errors');
 const { authenticate } = require('feathers-authentication').hooks;
-const { when, populate, discard } = require('feathers-hooks-common');
+const { when, populate, discard, disallow } = require('feathers-hooks-common');
+
+const assignToStory = () => hook => {
+  const storyService = hook.app.service('stories');
+  return storyService.find({
+    query: {
+      userId: hook.data.userId,
+      status: 'active'
+    }
+  }).then(res => {
+    if(res.data.length) {
+      hook.data.storyId = res.data[0].id;
+    } else {
+      hook.data.storyId = hook.data.id;
+    }
+    return hook;
+  });
+};
+
+const createPostStory = () => hook => {
+  const storyService = hook.app.service('stories');
+  if(hook.result.id == hook.result.storyId) {
+    // Create single-post story
+    storyService.create({
+      id: hook.result.id,
+      title: '',
+      userId: hook.result.userId,
+      chatId: hook.result.chatId,
+      createdAt: hook.result.sentAt,
+      status: 'finished'
+    });
+  }
+  return hook;
+};
+
+const removeMedia = () => hook => {
+  const mediaService = hook.app.service('media');
+  return hook.service.get(hook.id).then(data => {
+    const promises = [];
+    if(data.mediaId) {
+      const media = Array.isArray(data.mediaId) ? data.mediaId : [data.mediaId];
+      media.forEach(mediaId => {
+        promises.push(mediaService.remove(mediaId));
+      });
+    }
+    return Promise.all(promises).then(() => hook);
+  });
+};
 
 module.exports = {
   before: {
@@ -25,49 +72,18 @@ module.exports = {
       }
     ],
     create: [
-      hook => {
-        if(hook.params.provider)
-          throw new errors.Forbidden('Posts can only be created internally');
-        return hook;
-      },
-      // Assign to story
-      hook => {
-        const storyService = hook.app.service('stories');
-        return storyService.find({
-          query: {
-            userId: hook.data.userId,
-            status: 'active'
-          }
-        }).then(res => {
-          if(res.data.length) {
-            hook.data.storyId = res.data[0].id;
-          } else {
-            hook.data.storyId = hook.data.id;
-          }
-          return hook;
-        });
-      }
+      disallow('external'),
+      assignToStory()
     ],
     update: [
-      hook => {
-        if(hook.params.provider)
-          throw new errors.Forbidden('Posts can only be updated internally');
-        return hook;
-      }
+      disallow('external')
     ],
     patch: [
-      hook => {
-        if(hook.params.provider)
-          throw new errors.Forbidden('Posts can only be patched internally');
-        return hook;
-      }
+      disallow('external')
     ],
     remove: [
-      hook => {
-        if(hook.params.provider)
-          throw new errors.Forbidden('Posts can only be removed internally');
-        return hook;
-      }
+      disallow('external'),
+      removeMedia()
     ]
   },
 
@@ -109,21 +125,7 @@ module.exports = {
     find: [],
     get: [],
     create: [
-      hook => {
-        const storyService = hook.app.service('stories');
-        if(hook.result.id == hook.result.storyId) {
-          // Create single-post story
-          storyService.create({
-            id: hook.result.id,
-            title: '',
-            userId: hook.result.userId,
-            chatId: hook.result.chatId,
-            createdAt: hook.result.sentAt,
-            status: 'finished'
-          });
-        }
-        return hook;
-      }
+      createPostStory()
     ],
     update: [],
     patch: [],

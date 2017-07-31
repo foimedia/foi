@@ -1,5 +1,75 @@
 const errors = require('feathers-errors');
-const { when, discard } = require('feathers-hooks-common');
+const { when, iffElse, discard, disallow } = require('feathers-hooks-common');
+const { restrictToAuthenticated, restrictToOwner } = require('feathers-authentication-hooks');
+
+const isPrivate = () => hook => {
+  return hook.service.get(hook.id)
+    .then(data => data.type == 'private');
+}
+
+const allMembersAreAdmin = () => hook => {
+  return hook.service.get(hook.id)
+    .then(data => !!data.all_members_are_administrators);
+}
+
+const isChatMember = () => hook => {
+  const bot = hook.app.telegram.bot;
+  const userId = hook.params.user.id;
+  return bot.getChatMember(hook.id, userId)
+    .then(() => hook)
+    .catch(() => {
+      throw new errors.Forbidden('You are not part of this chat.');
+    });
+}
+
+const removeStories = () => hook => {
+  const storyService = hook.app.service('stories');
+  const promises = [];
+  return storyService.find({
+    paginate: false,
+    query: {
+      chatId: hook.id
+    }
+  }).then(data => {
+    data.forEach(story => {
+      promises.push(storyService.remove(story.id));
+    });
+    return Promise.all(promises).then(() => hook);
+  })
+}
+
+const restrict = [
+  restrictToAuthenticated(),
+  iffElse(
+    allMembersAreAdmin(),
+    [
+      isChatMember()
+    ],
+    [
+      when(
+        isPrivate(),
+        hook => {
+          throw new errors.Forbidden('You cannot delete a private chat.')
+        }
+      ),
+      restrictToOwner({
+        idField: 'id',
+        ownerField: 'admins'
+      })
+    ]
+  )
+];
+
+const restrictProperties = [
+  when(
+    hook => hook.params.provider,
+    [
+      discard('_id'),
+      discard('admins'),
+      discard('all_members_are_administrators')
+    ]
+  )
+];
 
 module.exports = {
   before: {
@@ -13,25 +83,22 @@ module.exports = {
       }
     ],
     create: [
-      hook => {
-        if(hook.params.provider)
-          throw new errors.Forbidden('Chats can only be created internally');
-        return hook;
-      }
+      disallow('external')
     ],
-    update: [],
-    patch: [],
-    remove: []
+    update: [
+      when(hook => hook.params.provider, [...restrict])
+    ],
+    patch: [
+      when(hook => hook.params.provider, [...restrict])
+    ],
+    remove: [
+      when(hook => hook.params.provider, [...restrict]),
+      removeStories()
+    ]
   },
 
   after: {
-    all: [
-      when(
-        hook => hook.params.provider,
-        discard('_id'),
-        discard('users')
-      )
-    ],
+    all: [...restrictProperties],
     find: [],
     get: [],
     create: [],

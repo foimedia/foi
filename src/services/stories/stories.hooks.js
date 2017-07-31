@@ -1,5 +1,36 @@
 const errors = require('feathers-errors');
-const { when, populate, discard } = require('feathers-hooks-common');
+const { when, populate, discard, disallow } = require('feathers-hooks-common');
+
+const restrictToOneRunningStory = () => hook => {
+  return hook.service.find({
+    query: {
+      userId: hook.data.userId,
+      status: 'active'
+    }
+  }).then(res => {
+    if(res.data.length) {
+      throw new errors.Forbidden('You can only have one running story. Maybe you\'d like to /endstory before starting a new one?');
+    } else {
+      return hook;
+    }
+  });
+}
+
+const removePosts = () => hook => {
+  const postService = hook.app.service('posts');
+  const promises = [];
+  return postService.find({
+    paginate: false,
+    query: {
+      storyId: hook.id
+    }
+  }).then(data => {
+    data.forEach(post => {
+      promises.push(postService.remove(post.id));
+    });
+    return Promise.all(promises).then(() => hook);
+  })
+}
 
 module.exports = {
   before: {
@@ -24,47 +55,18 @@ module.exports = {
       }
     ],
     create: [
-      hook => {
-        if(hook.params.provider)
-          throw new errors.Forbidden('Stories can only be created internally');
-        return hook;
-      },
-      // Users can only have 1 running story
-      hook => {
-        return hook.service.find({
-          query: {
-            userId: hook.data.userId,
-            status: 'active'
-          }
-        }).then(res => {
-          if(res.data.length) {
-            throw new errors.Forbidden('You can only have one running story. Maybe you\'d like to /endstory before starting a new one?');
-          } else {
-            return hook;
-          }
-        });
-      }
+      disallow('external'),
+      restrictToOneRunningStory()
     ],
     update: [
-      hook => {
-        if(hook.params.provider)
-          throw new errors.Forbidden('Stories can only be updated internally');
-        return hook;
-      }
+      disallow('external')
     ],
     patch: [
-      hook => {
-        if(hook.params.provider)
-          throw new errors.Forbidden('Stories can only be patched internally');
-        return hook;
-      }
+      disallow('external')
     ],
     remove: [
-      hook => {
-        if(hook.params.provider)
-          throw new errors.Forbidden('Stories can only be removed internally');
-        return hook;
-      }
+      disallow('external'),
+      removePosts()
     ]
   },
 

@@ -42,12 +42,10 @@ class ChatSettings extends Component {
               <h3>Chat settings</h3>
             </div>
             {chat.data.type !== 'private' &&
-              // <div className="group-chat-actions actions content-section">
-                <ButtonGroup alignright>
-                  <Button onClick={this.archiveChat}>Archive chat</Button>
-                  <Button primary onClick={this.removeChat}>Delete chat</Button>
-                </ButtonGroup>
-              // </div>
+              <ButtonGroup alignright>
+                <Button onClick={this.archiveChat}>Archive chat</Button>
+                <Button primary onClick={this.removeChat}>Delete chat</Button>
+              </ButtonGroup>
             }
           </div>
         </section>

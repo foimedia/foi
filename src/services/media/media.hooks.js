@@ -1,8 +1,10 @@
+const path = require('path');
 const mkdirp = require('mkdirp');
+const rimraf = require('rimraf');
 const errors = require('feathers-errors');
-const { when, iff, discard } = require('feathers-hooks-common');
+const { when, iff, discard, disallow } = require('feathers-hooks-common');
 
-const fetch = () => hook => {
+const fetchFiles = () => hook => {
   const bot = hook.app.telegram.bot;
   if(!hook.data.file_id) {
     throw new errors.BadRequest('Missing file id.');
@@ -24,27 +26,30 @@ const fetch = () => hook => {
   }
 };
 
+const removeFiles = () => hook => {
+  const filesDir = hook.app.get('filesDir');
+  return new Promise((resolve, reject) => {
+    rimraf(path.resolve(filesDir, hook.id), resolve);
+  });
+};
+
 module.exports = {
   before: {
     all: [],
     find: [],
     get: [],
-    create: [
-      (hook) => {
-        if(hook.params.provider)
-          throw new errors.Forbidden('Media files can only be created internally');
-        return hook;
-      },
-      fetch()
-    ],
-    update: [],
-    patch: [],
-    remove: []
+    create: [ disallow('external'), fetchFiles() ],
+    update: [ disallow('external') ],
+    patch: [ disallow('external') ],
+    remove: [ disallow('external'), removeFiles() ]
   },
 
   after: {
     all: [
-      discard('_id')
+      when(
+        hook => hook.params.provider,
+        discard('_id')
+      )
     ],
     find: [],
     get: [],

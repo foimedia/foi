@@ -6,7 +6,7 @@ import { withRouter, Route, Link, Switch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
 import client, { services, auth } from 'services/feathers';
-import { hasRole } from 'services/auth';
+import { hasUser, hasRole } from 'services/auth';
 import styleUtils from 'services/style-utils';
 
 import Bundle from 'components/bundle';
@@ -17,7 +17,7 @@ import Footer from 'components/footer';
 import Auth from 'components/auth';
 import Button, { ButtonLink } from 'components/button';
 
-import loadChats from 'bundle-loader?lazy!components/chats';
+import UserChats from 'containers/user-chats';
 
 import Home from 'scenes/home';
 import Chat from 'scenes/chat';
@@ -51,13 +51,7 @@ class Application extends Component {
 
   constructor (props) {
     super(props);
-
-    this.state = {
-      userChats: undefined
-    };
-
     this.authorizeService = client.service('authorize');
-
     this.doAuth = this.doAuth.bind(this);
     this.doAnonAuth = this.doAnonAuth.bind(this);
   }
@@ -96,46 +90,10 @@ class Application extends Component {
     }
   }
 
-  fetchUserChats (userId = false) {
-    return client.service('chats').find({
-      query: {
-        $or: [
-          {
-            users: {
-              $in: [userId]
-            }
-          },
-          {
-            id: userId
-          }
-        ],
-        $sort: {
-          id: -1
-        }
-      }
-    });
-  }
-
   componentDidMount () {
     const { auth } = this.props;
     this.doAuth();
     this.authorizeService.on('created', this.doAuth);
-  }
-
-  componentWillUpdate (nextProps) {
-    if(nextProps.auth !== this.props.auth) {
-      if(nextProps.auth.user) {
-        this.fetchUserChats(nextProps.auth.user.id).then(res => {
-          this.setState({
-            userChats: res.data
-          })
-        });
-      } else {
-        this.setState({
-          userChats: undefined
-        });
-      }
-    }
   }
 
   componentWillUnmount () {
@@ -151,7 +109,6 @@ class Application extends Component {
   render () {
     const self = this;
     const { auth } = this.props;
-    const { userChats } = this.state;
     return (
       <AppContainer>
         {/* <Helmet>
@@ -169,13 +126,9 @@ class Application extends Component {
               self.logout()
             }}
           />
-          {userChats !== undefined &&
+          {hasUser(auth) &&
             <div className="inner">
-              <Bundle load={loadChats}>
-                {Chats => (
-                  <Chats chats={userChats} />
-                )}
-              </Bundle>
+              <UserChats />
             </div>
           }
           {hasRole(auth, 'admin') &&

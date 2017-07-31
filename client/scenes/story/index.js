@@ -5,8 +5,12 @@ import { Link } from 'react-router-dom';
 import { services } from 'services/feathers';
 import StoryContainer from 'containers/story';
 
+const Wrapper = styled.section`
+  font-size: 1.2em;
+`
+
 const Footer = styled.footer`
-  font-size: .8em;
+  font-size: .6em;
   text-align: right;
 `
 
@@ -42,14 +46,14 @@ class Story extends Component {
     const { story } = this.props;
     if(story.data !== null) {
       return (
-        <section className="single-story">
+        <Wrapper className="single-story">
           <StoryContainer story={story.data} />
           <Footer>
             <p>
               <Link to={`/c/${story.data.chatId}`}>View all stories from this chat</Link>
             </p>
           </Footer>
-        </section>
+        </Wrapper>
       )
     } else {
       return null;
