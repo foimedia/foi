@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import { Link } from 'react-router-dom';
+import Link from 'components/absolute-link';
 
 import styleUtils from 'services/style-utils';
 
