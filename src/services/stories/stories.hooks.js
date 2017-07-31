@@ -1,5 +1,6 @@
 const errors = require('feathers-errors');
 const { when, populate, discard, disallow } = require('feathers-hooks-common');
+const { restrictToAuthenticated, restrictToOwner } = require('feathers-authentication-hooks');
 
 const restrictToOneRunningStory = () => hook => {
   return hook.service.find({
@@ -65,7 +66,11 @@ module.exports = {
       disallow('external')
     ],
     remove: [
-      disallow('external'),
+      restrictToAuthenticated(),
+      restrictToOwner({
+        idField: 'id',
+        ownerField: 'userId'
+      }),
       removePosts()
     ]
   },

@@ -13,7 +13,7 @@ class UserChats extends Component {
     };
     this.service = client.service('chats');
     this.newUserChat = this.newUserChat.bind(this);
-    this.deleteUserChat = this.deleteUserChat.bind(this);
+    this.removedUserChat = this.removedUserChat.bind(this);
   }
 
   fetchUserChats (userId = false) {
@@ -43,9 +43,9 @@ class UserChats extends Component {
     return this.setState({ userChats: newUserChats });
   }
 
-  deleteUserChat (deletedChat) {
+  removedUserChat (removedChat) {
     const { userChats } = this.state;
-    const newUserChats = userChats.filter(chat => chat.id !== deletedChat.id);
+    const newUserChats = userChats.filter(chat => chat.id !== removedChat.id);
     return this.setState({ userChats: newUserChats });
   }
 
@@ -59,7 +59,7 @@ class UserChats extends Component {
       });
     }
     this.service.on('created', this.newUserChat);
-    this.service.on('removed', this.deleteUserChat);
+    this.service.on('removed', this.removedUserChat);
   }
 
   componentWillUpdate (nextProps) {

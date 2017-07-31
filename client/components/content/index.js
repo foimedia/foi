@@ -8,7 +8,6 @@ const ContentWrapper = styled.section`
   transition: width 200ms ${styleUtils.transition};
   color: #444;
   font-size: 1.2rem;
-  box-sizing: border-box;
   min-height: 80%;
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
     padding-left: ${styleUtils.margins[i]}rem;
@@ -61,6 +60,7 @@ const ContentWrapper = styled.section`
   ${styleUtils.media.desktop`
     max-width: 700px;
     margin-left: 35%;
+    margin-right: 0;
     width: 55%;
   `}
   h3 {

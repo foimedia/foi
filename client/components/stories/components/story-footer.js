@@ -36,6 +36,12 @@ const StoryFooterBox = styled.footer`
       }
     }
   }
+  p.actions {
+    float: right;
+    .fa {
+      font-size: 1.2em;
+    }
+  }
 `;
 
 class StoryFooter extends Component {
@@ -102,6 +108,13 @@ class StoryFooter extends Component {
         <p>
           <Link to={`/s/${story.id}`}>{this.getStoryDate()}</Link>
         </p>
+        {this.props.canRemove &&
+          <p className="actions">
+            <a href="javascript:void(0)" onClick={this.props.remove} title="Remove story">
+              <span className="fa fa-remove"></span>
+            </a>
+          </p>
+        }
       </StoryFooterBox>
     )
   }

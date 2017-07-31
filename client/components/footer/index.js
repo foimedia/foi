@@ -10,6 +10,10 @@ const FooterWrapper = styled.footer`
   font-size: .7em;
   text-align: center;
   max-width: 700px;
+  ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+    padding-left: ${styleUtils.margins[i]}rem;
+    padding-right: ${styleUtils.margins[i]}rem;
+  `)}
   &:after {
     content: "";
     display: table;
@@ -29,6 +33,8 @@ const FooterWrapper = styled.footer`
     }
   }
   ${styleUtils.media.desktop`
+    margin: 4rem 0 4rem 35%;
+    width: 55%;
     text-align: inherit;
     p {
       float: left;
@@ -40,10 +46,6 @@ const FooterWrapper = styled.footer`
         float: left;
       }
     }
-  `}
-  ${styleUtils.media.desktop`
-    margin: 4rem 0 4rem 35%;
-    width: 55%;
   `}
 `
 

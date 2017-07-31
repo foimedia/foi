@@ -10,8 +10,9 @@ class ChatStories extends Component {
     this.state = {
       stories: undefined
     }
-    this.storyService = client.service('stories');
+    this.service = client.service('stories');
     this.newStory = this.newStory.bind(this);
+    this.removedStory = this.removedStory.bind(this);
   }
 
   getStories(chatId) {
@@ -19,7 +20,7 @@ class ChatStories extends Component {
     this.setState({
       stories: undefined
     });
-    this.storyService.find({
+    this.service.find({
       query: {
         chatId: chatId,
         $sort: {
@@ -43,14 +44,25 @@ class ChatStories extends Component {
     }
   }
 
+  removedStory (removedStory) {
+    const chat = this.props.chat.data || this.props.widgetChat;
+    const { stories } = this.state;
+    if(removedStory.chatId == chat.id) {
+      const newStories = stories.filter(story => story.id !== removedStory.id);
+      return this.setState({ stories: newStories });
+    }
+  }
+
   componentDidMount () {
     const chat = this.props.chat.data || this.props.widgetChat;
     this.getStories(chat.id);
-    this.storyService.on('created', this.newStory);
+    this.service.on('created', this.newStory);
+    this.service.on('removed', this.removedStory);
   }
 
   componentWillUnmount () {
-    this.storyService.off('created', this.newStory);
+    this.service.off('created', this.newStory);
+    this.service.off('removed', this.removedStory);
   }
 
   componentDidUpdate (prevProps, prevState) {
