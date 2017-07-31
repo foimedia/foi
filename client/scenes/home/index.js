@@ -7,16 +7,6 @@ import ContentHeader from 'components/content/header';
 import Button, { ButtonGroup } from 'components/button';
 
 const HomeWrapper = styled.section`
-  #content-header {
-    h2 {
-      line-height: .8;
-      padding-right: 53%;
-      ${styleUtils.media.desktop`
-        padding-right: 70%;
-        padding-top: 0;
-      `}
-    }
-  }
   .description {
     max-width: 500px;
     margin: 0 0 2rem;
@@ -24,14 +14,16 @@ const HomeWrapper = styled.section`
     font-family: "Inconsolata";
   }
   .main-actions {
-    padding: 0 0 2rem;
     border-bottom: 1px solid #ccc;
   }
-  .extended-description {
-    p {
-      margin: 0 0 1rem;
+  ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+    .main-actions {
+      padding-bottom: ${styleUtils.margins[i]*2}rem;
     }
-  }
+    .extended-description p {
+      margin-bottom: ${styleUtils.margins[i]}rem;
+    }
+  `)}
 `
 
 class Home extends Component {

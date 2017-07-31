@@ -5,8 +5,13 @@ import styleUtils from 'services/style-utils';
 import Button from 'components/button';
 
 const AuthWrapper = styled.div`
+  font-size: .8em;
+  h3 {
+    color: #777;
+  }
   nav {
     float: right;
+    margin-top: -.3rem;
   }
 `
 

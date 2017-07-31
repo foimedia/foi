@@ -3,9 +3,12 @@ import styled from 'styled-components';
 import styleUtils from 'services/style-utils';
 
 const Wrapper = styled.header`
+  font-family: "Inconsolata", monospace;
   width: 100%;
   color: #000;
-  margin-bottom: 2rem;
+  ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+    margin-bottom: ${styleUtils.margins[i]}rem;
+  `)}
   ${styleUtils.media.desktop`
     display: table;
     height: 14rem;
@@ -17,12 +20,11 @@ const Wrapper = styled.header`
     }
   `}
   h2 {
-    font-size: 1.7em;
+    font-size: 1.8em;
   }
   p.description {
-    font-size: .9em;
-    color: #999;
-    font-family: "Inconsolata", monospace;
+    color: #666;
+    margin-top: .5rem;
   }
 `
 

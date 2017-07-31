@@ -8,29 +8,35 @@ const ContentWrapper = styled.section`
   transition: width 200ms ${styleUtils.transition};
   color: #444;
   font-size: 1.2rem;
-  min-height: 80%;
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+    margin-top: ${styleUtils.margins[i]}rem;
     padding-left: ${styleUtils.margins[i]}rem;
     padding-right: ${styleUtils.margins[i]}rem;
+    h3 {
+      padding: ${styleUtils.margins[i]*2}rem 0 0;
+      margin: ${styleUtils.margins[i]*2}rem 0;
+    }
   `)}
   .loader {
     margin: 2rem auto;
   }
   .content-section {
-    margin: 0 0 2rem;
-    background: #f9f9f9;
-    border: 1px solid #eee;
+    background: #fff;
+    border: 1px solid #e4e4e4;
     border-radius: ${styleUtils.radius/3}px;
     overflow: auto;
     font-size: .8em;
     ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
       padding: ${styleUtils.margins[i]}rem;
+      margin: 0 0 ${styleUtils.margins[i]}rem;
       h3 {
+        padding-bottom: ${styleUtils.margins[i]}rem;
         margin-bottom: ${styleUtils.margins[i]}rem;
       }
     `)}
     h3 {
       margin-top: 0;
+      border-bottom: 1px solid #e4e4e4;
     }
     > :last-child {
       margin-bottom: 0;
@@ -47,18 +53,20 @@ const ContentWrapper = styled.section`
   `}
   h3 {
     border-top: 1px solid #ccc;
-    color: #999;
-    padding: 2rem 0 0;
-    margin: 2rem 0;
     &:first-child {
       border-top: 0;
-      padding: 0;
+      padding-top: 0;
     }
   }
   ul,
   ol {
     max-width: 500px;
   }
+  ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+    hr {
+      margin: ${styleUtils.margins[i]*2}rem 0;
+    }
+  `)}
 `;
 
 class Content extends Component {

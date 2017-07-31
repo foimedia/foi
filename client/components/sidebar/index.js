@@ -7,31 +7,8 @@ import styleUtils from 'services/style-utils';
 
 const SidebarWrapper = styled.div`
   position: relative;
-  .sidebar-content {
-    position: relative;
-    z-index: 5;
-    background: #222;
-    color: #999;
-    top: 0;
-    left: 0;
-    font-size: .8em;
-    > * {
-      border-bottom: 1px solid #333;
-      box-sizing: border-box;
-      ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
-        padding: ${styleUtils.margins[i]}rem;
-      `)}
-      &:last-child {
-        border-bottom: 0;
-      }
-      h3 {
-        color: #fff;
-      }
-    }
-    img {
-      max-width: 100%;
-      height: auto;
-    }
+  h3 {
+    color: #fff;
   }
   .inner {
     display: none;
@@ -61,6 +38,29 @@ const SidebarWrapper = styled.div`
     }
     nav.sidebar-nav {
       background: transparent;
+    }
+  }
+  .sidebar-content {
+    position: relative;
+    z-index: 5;
+    background: #222;
+    color: #999;
+    top: 0;
+    left: 0;
+    font-size: .8em;
+    > * {
+      border-bottom: 1px solid #333;
+      box-sizing: border-box;
+      ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+        padding: ${styleUtils.margins[i]}rem;
+      `)}
+      &:last-child {
+        border-bottom: 0;
+      }
+    }
+    img {
+      max-width: 100%;
+      height: auto;
     }
   }
   ${styleUtils.media.desktop`

@@ -24,9 +24,9 @@ const styles = css`
   .fa {
     float: left;
     margin-right: 1rem;
-    font-size: 1.5em;
-    margin-left: -.8rem;
-    line-height: 1;
+    font-size: 1.3em;
+    margin-left: -.4rem;
+    line-height: 1.2;
   }
   ${props => props.primary && css`
     background: ${styleUtils.color};
@@ -38,8 +38,19 @@ const styles = css`
       color: rgba(255,255,255,0.7);
     }
   `}
+  ${props => props.danger && css`
+    background: #333;
+    border-color: #333;
+    color: #fff;
+    &:hover,
+    &:active,
+    &:focus {
+      border-color: #000;
+      color: rgba(255,255,255,0.7);
+    }
+  `}
   ${props => props.small && css`
-    padding: .2rem 1rem;
+    padding: .1rem .7rem;
   `}
   ${props => props.block && css`
     display: block;

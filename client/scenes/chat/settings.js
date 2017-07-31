@@ -66,6 +66,33 @@ class ChatSettings extends Component {
             <Redirect to="/" />
           }
           <div className="sections">
+            <div className="chat-info content-section">
+              <h3>General information</h3>
+              <table>
+                <tbody>
+                  <tr>
+                    <th>Contributors</th>
+                    <td>--</td>
+                  </tr>
+                  <tr>
+                    <th>Stories</th>
+                    <td>--</td>
+                  </tr>
+                  <tr>
+                    <th>Posts</th>
+                    <td>--</td>
+                  </tr>
+                  <tr>
+                    <th>Max Live Viewers</th>
+                    <td>--</td>
+                  </tr>
+                  <tr>
+                    <th>Visitors</th>
+                    <td>--</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
             <div className="main-settings content-section">
               <h3>Chat settings</h3>
               <Form onSubmit={this.handleSubmit}>
@@ -85,12 +112,21 @@ class ChatSettings extends Component {
                 <hr />
                 <ButtonGroup alignright>
                   {!chat.data.archived &&
-                    <Button onClick={this.archive}>Archive chat</Button>
+                    <Button onClick={this.archive}>
+                      <span className="fa fa-archive"></span>
+                      Archive chat
+                    </Button>
                   }
                   {chat.data.archived &&
-                    <Button onClick={this.unarchive}>Unarchive chat</Button>
+                    <Button onClick={this.unarchive}>
+                      <span className="fa fa-archive"></span>
+                      Unarchive chat
+                    </Button>
                   }
-                  <Button primary onClick={this.remove}>Delete chat</Button>
+                  <Button danger onClick={this.remove}>
+                    <span className="fa fa-remove"></span>
+                    Delete chat
+                  </Button>
                 </ButtonGroup>
               </div>
             }

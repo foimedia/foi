@@ -5,14 +5,19 @@ import styleUtils from 'services/style-utils';
 const FooterWrapper = styled.footer`
   font-family: 'Inconsolata', monospace;
   text-transform: uppercase;
-  margin: 4rem auto;
   color: #999;
   font-size: .7em;
   text-align: center;
   max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+    margin-bottom: ${styleUtils.margins[i]*2}rem;
     padding-left: ${styleUtils.margins[i]}rem;
     padding-right: ${styleUtils.margins[i]}rem;
+    hr {
+      margin: ${styleUtils.margins[i]*2}rem 0;
+    }
   `)}
   &:after {
     content: "";
@@ -33,7 +38,7 @@ const FooterWrapper = styled.footer`
     }
   }
   ${styleUtils.media.desktop`
-    margin: 4rem 0 4rem 35%;
+    margin-left: 35%;
     width: 55%;
     text-align: inherit;
     p {
