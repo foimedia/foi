@@ -90,7 +90,7 @@ class ChatSettings extends Component {
                     <td>--</td>
                   </tr>
                   <tr>
-                    <th>Visitors</th>
+                    <th>Visits</th>
                     <td>--</td>
                   </tr>
                 </tbody>
