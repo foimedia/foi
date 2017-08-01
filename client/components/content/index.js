@@ -7,7 +7,6 @@ const ContentWrapper = styled.section`
   margin: 2rem auto 0;
   transition: width 200ms ${styleUtils.transition};
   color: #444;
-  font-size: 1.2rem;
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
     margin-top: ${styleUtils.margins[i]}rem;
     padding-left: ${styleUtils.margins[i]}rem;
@@ -43,6 +42,7 @@ const ContentWrapper = styled.section`
     }
   }
   ${styleUtils.media.tablet`
+    font-size: 1.2rem;
     margin-top: 4rem;
   `}
   ${styleUtils.media.desktop`

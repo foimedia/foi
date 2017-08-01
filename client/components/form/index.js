@@ -15,6 +15,7 @@ const Form = styled.form`
     input,
     textarea {
       margin-top: ${styleUtils.margins[i]/2}rem;
+      padding: ${styleUtils.margins[i]/2}rem;
     }
   `)}
   p.form-actions {
@@ -37,7 +38,6 @@ const Form = styled.form`
     width: 100%;
     box-sizing: border-box;
     display: block;
-    padding: .7rem;
     &:hover {
       border-color: #bbb;
     }

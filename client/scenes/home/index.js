@@ -10,8 +10,17 @@ const HomeWrapper = styled.section`
   .description {
     max-width: 500px;
     margin: 0 0 2rem;
-    font-size: 1.5em;
     font-family: "Inconsolata";
+    ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+      padding-left: ${styleUtils.margins[i]}rem;
+      padding-right: ${styleUtils.margins[i]}rem;
+    `)}
+    ${styleUtils.media.tablet`
+      padding: 0;
+    `}
+    ${styleUtils.media.phablet`
+      font-size: 1.5em;
+    `}
   }
   .main-actions {
     border-bottom: 1px solid #ccc;

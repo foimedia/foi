@@ -5,10 +5,20 @@ import styleUtils from 'services/style-utils';
 const Wrapper = styled.header`
   font-family: "Inconsolata", monospace;
   width: 100%;
+  box-sizing: border-box;
   color: #000;
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+    padding-top: ${styleUtils.margins[i]}rem;
+    padding-left: ${styleUtils.margins[i]}rem;
+    padding-right: ${styleUtils.margins[i]}rem;
     margin-bottom: ${styleUtils.margins[i]}rem;
+    h2 {
+      margin-bottom: ${styleUtils.margins[i]/2}rem;
+    }
   `)}
+  ${styleUtils.media.tablet`
+    padding: 0;
+  `}
   ${styleUtils.media.desktop`
     display: table;
     height: 14rem;
@@ -18,9 +28,12 @@ const Wrapper = styled.header`
       display: table-cell;
       vertical-align: middle;
     }
+    h2 {
+      font-size: 2em;
+    }
   `}
   h2 {
-    font-size: 1.8em;
+    font-size: 1.3em;
   }
   p.description {
     color: #666;
