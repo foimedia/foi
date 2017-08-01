@@ -10,12 +10,9 @@ const SidebarWrapper = styled.div`
   h3 {
     color: #fff;
   }
-  .inner {
-    display: none;
-  }
   nav.sidebar-nav {
-    line-height: 3rem;
-    font-size: 1.5em;
+    font-size: 1em;
+    line-height: 1.5rem;
     text-align: right;
     position: absolute;
     top: 0;
@@ -24,16 +21,19 @@ const SidebarWrapper = styled.div`
     a {
       color: #fff;
       background: #222;
-      padding: .5rem;
-      margin: -.5rem;
+      line-height: 1.5rem;
     }
     ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
-      padding-left: ${styleUtils.margins[i]}rem;
-      padding-right: ${styleUtils.margins[i]}rem;
+      padding-top: ${styleUtils.margins[i]}rem;
+      padding-right: ${styleUtils.margins[i]*2}rem;
+      a {
+        padding: ${styleUtils.margins[i]}rem;
+        margin -${styleUtils.margins[i]}rem;
+      }
     `)}
   }
   &.active {
-    .inner {
+    .sidebar-content .inner {
       display: block;
     }
     nav.sidebar-nav {
@@ -48,8 +48,20 @@ const SidebarWrapper = styled.div`
     top: 0;
     left: 0;
     font-size: .8em;
+    line-height: 1.5rem;
+    &:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+    ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+      padding-left: ${styleUtils.margins[i]}rem;
+      padding-right: ${styleUtils.margins[i]}rem;
+    `)}
     > * {
-      border-bottom: 1px solid #333;
+      float: left;
+      line-height: 1.5rem;
+      display: inline-block;
       box-sizing: border-box;
       ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
         padding: ${styleUtils.margins[i]}rem;
@@ -57,6 +69,10 @@ const SidebarWrapper = styled.div`
       &:last-child {
         border-bottom: 0;
       }
+    }
+    .inner {
+      display: none;
+      float: none;
     }
     img {
       max-width: 100%;
@@ -73,7 +89,19 @@ const SidebarWrapper = styled.div`
       width: 25%;
       position: fixed;
       bottom: 0;
+      padding: 0;
       overflow: auto;
+      line-height: 1.5;
+      > * {
+        float: none;
+        display: block;
+        border-bottom: 1px solid #333;
+        line-height: 1.5;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
       .inner {
         display: block;
       }
@@ -81,6 +109,14 @@ const SidebarWrapper = styled.div`
   `}
   ${styleUtils.media.desktopHD`
     font-size: 1.2em;
+    .sidebar-content {
+      > * {
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
+      }
+    }
   `}
 `;
 

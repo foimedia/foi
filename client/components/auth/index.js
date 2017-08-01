@@ -6,12 +6,25 @@ import Button from 'components/button';
 
 const AuthWrapper = styled.div`
   font-size: .8em;
+  display: inline-block;
+  line-height: 1.5rem;
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
   h3 {
     color: #777;
+    display: inline-block;
+    margin-right: 1rem;
+    float: left;
+    line-height: 1.5rem;
   }
   nav {
-    float: right;
-    margin-top: -.3rem;
+    float: right !important;
+    a {
+      margin: 0;
+    }
   }
 `
 
@@ -27,7 +40,7 @@ class Auth extends Component {
     if(auth.isSignedIn && !auth.user.anonymous) {
       return (
         <AuthWrapper>
-          <nav id="auth">
+          <nav id="auth" className="inner">
             <Button primary small href="javascript:void(0);" onClick={this.logout.bind(this)}>Logout</Button>
           </nav>
           <h3>Hello, {auth.user.first_name}.</h3>

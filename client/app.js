@@ -29,17 +29,18 @@ import 'styles/scrollbar.css';
 
 const AppContainer = styled.div`
   .brand {
-    padding: 1rem;
-    box-sizing: border-box;
+    float: left;
     img {
-      max-width: 1.5em;
+      max-height: 1.5rem;
       display: block;
     }
     ${styleUtils.media.desktop`
+      float: none;
       padding: 4rem;
       height: 225px;
       img {
         max-width: 6em;
+        max-height: none;
         margin: 0 auto;
       }
     `}
@@ -125,6 +126,7 @@ class Application extends Component {
               self.logout()
             }}
           />
+          <div className="inner clear"></div>
           {hasUser(auth) &&
             <div className="inner">
               <UserChats />

@@ -7,7 +7,7 @@ const styles = css`
   font-family: 'Inconsolata', monospace;
   letter-spacing: 0.06em;
   display: inline-block;
-  padding: .5rem 1.5rem;
+  padding: .7rem 1.5rem;
   border: 1px solid ${styleUtils.color};
   border-radius: 2em;
   margin: 0 0 .5rem;
@@ -15,6 +15,7 @@ const styles = css`
   font-size: .8em;
   text-transform: uppercase;
   text-align: center;
+  line-height: 1;
   &:hover,
   &:active,
   &:focus {
@@ -26,7 +27,8 @@ const styles = css`
     margin-right: 1rem;
     font-size: 1.3em;
     margin-left: -.4rem;
-    line-height: 1.2;
+    margin-top: -.15rem;
+    line-height: 1;
   }
   ${props => props.primary && css`
     background: ${styleUtils.color};
@@ -50,7 +52,7 @@ const styles = css`
     }
   `}
   ${props => props.small && css`
-    padding: .1rem .7rem;
+    padding: .3rem .7rem;
   `}
   ${props => props.block && css`
     display: block;

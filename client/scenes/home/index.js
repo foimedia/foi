@@ -9,11 +9,11 @@ import Button, { ButtonGroup } from 'components/button';
 const HomeWrapper = styled.section`
   .description {
     max-width: 500px;
-    margin: 0 0 2rem;
     font-family: "Inconsolata";
     ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
       padding-left: ${styleUtils.margins[i]}rem;
       padding-right: ${styleUtils.margins[i]}rem;
+      margin-bottom: ${styleUtils.margins[i]}rem;
     `)}
     ${styleUtils.media.tablet`
       padding: 0;
@@ -24,10 +24,17 @@ const HomeWrapper = styled.section`
   }
   .main-actions {
     border-bottom: 1px solid #ccc;
+    ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+      padding-left: ${styleUtils.margins[i]}rem;
+      padding-right: ${styleUtils.margins[i]}rem;
+    `)}
+    ${styleUtils.media.tablet`
+      padding: 0;
+    `}
   }
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
     .main-actions {
-      padding-bottom: ${styleUtils.margins[i]*2}rem;
+      padding-bottom: ${styleUtils.margins[i]*3}rem;
     }
     .extended-description p {
       margin-bottom: ${styleUtils.margins[i]}rem;
