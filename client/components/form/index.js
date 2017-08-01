@@ -12,7 +12,9 @@ const Form = styled.form`
         margin-bottom: 0;
       }
     }
-    input,
+    input[type=text],
+    input[type=password],
+    input[type=email],
     textarea {
       margin-top: ${styleUtils.margins[i]/2}rem;
       padding: ${styleUtils.margins[i]/2}rem;
