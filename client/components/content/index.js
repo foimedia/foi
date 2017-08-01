@@ -25,24 +25,37 @@ const ContentWrapper = styled.section`
     border-radius: ${styleUtils.radius/3}px;
     overflow: auto;
     font-size: .8em;
+    h3 {
+      font-size: .8em;
+      color: #aaa;
+      margin-top: 0;
+      border-bottom: 1px solid #e4e4e4;
+      .fa {
+        color: #666;
+      }
+    }
+    > :last-child {
+      margin-bottom: 0;
+    }
     ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
       padding: ${styleUtils.margins[i]}rem;
       margin: 0 0 ${styleUtils.margins[i]}rem;
       h3 {
         padding-bottom: ${styleUtils.margins[i]}rem;
-        margin-bottom: ${styleUtils.margins[i]}rem;
+        margin-bottom: ${styleUtils.margins[i]/2}rem;
+        .fa {
+          margin-right: ${styleUtils.margins[i]/2}rem;
+        }
       }
     `)}
-    h3 {
-      margin-top: 0;
-      border-bottom: 1px solid #e4e4e4;
-    }
-    > :last-child {
-      margin-bottom: 0;
-    }
+    ${styleUtils.media.tablet`
+      h3 {
+        font-size: 1em;
+      }
+    `}
   }
   ${styleUtils.media.tablet`
-    font-size: 1.2rem;
+    font-size: 1.2em;
     margin-top: 4rem;
   `}
   ${styleUtils.media.desktop`

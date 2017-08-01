@@ -29,7 +29,10 @@ class Admin extends Component {
           </ContentHeader>
           <div className="sections">
             <div className="env-info content-section">
-              <h3>Environment information</h3>
+              <h3>
+                <span className="fa fa-info-circle"></span>
+                Environment information
+              </h3>
               <table>
                 <tbody>
                   <tr>
@@ -48,7 +51,10 @@ class Admin extends Component {
               </table>
             </div>
             <div className="admin-options content-section">
-              <h3>Site options</h3>
+              <h3>
+                <span className="fa fa-gear"></span>
+                Site options
+              </h3>
             </div>
           </div>
         </section>

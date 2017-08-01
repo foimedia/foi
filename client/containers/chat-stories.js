@@ -15,7 +15,12 @@ class ChatStories extends Component {
     this.removedStory = this.removedStory.bind(this);
   }
 
+  getChat () {
+    return this.props.chat.data || this.props.widgetChat;
+  }
+
   getStories(chatId) {
+    const chat = this.getChat();
     // Clear stories before continuing
     this.setState({
       stories: undefined
@@ -24,7 +29,7 @@ class ChatStories extends Component {
       query: {
         chatId: chatId,
         $sort: {
-          createdAt: -1
+          createdAt: chat.archived ? 1 : -1
         }
       }
     }).then(res => {
@@ -74,7 +79,7 @@ class ChatStories extends Component {
   }
 
   render () {
-    const chat = this.props.chat.data || this.props.widgetChat;
+    const chat = this.getChat();
     const { stories } = this.state;
     if(chat !== null && chat !== undefined) {
       return (

@@ -4,8 +4,6 @@ import styleUtils from 'services/style-utils';
 
 const Wrapper = styled.header`
   font-family: "Inconsolata", monospace;
-  width: 100%;
-  box-sizing: border-box;
   color: #000;
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
     padding-top: ${styleUtils.margins[i]}rem;
@@ -20,6 +18,7 @@ const Wrapper = styled.header`
     padding: 0;
   `}
   ${styleUtils.media.desktop`
+    width: 100%;
     display: table;
     height: 14rem;
     margin-top: -4rem;
@@ -34,6 +33,14 @@ const Wrapper = styled.header`
   `}
   h2 {
     font-size: 1.3em;
+    a {
+      color: inherit;
+      &:hover,
+      &:active,
+      &:focus {
+        color: #000;
+      }
+    }
   }
   p.description {
     color: #666;

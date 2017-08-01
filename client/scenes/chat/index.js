@@ -46,17 +46,20 @@ class Chat extends Component {
     const { stories } = this.state;
     if(chat.isError) {
       return (
-        <section>
-          <header>
-            <h2>{chat.isError.message}</h2>
-          </header>
-        </section>
+        <ContentHeader>
+          <p>{chat.isError.message}</p>
+        </ContentHeader>
       )
     } else if(chat.data !== null) {
+      const { id } = chat.data;
       return (
-        <section id={`chat-${chat.data.id}`}>
+        <section id={`chat-${id}`}>
           <ContentHeader>
-            <h2>{getTitle(chat.data)}</h2>
+            <h2>
+              <Link to={`/c/${id}`}>
+                {getTitle(chat.data)}
+              </Link>
+            </h2>
             {chat.data.description &&
               <p className="description">{chat.data.description}</p>
             }

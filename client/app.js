@@ -11,6 +11,7 @@ import styleUtils from 'services/style-utils';
 
 import Sidebar from 'components/sidebar';
 import Content from 'components/content';
+import ContentHeader from 'components/content/header';
 import Footer from 'components/footer';
 import Auth from 'components/auth';
 import Button, { ButtonLink } from 'components/button';
@@ -145,7 +146,9 @@ class Application extends Component {
             <Route path="/s/:storyId" component={Story} />
             <Route path="/admin" component={Admin} />
             <Route render={() => (
-              <h2>Not found</h2>
+              <ContentHeader>
+                <h2>404 Not found</h2>
+              </ContentHeader>
             )} />
           </Switch>
         </Content>

@@ -67,7 +67,10 @@ class ChatSettings extends Component {
           }
           <div className="sections">
             <div className="chat-info content-section">
-              <h3>General information</h3>
+              <h3>
+                <span className="fa fa-info-circle"></span>
+                General information
+              </h3>
               <table>
                 <tbody>
                   <tr>
@@ -94,7 +97,10 @@ class ChatSettings extends Component {
               </table>
             </div>
             <div className="main-settings content-section">
-              <h3>Chat settings</h3>
+              <h3>
+                <span className="fa fa-gear"></span>
+                Settings
+              </h3>
               <Form onSubmit={this.handleSubmit}>
                 <p>
                   <label>

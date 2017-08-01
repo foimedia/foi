@@ -5,12 +5,13 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { services } from 'services/feathers';
 import StoryContainer from 'containers/story';
+import ContentHeader from 'components/content/header';
 
 const Wrapper = styled.section`
   ${styleUtils.media.desktopHD`
     font-size: 1.2em;
     .story-item {
-      margin-bottom: 4rem;
+      margin-bottom: 2rem;
     }
   `}
 `
@@ -52,11 +53,9 @@ class Story extends Component {
     const { story } = this.props;
     if(story.isError) {
       return (
-        <section>
-          <header>
-            <h2>{story.isError.message}</h2>
-          </header>
-        </section>
+        <ContentHeader>
+          <p>{story.isError.message}</p>
+        </ContentHeader>
       )
     } else if(story.data !== null) {
       return (

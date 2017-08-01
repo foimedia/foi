@@ -14,7 +14,7 @@ class Stories extends Component {
     if(stories === undefined) {
       return <Loader size={20} />;
     } else if(!stories.length) {
-      return <h2>No posts were found</h2>;
+      return <p>No posts were found.</p>;
     } else {
       return (
         <StoriesComponent>
