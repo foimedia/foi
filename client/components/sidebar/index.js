@@ -109,6 +109,7 @@ const SidebarWrapper = styled.div`
   `}
   ${styleUtils.media.desktopHD`
     font-size: 1.2em;
+    &.active .sidebar-content,
     .sidebar-content {
       > * {
         padding-top: 1.5rem;
