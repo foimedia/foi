@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const Message = require('./message');
 
 module.exports = function () {
 
@@ -118,12 +119,78 @@ module.exports = function () {
     });
   }
 
+  function validateMuted (message) {
+    const chatId = message.chat.id;
+    const userId = message.from.id;
+    return new Promise((resolve, reject) => {
+      service.get(chatId).then(data => {
+        if(data.muted && data.muted[userId])
+          reject();
+        else
+          resolve(message);
+      });
+    });
+  }
+
+  function mute (message) {
+    const chatId = message.chat.id;
+    const userId = message.from.id;
+    return service.patch(chatId, {
+      [`muted.${userId}`]: true
+    }).then(() => message);
+  }
+
+  function unmute (message) {
+    const chatId = message.chat.id;
+    const userId = message.from.id;
+    return service.patch(chatId, {
+      [`muted.${userId}`]: false
+    }).then(() => message);
+  }
+
+  /*
+   * Mute chat
+   */
+  bot.onText(/\/mute( .+)?/, (data, match) => {
+    const chatId = data.chat.id;
+    const message = new Message(data);
+    return user.createMessageUsers(message)
+      .then(createMessageChats)
+      .then(mute)
+      .then(data => {
+        bot.sendMessage(chatId, 'You are now muted on this chat.');
+      })
+      .catch(err => {
+        bot.sendMessage(chatId, err.message || err);
+      });
+  });
+
+  /*
+   * Unmute chat
+   */
+  bot.onText(/\/unmute( .+)?/, (data, match) => {
+    const chatId = data.chat.id;
+    const message = new Message(data);
+    return user.createMessageUsers(message)
+      .then(createMessageChats)
+      .then(unmute)
+      .then(data => {
+        bot.sendMessage(chatId, 'You are not muted anymore.');
+      })
+      .catch(err => {
+        bot.sendMessage(chatId, err.message || err);
+      });
+  });
+
   return Object.assign(app.telegram || {}, {
     chat: {
       validatePrivateChat,
       isGroupInvite,
       validateGroupInvite,
-      createMessageChats
+      createMessageChats,
+      validateMuted,
+      mute,
+      unmute
     }
   });
 

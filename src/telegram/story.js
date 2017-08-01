@@ -31,6 +31,7 @@ module.exports = function () {
     return user.createMessageUsers(message)
       .then(chat.createMessageChats)
       .then(chat.validatePrivateChat)
+      .then(chat.validateMuted)
       .then(() => createStory(message, match))
       .then(data => {
         bot.sendMessage(chatId, 'You just started your "' + data.title.trim() + '" story!');

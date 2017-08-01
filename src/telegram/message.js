@@ -100,6 +100,24 @@ Message.prototype.getContent = function () {
   }
 };
 
+Message.prototype.getUrls = function () {
+  const urls = [];
+  if(this.entities && this.entities.length) {
+    this.entities.forEach(entity => {
+      if(entity.type == 'url') {
+        const start = entity.offset;
+        const end = start + entity.length;
+        urls.push({
+          url: this.text.slice(start, end),
+          offset: entity.offset,
+          length: entity.length
+        });
+      }
+    });
+  }
+  return urls;
+};
+
 Message.prototype.toPost = function () {
   const type = this.getType();
   if(type !== undefined && !this.isBotCommand()) {
@@ -115,6 +133,9 @@ Message.prototype.toPost = function () {
       chatId: this.chat.id,
       creatorId: this.getCreator()
     };
+    if(this.entities) {
+      post.entities = this.entities;
+    }
     return post;
   }
   return false;

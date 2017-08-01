@@ -23,14 +23,13 @@ module.exports = function () {
         .then(user.createMessageUsers)
         .then(chat.createMessageChats)
         .then(chat.validatePrivateChat)
+        .then(chat.validateMuted)
         .then(media.createMessageMedia)
         .then(createPost)
         .catch(err => {
           const chatId = data.chat.id;
           if(typeof err === 'string') {
             bot.sendMessage(chatId, err);
-          } else {
-            throw new errors.GeneralError(err);
           }
         });
     }
