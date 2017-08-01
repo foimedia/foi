@@ -65,7 +65,7 @@ Place the `div` with the chat id:
 
 ### Configuration
 
-First you need to [create a bot](https://telegram.me/botfather). Once you send your bot name and the BotFather gives you your bot token you are good to go. Paste it into `config/default.json`:
+First you need to [create a Telegram bot](https://telegram.me/botfather). Once you send your bot name and the BotFather gives you your bot token you are good to go. Paste it into `config/default.json`:
 
 ```json
 "telegram": {
@@ -73,6 +73,10 @@ First you need to [create a bot](https://telegram.me/botfather). Once you send y
   "token": "[your-token-here]"
 }
 ```
+
+#### Bot privacy setup
+
+Your bot need to be able to receive messages sent to groups, Telegram bots have their privacy mode **enabled** by default. You need to **disable privacy mode** by typing `/setprivacy` to the BotFather and follow its instructions.
 
 ### Install dependencies
 
