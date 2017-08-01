@@ -23,6 +23,7 @@ module.exports = function () {
         .then(user.createMessageUsers)
         .then(chat.createMessageChats)
         .then(chat.validatePrivateChat)
+        .then(chat.validateArchived)
         .then(chat.validateMuted)
         .then(media.createMessageMedia)
         .then(createPost)

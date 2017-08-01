@@ -132,6 +132,35 @@ module.exports = function () {
     });
   }
 
+  function validateArchived (message) {
+    const chatId = message.chat.id;
+    const userId = message.from.id;
+    return new Promise((resolve, reject) => {
+      service.get(chatId).then(data => {
+        if(data.archived)
+          reject();
+        else
+          resolve(message);
+      });
+    });
+  }
+
+  function isUserAdmin (message) {
+    const chatId = message.chat.id;
+    const userId = message.from.id;
+    return new Promise((resolve, reject) => {
+      service.get(chatId).then(data => {
+        if(data.type == 'private' || data.all_members_are_administrators) {
+          resolve(message);
+        } else if(data.admins && data.admins.indexOf(userId) !== -1) {
+          resolve(message);
+        } else {
+          reject('You are not allowed to do this.');
+        }
+      })
+    });
+  }
+
   function mute (message) {
     const chatId = message.chat.id;
     const userId = message.from.id;
@@ -145,6 +174,22 @@ module.exports = function () {
     const userId = message.from.id;
     return service.patch(chatId, {
       [`muted.${userId}`]: false
+    }).then(() => message);
+  }
+
+  function archiveChat (message) {
+    const chatId = message.chat.id;
+    const userId = message.from.id;
+    return service.patch(chatId, {
+      archived: true
+    }).then(() => message);
+  }
+
+  function unarchiveChat (message) {
+    const chatId = message.chat.id;
+    const userId = message.from.id;
+    return service.patch(chatId, {
+      archived: false
     }).then(() => message);
   }
 
@@ -164,7 +209,6 @@ module.exports = function () {
         bot.sendMessage(chatId, err.message || err);
       });
   });
-
   /*
    * Unmute chat
    */
@@ -182,12 +226,48 @@ module.exports = function () {
       });
   });
 
+  /*
+   * Archive chat
+   */
+  bot.onText(/\/archive( .+)?/, (data, match) => {
+    const chatId = data.chat.id;
+    const message = new Message(data);
+    return user.createMessageUsers(message)
+      .then(createMessageChats)
+      .then(isUserAdmin)
+      .then(archiveChat)
+      .then(data => {
+        bot.sendMessage(chatId, 'This chat has been archived.');
+      })
+      .catch(err => {
+        bot.sendMessage(chatId, err.message || err);
+      });
+  });
+  /*
+   * Unarchive chat
+   */
+  bot.onText(/\/unarchive( .+)?/, (data, match) => {
+    const chatId = data.chat.id;
+    const message = new Message(data);
+    return user.createMessageUsers(message)
+      .then(createMessageChats)
+      .then(isUserAdmin)
+      .then(unarchiveChat)
+      .then(data => {
+        bot.sendMessage(chatId, 'This chat has been unarchived.');
+      })
+      .catch(err => {
+        bot.sendMessage(chatId, err.message || err);
+      });
+  });
+
   return Object.assign(app.telegram || {}, {
     chat: {
       validatePrivateChat,
       isGroupInvite,
       validateGroupInvite,
       createMessageChats,
+      validateArchived,
       validateMuted,
       mute,
       unmute

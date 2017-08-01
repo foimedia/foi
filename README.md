@@ -37,6 +37,19 @@ FOI currently supports publishing the following Telegram available media:
  - Video note
  - Stickers (*available for Chrome only*)
 
+## Bot commands
+
+Available features:
+
+```
+story - Start a new story. Posts will be grouped and displayed in ascending order.
+endstory - Finish a running story
+mute - Keep the bot from storing your messages
+unmute - Allow the bot to store and publish your messages
+archive - Archive the chat. All the stories and posts will be displayed in ascending order and the bot will no longer store new messages.
+unarchive - Unarchive the chat.
+```
+
 ## Stories
 
 Coming soon...

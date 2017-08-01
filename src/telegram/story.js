@@ -31,6 +31,7 @@ module.exports = function () {
     return user.createMessageUsers(message)
       .then(chat.createMessageChats)
       .then(chat.validatePrivateChat)
+      .then(chat.validateArchived)
       .then(chat.validateMuted)
       .then(() => createStory(message, match))
       .then(data => {
