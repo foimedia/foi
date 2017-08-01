@@ -53,6 +53,9 @@ const ContentWrapper = styled.section`
         font-size: 1em;
       }
     `}
+    ${styleUtils.media.desktop`
+      border-radius: ${styleUtils.radius/2}px;
+    `}
   }
   ${styleUtils.media.tablet`
     font-size: 1.2em;
