@@ -6,16 +6,19 @@ import Transition from 'react-transition-group/Transition';
 import Loader from 'components/loader';
 
 const StoriesWrapper = styled.section`
-  .fade {
+  .story-fade {
     transition: all 200ms ${styleUtils.transition};
   }
-  .fade-entering, .fade-exited {
+  .story-fade.fade-entering, .story-fade.fade-exiting {
     transform: translate(0, -1.5rem);
     opacity: 0.01;
   }
-  .fade-entered, .fade-exiting {
+  .story-fade.fade-entered {
     transform: translate(0, 0);
     opacity: 1;
+  }
+  .story-fade.fade-exited {
+    display: none;
   }
 `;
 
@@ -34,7 +37,7 @@ class Stories extends Component {
           {childrenArray.map((child, i) =>
             <Transition key={child.key} timeout={200}>
               {(status) => (
-                <div className={`fade fade-${status}`}>
+                <div className={`story-fade fade-${status}`}>
                   {child}
                 </div>
               )}

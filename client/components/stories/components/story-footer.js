@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 import Link from 'components/absolute-link';
+import ActionsBox from 'components/actions-box';
 
 import styleUtils from 'services/style-utils';
 
 const StoryFooterBox = styled.footer`
   padding: 0 .5rem .5rem;
   font-size: .7em;
-  color: #ccc;
+  color: #aaa;
   border-radius: 0 0 3px 3px;
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
     padding-left: ${styleUtils.margins[i]}rem;
@@ -36,11 +37,8 @@ const StoryFooterBox = styled.footer`
       }
     }
   }
-  p.actions {
+  .actions {
     float: right;
-    .fa {
-      font-size: 1.2em;
-    }
   }
 `;
 
@@ -109,11 +107,12 @@ class StoryFooter extends Component {
           <Link to={`/s/${story.id}`}>{this.getStoryDate()}</Link>
         </p>
         {this.props.canRemove &&
-          <p className="actions">
+          <ActionsBox className="actions">
             <a href="javascript:void(0)" onClick={this.props.remove} title="Remove story">
               <span className="fa fa-remove"></span>
+              Remove
             </a>
-          </p>
+          </ActionsBox>
         }
       </StoryFooterBox>
     )

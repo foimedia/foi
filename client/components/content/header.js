@@ -41,7 +41,7 @@ const Wrapper = styled.header`
   }
 `
 
-export default class ContentHeader {
+export default class ContentHeader extends Component {
   render () {
     return (
       <Wrapper id="content-header">
