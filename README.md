@@ -14,7 +14,7 @@ This project uses [Feathers](http://feathersjs.com). An open source web framewor
 
 FOI is both a bot and a web app. The bot takes the messages it receives and sends it to the app, where its organized, stored and displayed in real-time.
 
-The content is organized by the **chats** the bot participates in. They are your *private chat* with the bot and the *group chats* the bot is invited to..
+The content is organized by the **chats** the bot participates in. They are your *private chat* with the bot and the *group chats* the bot is invited to.
 
 Creating a new coverage or simply starting a new live feed is as easy as creating a Telegram group:
 
