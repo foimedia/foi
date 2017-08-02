@@ -13,6 +13,7 @@ class UserChats extends Component {
     };
     this.service = client.service('chats');
     this.newUserChat = this.newUserChat.bind(this);
+    this.patchedUserChat = this.patchedUserChat.bind(this);
     this.removedUserChat = this.removedUserChat.bind(this);
   }
 
@@ -43,6 +44,17 @@ class UserChats extends Component {
     return this.setState({ userChats: newUserChats });
   }
 
+  patchedUserChat (patchedChat) {
+    const { userChats } = this.state;
+    const newUserChats = userChats.map(chat => {
+      if(chat.id == patchedChat.id)
+        return patchedChat;
+      else
+        return chat;
+    });
+    return this.setState({ userChats: newUserChats });
+  }
+
   removedUserChat (removedChat) {
     const { userChats } = this.state;
     const newUserChats = userChats.filter(chat => chat.id !== removedChat.id);
@@ -59,6 +71,7 @@ class UserChats extends Component {
       });
     }
     this.service.on('created', this.newUserChat);
+    this.service.on('patched', this.patchedUserChat);
     this.service.on('removed', this.removedUserChat);
   }
 
@@ -77,6 +90,7 @@ class UserChats extends Component {
 
   componentWillUnmount () {
     this.service.off('created', this.newUserChat);
+    this.service.off('patched', this.patchedUserChat);
     this.service.off('removed', this.deleteUserChat);
   }
 

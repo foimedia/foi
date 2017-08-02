@@ -18,26 +18,35 @@ const List = styled.ul`
   li {
     margin: 0;
     padding: 0;
-    span {
+    span.item {
       display: block;
       padding: .75rem;
       border-bottom: 1px solid ${styleUtils.color};
-    }
-    .fa {
-      font-weight: normal;
-      float: right;
-      font-size: 1.2em;
-      line-height: 1.4;
-      color: #ddd;
-      &:hover,
-      &:active,
-      &:focus {
-        color: ${styleUtils.color};
+      a {
+        .fa {
+          margin-left: .5rem;
+          font-size: .8em;
+          opacity: .4;
+        }
       }
     }
-    &:last-child {
-      span {
-        border-bottom: 0;
+    .actions {
+      float: right;
+      .fa {
+        font-weight: normal;
+        font-size: 1.2em;
+        line-height: 1.4;
+        color: #ddd;
+        &:hover,
+        &:active,
+        &:focus {
+          color: ${styleUtils.color};
+        }
+      }
+      &:last-child {
+        span {
+          border-bottom: 0;
+        }
       }
     }
   }
@@ -55,7 +64,7 @@ const List = styled.ul`
   `}
   ${props => props.dark && css`
     border-color: #444;
-    li span {
+    li span.item {
       border-color: #444;
       a {
         color: #fff;

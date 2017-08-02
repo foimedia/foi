@@ -30,11 +30,18 @@ class Chat extends Component {
     return (
       <p>
         {data !== undefined &&
-          <span>
-            <Link to={`/c/${data.id}`}>{getTitle(data)}</Link>
-            {canManage(data, auth) &&
-              <Link to={`/c/${data.id}/settings`} className="fa fa-gear"></Link>
-            }
+          <span className="item">
+            <Link to={`/c/${data.id}`}>
+              {getTitle(data)}
+              {data.archived &&
+                <span className="attr-icon fa fa-archive" title="This chat is archived"></span>
+              }
+            </Link>
+            <span className="actions">
+              {canManage(data, auth) &&
+                <Link to={`/c/${data.id}/settings`} className="fa fa-gear"></Link>
+              }
+            </span>
           </span>
         }
       </p>

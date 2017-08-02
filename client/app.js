@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { withRouter, Route, Link, Switch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
-import client, { auth } from 'services/feathers';
 import { hasUser, hasRole } from 'services/auth';
 import styleUtils from 'services/style-utils';
 
@@ -16,6 +15,7 @@ import Footer from 'components/footer';
 import Auth from 'components/auth';
 import Button, { ButtonLink } from 'components/button';
 
+import Authenticate from 'containers/authenticate';
 import UserChats from 'containers/user-chats';
 
 import Home from 'scenes/home';
@@ -51,62 +51,10 @@ class Application extends Component {
 
   constructor (props) {
     super(props);
-    this.authorization = client.service('authorize');
-    this.doAuth = this.doAuth.bind(this);
-    this.doAnonAuth = this.doAnonAuth.bind(this);
-  }
-
-  doAnonAuth () {
-    const { authenticate } = this.props;
-    return authenticate({
-      strategy: 'anonymous',
-      accessToken: null
-    });
-  }
-
-  doAuth (token = false) {
-    const { authenticate, logout } = this.props;
-    // No token, attempt stored token and catch with anon auth
-    if(!token) {
-      if(window.localStorage['feathers-jwt']) {
-        // User not found auth error is not returning client error
-        return authenticate().catch(() => {
-          return this.doAnonAuth();
-        });
-      } else {
-        return this.doAnonAuth().then(() => {
-          client.io.disconnect();
-          return client.io.connect();
-        });
-      }
-    // With token, logout from previous session (mostly anon) and start new one with token
-    } else {
-      token = token.accessToken || token;
-      logout();
-      return authenticate({
-        strategy: 'jwt',
-        accessToken: token
-      }).then(data => {
-        const { user } = this.props.auth;
-        this.authorization.patch(user.id, {authenticated: true});
-      });
-    }
   }
 
   componentDidMount () {
     const { auth } = this.props;
-    this.doAuth();
-    this.authorization.on('created', this.doAuth);
-  }
-
-  componentWillUnmount () {
-    this.authorization.off('created', this.doAuth);
-  }
-
-  logout () {
-    const { authenticate, logout } = this.props;
-    logout();
-    return this.doAnonAuth();
   }
 
   render () {
@@ -117,6 +65,7 @@ class Application extends Component {
         {/* <Helmet>
           <title>FOI - Publishing Bot</title>
         </Helmet> */}
+        <Authenticate onRef={ref => (self.logout = ref.logout)} />
         <Sidebar>
           <div className={`brand`}>
             <Link to="/">
@@ -168,9 +117,4 @@ const mapStateToProps = (state, ownProps) => {
   return { auth: state.auth }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  authenticate: (credentials) => dispatch(auth.authenticate(credentials)),
-  logout: () => dispatch(auth.logout())
-})
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Application));
+export default withRouter(connect(mapStateToProps)(Application));
