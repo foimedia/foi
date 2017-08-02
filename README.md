@@ -50,7 +50,7 @@ unarchive - Unarchive the chat.
 
 ## Authentication
 
-Authentication is performed through Telegram, every anonymous session has a unique token. Once you click to authenticate, the app will redirect you to send the following message to the bot:
+Authentication is performed through Telegram. The app provides an unique token for every anonymous session. Once you click to authenticate, the app will redirect you to send the following message to the bot:
 
 ```
 /start [token]
