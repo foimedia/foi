@@ -1,10 +1,10 @@
 # FOI
 
-**A bot-based publisher app.**
+**FOI is a publishing bot**
 
 ---
 
-Made for journalists and activists, it is focused on real-time coverage of events.
+Real-time coverage of events for journalists and activists.
 
 ---
 
