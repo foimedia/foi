@@ -4,6 +4,7 @@ import styleUtils from 'services/style-utils';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { services } from 'services/feathers';
+import { getTitle } from 'services/chats';
 import StoryContainer from 'containers/story';
 import ContentHeader from 'components/content/header';
 
@@ -59,14 +60,26 @@ class Story extends Component {
       )
     } else if(story.data !== null) {
       return (
-        <Wrapper className="single-story">
-          <StoryContainer story={story.data} />
-          <Footer>
-            <p>
-              <Link to={`/c/${story.data.chatId}`}>View all stories from this chat</Link>
-            </p>
-          </Footer>
-        </Wrapper>
+        <div>
+          <ContentHeader>
+            <h2>
+              <Link to={`/c/${story.data.chat.id}`}>
+                {getTitle(story.data.chat)}
+              </Link>
+            </h2>
+            {story.data.chat.description &&
+              <p className="description">{story.data.chat.description}</p>
+            }
+          </ContentHeader>
+          <Wrapper className="single-story">
+            <StoryContainer story={story.data} />
+            <Footer>
+              <p>
+                <Link to={`/c/${story.data.chatId}`}>View all stories from this chat</Link>
+              </p>
+            </Footer>
+          </Wrapper>
+        </div>
       )
     } else {
       return null;

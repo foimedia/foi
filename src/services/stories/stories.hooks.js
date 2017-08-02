@@ -110,7 +110,21 @@ module.exports = {
       })
     ],
     find: [],
-    get: [],
+    get: [
+      populate({
+        schema: {
+          include: [
+            {
+              nameAs: 'chat',
+              service: 'chats',
+              parentField: 'chatId',
+              childField: 'id',
+              useInnerPopulate: true
+            }
+          ]
+        }
+      })
+    ],
     create: [],
     update: [],
     patch: [],
