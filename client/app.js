@@ -51,7 +51,7 @@ class Application extends Component {
 
   constructor (props) {
     super(props);
-    this.authorizeService = client.service('authorize');
+    this.authorization = client.service('authorize');
     this.doAuth = this.doAuth.bind(this);
     this.doAnonAuth = this.doAnonAuth.bind(this);
   }
@@ -86,6 +86,9 @@ class Application extends Component {
       return authenticate({
         strategy: 'jwt',
         accessToken: token
+      }).then(data => {
+        const { user } = this.props.auth;
+        this.authorization.patch(user.id, {authenticated: true});
       });
     }
   }
@@ -93,11 +96,11 @@ class Application extends Component {
   componentDidMount () {
     const { auth } = this.props;
     this.doAuth();
-    this.authorizeService.on('created', this.doAuth);
+    this.authorization.on('created', this.doAuth);
   }
 
   componentWillUnmount () {
-    this.authorizeService.off('created', this.doAuth);
+    this.authorization.off('created', this.doAuth);
   }
 
   logout () {

@@ -17,6 +17,9 @@ module.exports = function () {
       return passport.createJWT(payload, config).then(accessToken => {
         return { accessToken };
       });
+    },
+    patch (id, data, params) {
+      return true;
     }
   };
 

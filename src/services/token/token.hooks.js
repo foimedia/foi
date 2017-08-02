@@ -31,6 +31,14 @@ module.exports = {
           throw new errors.BadRequest(err);
         })
       }
+    ],
+    patch: [
+      hook => {
+        if(hook.data.authenticated) {
+          hook.app.telegram.auth.validateIntent(hook.id);
+        }
+        return hook;
+      }
     ]
   }
 };
