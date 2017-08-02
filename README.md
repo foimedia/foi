@@ -1,9 +1,7 @@
-# FOI
+![FOI](http://i.imgur.com/O2b8Z3u.png)
+======
 
-**FOI is a publishing bot**
-
----
-
+## FOI is a publishing bot
 Real-time coverage of events for journalists and activists.
 
 ---
