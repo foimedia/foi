@@ -34,7 +34,7 @@ module.exports = function () {
     for(let id in intents) {
       if(intents[id] + timeout < now) {
         removeIntent(id);
-        bot.sendMessage(id, 'No browser response, authentication timed out. Try refreshing your browser page and try again.');
+        bot.sendMessage(id, 'No browser response, authentication timed out. Refresh your browser page and try again, please.');
       }
     }
   }
