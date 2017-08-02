@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import styleUtils from 'services/style-utils';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import Transition from 'react-transition-group/Transition';
-import Loader from 'components/loader';
 
 const StoriesWrapper = styled.section`
   .story-fade {

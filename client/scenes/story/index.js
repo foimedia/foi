@@ -9,7 +9,7 @@ import ContentHeader from 'components/content/header';
 
 const Wrapper = styled.section`
   ${styleUtils.media.desktopHD`
-    font-size: 1.2em;
+    font-size: 1.1em;
     .story-item {
       margin-bottom: 2rem;
     }

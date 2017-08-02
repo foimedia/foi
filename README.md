@@ -50,17 +50,19 @@ archive - Archive the chat. All the stories and posts will be displayed in ascen
 unarchive - Unarchive the chat.
 ```
 
-## Stories
-
-Coming soon...
-
 ## Authentication
 
-Coming soon...
+Authentication is performed through Telegram, every anonymous session has a unique token. Once you click to authenticate, the app will redirect you to send the following message to the bot:
+
+```
+/start [token]
+```
+
+Once the token is validated internally, a socket event containg the authorized user session is emitted to the connection with the validated token in its payload.
 
 ## Widget
 
-FOI also provides a **widget** for embedding the real-time feed on another website.
+FOI also provides a **widget** for embedding the live feed on another website.
 
 Place `widget.js` on `<head />` or `<body />`:
 
@@ -72,6 +74,19 @@ Place the `div` with the chat id:
 
 ```html
 <div class="foi-widget" data-chat="[chatId]"></div>
+```
+
+### Widget options
+
+#### Load more options
+
+ - `scroll` - Load more stories using infinite scroll feature
+ - `button` - Load more stories by clicking on a button (default)
+
+Example using `scroll` option:
+
+```html
+<div class="foi-widget" data-chat="[chatId]" data-more="scroll"></div>
 ```
 
 ## Installing

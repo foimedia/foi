@@ -90,7 +90,7 @@ class ChatSettings extends Component {
                     <td>--</td>
                   </tr>
                   <tr>
-                    <th>Visits</th>
+                    <th>Viewers</th>
                     <td>--</td>
                   </tr>
                 </tbody>
@@ -111,6 +111,28 @@ class ChatSettings extends Component {
                 <p className="form-actions">
                   <InputButton primary type="submit" value="Update chat" />
                 </p>
+              </Form>
+            </div>
+            <div className="share-settings content-section">
+              <h3>
+                <span className="fa fa-bullhorn"></span>
+                Share
+              </h3>
+              <Form>
+                <p>
+                  <label>
+                    URL
+                    <input type="text" value={`${foi.url}/c/${chat.data.id}`} />
+                  </label>
+                </p>
+                <p>
+                  <label>
+                    Widget code
+                    <textarea value={`<div class="foi-widget" data-chat="${chat.data.id}"></div>`}></textarea>
+                  </label>
+                </p>
+                <p>Make sure to add the widget javascript to your page:</p>
+                <pre><code>{`<script type="text/javascript" src="${foi.url}/widget.js" async></script>`}</code></pre>
               </Form>
             </div>
             {chat.data.type !== 'private' &&

@@ -20,7 +20,8 @@ document.addEventListener('DOMContentLoaded', function() {
         xhr.addEventListener('load', function(res) {
           if(this.status == 200) {
             const props = {
-              widgetChat: JSON.parse(res.target.response)
+              widgetChat: JSON.parse(res.target.response),
+              more: node.dataset.more || 'button'
             };
             ReactDom.render(
               <Provider store={store}>

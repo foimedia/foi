@@ -4,7 +4,7 @@ table {
   color: #666;
   table-layout: auto;
   border-collapse: collapse;
-  font-family: 'Inconsolata';
+  font-family: 'Inconsolata', monospace;
   overflow: auto;
 }
 

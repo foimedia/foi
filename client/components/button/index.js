@@ -14,6 +14,7 @@ const styles = css`
   cursor: pointer;
   font-size: .8em;
   text-transform: uppercase;
+  text-decoration: none;
   text-align: center;
   line-height: 1;
   &:hover,

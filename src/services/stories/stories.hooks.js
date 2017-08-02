@@ -10,7 +10,7 @@ const restrictToOneRunningStory = () => hook => {
     }
   }).then(res => {
     if(res.data.length) {
-      throw new errors.Forbidden('You can only have one running story. Maybe you\'d like to /endstory before starting a new one?');
+      throw new errors.Forbidden('You can only have one running story. Perhaps you\'d like to /endstory before starting a new one?');
     } else {
       return hook;
     }
