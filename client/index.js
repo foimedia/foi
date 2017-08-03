@@ -10,10 +10,14 @@ import Application from 'app';
 
 import { store } from 'services/feathers';
 
+import ScrollToTop from 'components/scroll-top'
+
 ReactDom.render(
   <Provider store={store}>
     <Router history={browserHistory}>
-      <Application />
+      <ScrollToTop>
+        <Application />
+      </ScrollToTop>
     </Router>
   </Provider>,
   document.getElementById('app')
