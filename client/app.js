@@ -49,14 +49,6 @@ const AppContainer = styled.div`
 
 class Application extends Component {
 
-  constructor (props) {
-    super(props);
-  }
-
-  componentDidMount () {
-    const { auth } = this.props;
-  }
-
   render () {
     const self = this;
     const { auth } = this.props;
