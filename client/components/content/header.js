@@ -47,6 +47,7 @@ const Wrapper = styled.header`
       width: 2rem;
       padding-right: 2rem;
       line-height: 1;
+      text-align: center;
       color: ${styleUtils.color};
     `}
   }

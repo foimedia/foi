@@ -61,7 +61,7 @@ class Story extends Component {
     } else if(story.data !== null) {
       return (
         <div>
-          <ContentHeader>
+          <ContentHeader icon="bullhorn">
             <h2>
               <Link to={`/c/${story.data.chat.id}`}>
                 {getTitle(story.data.chat)}
