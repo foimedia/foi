@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { hasUser, hasRole } from 'services/auth';
 import ContentHeader from 'components/content/header';
+import Table from 'components/table';
 import Loader from 'components/loader';
-
-import 'styles/tables.css';
 
 class Admin extends Component {
 
@@ -33,7 +32,7 @@ class Admin extends Component {
                 <span className="fa fa-info-circle"></span>
                 Environment information
               </h3>
-              <table>
+              <Table>
                 <tbody>
                   <tr>
                     <th>Site url</th>
@@ -48,7 +47,7 @@ class Admin extends Component {
                     <td>{foi.defaultUserRoles}</td>
                   </tr>
                 </tbody>
-              </table>
+              </Table>
             </div>
             <div className="admin-options content-section">
               <h3>

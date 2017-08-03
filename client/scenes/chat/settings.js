@@ -5,6 +5,7 @@ import { canManage } from 'services/chats';
 import { services } from 'services/feathers';
 import { hasUser, hasRole } from 'services/auth';
 import Loader from 'components/loader';
+import Table from 'components/table';
 import Form from 'components/form';
 import Button, { InputButton, ButtonGroup } from 'components/button';
 
@@ -71,7 +72,7 @@ class ChatSettings extends Component {
                 <span className="fa fa-info-circle"></span>
                 General information
               </h3>
-              <table>
+              <Table>
                 <tbody>
                   <tr>
                     <th>Contributors</th>
@@ -94,7 +95,7 @@ class ChatSettings extends Component {
                     <td>--</td>
                   </tr>
                 </tbody>
-              </table>
+              </Table>
             </div>
             <div className="main-settings content-section">
               <h3>
