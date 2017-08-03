@@ -51,7 +51,7 @@ class Home extends Component {
     const { auth } = this.props;
     return (
       <HomeWrapper id="home">
-        <ContentHeader>
+        <ContentHeader icon="asterisk">
           <h2>FOI is a publishing bot</h2>
         </ContentHeader>
         <div className="description">
