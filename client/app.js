@@ -92,7 +92,7 @@ class Application extends Component {
             <Route path="/s/:storyId" component={Story} />
             <Route path="/admin" component={Admin} />
             <Route render={() => (
-              <ContentHeader>
+              <ContentHeader icon="meh-o">
                 <h2>404 Not found</h2>
               </ContentHeader>
             )} />

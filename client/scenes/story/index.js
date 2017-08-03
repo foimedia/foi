@@ -54,8 +54,8 @@ class Story extends Component {
     const { story } = this.props;
     if(story.isError) {
       return (
-        <ContentHeader>
-          <p>{story.isError.message}</p>
+        <ContentHeader icon="frown-o">
+          <p>ERROR: {story.isError.message}</p>
         </ContentHeader>
       )
     } else if(story.data !== null) {

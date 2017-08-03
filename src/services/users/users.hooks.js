@@ -1,5 +1,5 @@
 const { authenticate } = require('feathers-authentication').hooks;
-const { when, iff, discard } = require('feathers-hooks-common');
+const { when, iff, discard, disallow } = require('feathers-hooks-common');
 const { restrictToOwner } = require('feathers-authentication-hooks');
 
 const restrict = [
@@ -27,6 +27,12 @@ const defaultRoles = () => hook => {
   return hook;
 }
 
+const parsePatch = () => hook => {
+  // hook.data = _.pick(hook.data, ['']);
+  hook.data = {}; // currently no data is going to be patched
+  return hook;
+}
+
 module.exports = {
   before: {
     all: [],
@@ -39,11 +45,12 @@ module.exports = {
       }
     ],
     create: [
+      disallow('external'),
       defaultRoles(),
       firstUser()
     ],
-    update: [ ...restrict ],
-    patch: [ ...restrict ],
+    update: [ disallow('external') ],
+    patch: [ parsePatch(), ...restrict ],
     remove: [ ...restrict ]
   },
 

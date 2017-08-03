@@ -51,8 +51,8 @@ class Chat extends Component {
     const { stories } = this.state;
     if(chat.isError) {
       return (
-        <ContentHeader>
-          <p>{chat.isError.message}</p>
+        <ContentHeader icon="frown-o">
+          <p>ERROR: {chat.isError.message}</p>
         </ContentHeader>
       )
     } else if(chat.data !== null) {

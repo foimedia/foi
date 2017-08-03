@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { services } from 'services/feathers';
+import ContentHeader from 'components/content/header';
 import Table from 'components/table';
 import Loader from 'components/loader';
 
@@ -13,7 +14,13 @@ class Users extends Component {
   }
   render () {
     const { users } = this.props;
-    if(users.queryResult !== null) {
+    if(users.isError) {
+      return (
+        <ContentHeader icon="frown-o" inner={true}>
+          <p>ERROR: {users.isError.message}</p>
+        </ContentHeader>
+      )
+    } else if(users.queryResult !== null) {
       return (
         <div className="sections">
           <div className="users content-section">

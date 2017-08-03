@@ -100,16 +100,25 @@ const Wrapper = styled.header`
       }
     `)}
   }
+  ${props => props.inner && css`
+    margin-top: 0;
+    margin-bottom: 0;
+    height: auto;
+    ${styleUtils.media.desktop`
+      margin-top: 0;
+      margin-bottom: 0;
+      height: auto;
+    `}
+  `}
 `
 
 export default class ContentHeader extends Component {
   render () {
-    const { icon } = this.props;
-    console.log(icon);
+    const { ...props } = this.props;
     return (
-      <Wrapper id="content-header" icon={icon}>
-        {icon !== undefined &&
-          <span className={`header-icon fa fa-${icon}`}></span>
+      <Wrapper id={props.inner ? null : 'content-header'} {...props}>
+        {props.icon &&
+          <span className={`header-icon fa fa-${props.icon}`}></span>
         }
         <div>
           {this.props.children}
