@@ -49,7 +49,6 @@ class Chat extends Component {
   render () {
     const { match, chat } = this.props;
     const { stories } = this.state;
-    console.log(this.isSettings());
     if(chat.isError) {
       return (
         <ContentHeader>
