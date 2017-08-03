@@ -16,8 +16,8 @@ const Wrapper = styled.header`
     margin-bottom: ${styleUtils.margins[i]}rem;
     h2,
     .header-icon {
-      padding-top: ${styleUtils.margins[i]}rem;
-      padding-bottom: ${styleUtils.margins[i]}rem;
+      padding-top: ${styleUtils.margins[i]/2}rem;
+      padding-bottom: ${styleUtils.margins[i]/2}rem;
     }
   `)}
   ${styleUtils.media.tablet`
@@ -92,7 +92,7 @@ const Wrapper = styled.header`
     }
     ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
       a {
-        margin-right: ${styleUtils.margins[i]/2}rem;
+        margin-right: ${styleUtils.margins[i]/3}rem;
         padding-left: ${styleUtils.margins[i]/2}rem;
         padding-right: ${styleUtils.margins[i]/2}rem;
         .fa {
