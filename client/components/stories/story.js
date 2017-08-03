@@ -1,8 +1,18 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import Link from 'components/smart-link';
 import styleUtils from 'services/style-utils';
 import client from 'services/feathers';
 import StoryFooter from './components/story-footer';
+
+const Wrapper = styled.div`
+  .mast-link {
+    color: #333;
+    text-decoration: none;
+    outline: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+  }
+`
 
 const StoryBox = styled.article`
   border: 1px solid #e4e4e4;
@@ -11,6 +21,7 @@ const StoryBox = styled.article`
   position: relative;
   z-index: 1;
   overflow: hidden;
+  cursor: pointer;
   ${styleUtils.media.desktop`
     border-radius: ${styleUtils.radius/2}px;
   `}
@@ -19,6 +30,7 @@ const StoryBox = styled.article`
   `)}
   :hover {
     border-color: #ddd;
+    background: #fff;
   }
   .story-header {
     padding: 1.5rem;
@@ -49,17 +61,21 @@ class Story extends Component {
   render () {
     const { story } = this.props;
     return (
-      <StoryBox id={`story-${story.id}`} className="story-item">
-        {story.title &&
-          <header className="story-header">
-            <h2>{story.title}</h2>
-          </header>
-        }
-        <section className="story-content">
-          {this.props.children}
-        </section>
-        <StoryFooter {...this.props} />
-      </StoryBox>
+      <Wrapper>
+        <Link to={`/s/${story.id}`} className="mast-link">
+          <StoryBox id={`story-${story.id}`} className="story-item">
+            {story.title &&
+              <header className="story-header">
+                <h2>{story.title}</h2>
+              </header>
+            }
+            <section className="story-content">
+              {this.props.children}
+            </section>
+            <StoryFooter {...this.props} />
+          </StoryBox>
+        </Link>
+      </Wrapper>
     )
   }
 

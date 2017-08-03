@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import styleUtils from 'services/style-utils';
 
 const ContentWrapper = styled.section`
-  max-width: 670px;
+  max-width: 720px;
   margin: 2rem auto 0;
   transition: width 200ms ${styleUtils.transition};
   color: #444;

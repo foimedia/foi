@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import Link from 'components/absolute-link';
+import Link from 'components/smart-link';
 import ActionsBox from 'components/actions-box';
 
 import styleUtils from 'services/style-utils';
@@ -9,7 +9,7 @@ import styleUtils from 'services/style-utils';
 const StoryFooterBox = styled.footer`
   padding: 0 .5rem .5rem;
   font-size: .7em;
-  color: #aaa;
+  color: #999;
   border-radius: 0 0 3px 3px;
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
     padding-left: ${styleUtils.margins[i]}rem;

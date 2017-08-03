@@ -105,13 +105,17 @@ export default class Actions extends Component {
   show () {
     this.setState({active: true});
   }
-  handleClick () {
+  handleClick (event) {
+    event.preventDefault();
     this.state.active ? this.hide() : this.show();
   }
-  handleWindowClick () {
+  handleWindowClick (event) {
     const node = findDOMNode(this);
-    if(event.target !== node && !node.contains(event.target) && this.state.active)
+    if(event.target !== node && !node.contains(event.target) && this.state.active) {
+      event.preventDefault();
       this.hide();
+      return false;
+    }
   }
   componentDidMount () {
     window.addEventListener('click', this.handleWindowClick);

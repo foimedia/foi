@@ -5,14 +5,14 @@ import styleUtils from 'services/style-utils';
 const Wrapper = styled.header`
   font-family: "Inconsolata", monospace;
   color: #000;
-  ${props => props.icon && css`
-    ${styleUtils.media.desktop`
-      margin-left: -4rem;
-    `}
-  `}
+  background: #fff;
+  border-bottom: 1px solid #e4e4e4;
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
-    padding-left: ${styleUtils.margins[i]}rem;
-    padding-right: ${styleUtils.margins[i]}rem;
+    margin: -${styleUtils.margins[i]}rem;
+    padding-left: ${styleUtils.margins[i]*2}rem;
+    padding-right: ${styleUtils.margins[i]*2}rem;
+    padding-top: ${styleUtils.margins[i]}rem;
+    padding-bottom: ${styleUtils.margins[i]}rem;
     margin-bottom: ${styleUtils.margins[i]}rem;
     h2,
     .header-icon {
@@ -21,10 +21,14 @@ const Wrapper = styled.header`
     }
   `)}
   ${styleUtils.media.tablet`
+    margin-top: 0;
+    margin-left: 0;
+    margin-right: 0;
     padding: 0;
+    background: transparent;
+    border-bottom: 0;
   `}
   ${styleUtils.media.desktop`
-    width: 100%;
     display: table;
     table-layout: auto;
     height: 14rem;
@@ -101,6 +105,11 @@ const Wrapper = styled.header`
       }
     `)}
   }
+  ${props => props.icon && css`
+    ${styleUtils.media.desktop`
+      margin-left: -4rem;
+    `}
+  `}
   ${props => props.inner && css`
     margin-top: 0;
     margin-bottom: 0;
