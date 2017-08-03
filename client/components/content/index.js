@@ -37,6 +37,8 @@ const ContentWrapper = styled.section`
     }
     > :last-child {
       margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: 0;
     }
     ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
       padding: ${styleUtils.margins[i]}rem;
