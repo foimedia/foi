@@ -20,7 +20,12 @@ const List = styled.ul`
     padding: 0;
     span.item {
       display: block;
-      padding: .75rem;
+      ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+        padding-top: ${styleUtils.margins[i]*.5}rem;
+        padding-bottom: ${styleUtils.margins[i]*.5}rem;
+        padding-left: ${styleUtils.margins[i]*.8}rem;
+        padding-right: ${styleUtils.margins[i]*.8}rem;
+      `)}
       border-bottom: 1px solid ${styleUtils.color};
       a {
         .fa {

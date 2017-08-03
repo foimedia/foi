@@ -51,28 +51,6 @@ const Wrapper = styled.div`
       white-space: nowrap;
     }
   }
-
-  table tr {
-  }
-
-  table th:first-child,
-  table td:first-child {
-  }
-
-  table th {
-  }
-
-  table th,
-  table td {
-  }
-
-  table tr:first-child th,
-  table tr:first-child td {
-  }
-
-  table tr:last-child th,
-  table tr:last-child td {
-  }
 `
 
 export default class Table extends Component {
