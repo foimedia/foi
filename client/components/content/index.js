@@ -28,10 +28,11 @@ const ContentWrapper = styled.section`
     h3 {
       font-size: .8em;
       color: #aaa;
+      font-weight: 700;
       margin-top: 0;
       border-bottom: 1px solid #e4e4e4;
       .fa {
-        color: #666;
+        color: ${styleUtils.color};
       }
     }
     > :last-child {

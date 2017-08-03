@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { Route, Link, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import { hasUser, hasRole } from 'services/auth';
 import ContentHeader from 'components/content/header';
-import Table from 'components/table';
 import Loader from 'components/loader';
+
+import Dashboard from './dashboard';
+import Users from './users';
 
 class Admin extends Component {
 
@@ -12,50 +14,33 @@ class Admin extends Component {
     super(props);
   }
 
-  componentDidMount () {
-  }
-
   render () {
-    const { auth } = this.props;
+    const { match, auth } = this.props;
     if(auth.user !== null) {
       return (
         <section id="admin-area">
           {!hasRole(auth, 'admin') &&
             <Redirect to="/" />
           }
-          <ContentHeader>
-            <h2>Administration</h2>
-          </ContentHeader>
-          <div className="sections">
-            <div className="env-info content-section">
-              <h3>
-                <span className="fa fa-info-circle"></span>
-                Environment information
-              </h3>
-              <Table>
-                <tbody>
-                  <tr>
-                    <th>Site url</th>
-                    <td>{foi.url}</td>
-                  </tr>
-                  <tr>
-                    <th>Bot name</th>
-                    <td>{foi.botName}</td>
-                  </tr>
-                  <tr>
-                    <th>Default user roles</th>
-                    <td>{foi.defaultUserRoles}</td>
-                  </tr>
-                </tbody>
-              </Table>
-            </div>
-            <div className="admin-options content-section">
-              <h3>
+          <ContentHeader icon="lock">
+            <h2>
+              <Link to="/admin">Administration</Link>
+            </h2>
+            <nav>
+              <Link to="/admin">
                 <span className="fa fa-gear"></span>
-                Site options
-              </h3>
-            </div>
-          </div>
+                Dashboard
+              </Link>
+              <Link to="/admin/users">
+                <span className="fa fa-users"></span>
+                Users
+              </Link>
+            </nav>
+          </ContentHeader>
+          <Switch>
+            <Route path={`${match.url}/users`} component={Users} />
+            <Route component={Dashboard} />
+          </Switch>
         </section>
       )
     } else {

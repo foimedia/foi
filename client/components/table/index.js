@@ -17,22 +17,30 @@ const Wrapper = styled.div`
     font-family: 'Inconsolata', monospace;
     overflow: auto;
     margin: 0;
+    tbody {
+      tr {
+        &:last-child {
+          th,
+          td {
+            border-bottom: 0;
+            padding-bottom: 0;
+          }
+        }
+      }
+    }
+    *:first-child {
+      tr {
+        &:first-child {
+          th,
+          td {
+            padding-top: 0;
+          }
+        }
+      }
+    }
     tr {
       margin: 0;
       padding: 0;
-      &:first-child {
-        th,
-        td {
-          padding-top: 0;
-        }
-      }
-      &:last-child {
-        th,
-        td {
-          border-bottom: 0;
-          padding-bottom: 0;
-        }
-      }
     }
     th,
     td {
@@ -49,6 +57,7 @@ const Wrapper = styled.div`
       text-align: left;
       text-transform: uppercase;
       white-space: nowrap;
+      font-weight: 700;
     }
   }
 `

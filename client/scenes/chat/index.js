@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter, Route, Link, Switch, Redirect } from 'react-router-dom';
+import { Route, Link, Switch, Redirect } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { services } from 'services/feathers';
 import { getTitle } from 'services/chats';
@@ -84,9 +84,7 @@ function mapStateToProps (state, ownProps) {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  fetch: (chatId) => {
-    dispatch(services.chats.get(chatId))
-  }
+  fetch: (chatId) => dispatch(services.chats.get(chatId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);
