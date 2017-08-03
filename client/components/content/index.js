@@ -61,11 +61,12 @@ const ContentWrapper = styled.section`
     `}
   }
   ${styleUtils.media.tablet`
+    margin-top: 2rem;
     font-size: 1.2em;
-    margin-top: 4rem;
   `}
   ${styleUtils.media.desktop`
     max-width: 700px;
+    margin-top: 4rem;
     margin-left: 35%;
     margin-right: 0;
     width: 55%;
