@@ -66,13 +66,18 @@ const SidebarWrapper = styled.div`
       ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
         padding: ${styleUtils.margins[i]}rem;
       `)}
+    }
+    > .inner {
+      float: none;
+      padding-bottom: 0;
       &:last-child {
-        border-bottom: 0;
+        ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+          padding-bottom: ${styleUtils.margins[i]}rem;
+        `)}
       }
     }
     .inner {
       display: none;
-      float: none;
     }
     img {
       max-width: 100%;
@@ -92,7 +97,8 @@ const SidebarWrapper = styled.div`
       padding: 0;
       overflow: auto;
       line-height: 1.5;
-      > * {
+      > *,
+      > .inner {
         float: none;
         display: block;
         border-bottom: 1px solid #333;
@@ -101,6 +107,9 @@ const SidebarWrapper = styled.div`
         padding-bottom: 1rem;
         padding-left: 1rem;
         padding-right: 1rem;
+        &:last-child {
+          border-bottom: 0;
+        }
       }
       .inner {
         display: block;
@@ -111,7 +120,8 @@ const SidebarWrapper = styled.div`
     font-size: 1.2em;
     &.active .sidebar-content,
     .sidebar-content {
-      > * {
+      > *,
+      > .inner {
         padding-top: 1.5rem;
         padding-bottom: 1.5rem;
         padding-left: 2rem;

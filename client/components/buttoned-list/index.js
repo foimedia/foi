@@ -43,16 +43,16 @@ const List = styled.ul`
           color: ${styleUtils.color};
         }
       }
-      &:last-child {
-        span {
-          border-bottom: 0;
-        }
+    }
+    &:last-child {
+      span.item {
+        border-bottom: 0;
       }
     }
   }
   ${props => props.primary && css`
     background-color: ${styleUtils.color};
-    li span {
+    li span.item {
       border-color: rgba(255,255,255,0.2);
       a {
         color: #fff;

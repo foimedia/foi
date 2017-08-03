@@ -36,7 +36,7 @@ const AppContainer = styled.div`
     }
     ${styleUtils.media.desktop`
       float: none;
-      padding: 4rem;
+      padding: 4rem !important;
       height: 225px;
       img {
         max-width: 6em;
