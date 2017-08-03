@@ -41,9 +41,15 @@ class Chat extends Component {
     }
   }
 
+  isSettings () {
+    const { location } = this.props;
+    return location.pathname.indexOf('settings') !== -1;
+  }
+
   render () {
     const { match, chat } = this.props;
     const { stories } = this.state;
+    console.log(this.isSettings());
     if(chat.isError) {
       return (
         <ContentHeader>
@@ -54,7 +60,7 @@ class Chat extends Component {
       const { id } = chat.data;
       return (
         <section id={`chat-${id}`}>
-          <ContentHeader>
+          <ContentHeader icon={this.isSettings() ? 'cog' : 'bullhorn'}>
             <h2>
               <Link to={`/c/${id}`}>
                 {getTitle(chat.data)}

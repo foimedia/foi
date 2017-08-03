@@ -105,6 +105,7 @@ const Wrapper = styled.header`
 export default class ContentHeader extends Component {
   render () {
     const { icon } = this.props;
+    console.log(icon);
     return (
       <Wrapper id="content-header" icon={icon}>
         {icon !== undefined &&
