@@ -4,7 +4,6 @@ import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 
 import styleUtils from 'services/style-utils';
 
-import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 L.Icon.Default.imagePath = foi.url;
 L.Icon.Default.mergeOptions({

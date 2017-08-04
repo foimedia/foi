@@ -4,6 +4,8 @@ import ReactDom from 'react-dom';
 import { Provider } from 'react-redux';
 import { store } from 'services/feathers';
 
+import 'styles';
+
 import Bundle from 'components/bundle';
 import loadChatStories from 'bundle-loader?lazy!containers/chat-stories';
 

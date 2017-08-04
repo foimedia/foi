@@ -23,6 +23,7 @@ import Chat from 'scenes/chat';
 import Story from 'scenes/story';
 import Admin from 'scenes/admin';
 
+import 'styles';
 import 'styles/global.css';
 import 'styles/lists-code.css';
 import 'styles/scrollbar.css';

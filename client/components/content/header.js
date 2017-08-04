@@ -34,9 +34,12 @@ const Wrapper = styled.header`
     height: 14rem;
     margin-top: -4rem;
     margin-bottom: 0;
-    > div {
+    .header-container {
       display: table-cell;
       vertical-align: middle;
+      > div {
+        height: 3rem;
+      }
     }
     h2 {
       font-size: 2em;
@@ -49,7 +52,7 @@ const Wrapper = styled.header`
       vertical-align: middle;
       font-size: 2rem;
       width: 2rem;
-      padding-right: 2rem;
+      padding-right: 3rem;
       line-height: 1;
       text-align: center;
       color: ${styleUtils.color};
@@ -68,15 +71,9 @@ const Wrapper = styled.header`
   }
   p.description {
     color: #666;
-    ${styleUtils.media.desktop`
-      height: 0;
-    `}
   }
   nav {
     font-size: .7em;
-    ${styleUtils.media.desktop`
-      height: 0;
-    `}
     a {
       background: #fff;
       padding-top: .25rem;
@@ -107,7 +104,7 @@ const Wrapper = styled.header`
   }
   ${props => props.icon && css`
     ${styleUtils.media.desktop`
-      margin-left: -4rem;
+      margin-left: -5rem;
     `}
   `}
   ${props => props.inner && css`
@@ -130,8 +127,10 @@ export default class ContentHeader extends Component {
         {props.icon &&
           <span className={`header-icon fa fa-${props.icon}`}></span>
         }
-        <div>
-          {this.props.children}
+        <div className="header-container">
+          <div>
+            {this.props.children}
+          </div>
         </div>
       </Wrapper>
     )

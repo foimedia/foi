@@ -6,10 +6,7 @@ import client from 'services/feathers';
 import StoryFooter from './components/story-footer';
 
 const Wrapper = styled.div`
-  .mast-link {
-    color: #333;
-    text-decoration: none;
-    outline: none;
+  .block-link {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
   }
 `
@@ -62,7 +59,7 @@ class Story extends Component {
     const { story } = this.props;
     return (
       <Wrapper>
-        <Link to={`/s/${story.id}`} block className="mast-link">
+        <Link to={`/s/${story.id}`} block className="block-link">
           <StoryBox id={`story-${story.id}`} className="story-item">
             {story.title &&
               <header className="story-header">

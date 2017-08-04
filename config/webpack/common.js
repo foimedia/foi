@@ -9,7 +9,7 @@ module.exports = {
   },
   resolve: {
     modules: [
-      path.resolve('client'),
+      'client',
       'node_modules'
     ],
     alias: {

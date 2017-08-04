@@ -27,7 +27,7 @@ export default class SmartLink extends Component {
           redirect: true
         });
       } else if(router === undefined) {
-        window.location = event.target.href;
+        window.open(event.target.href || foi.url + to, this.isLocal() ? '_self' : '_blank');
       }
     }
   }
@@ -51,7 +51,7 @@ export default class SmartLink extends Component {
         return <Link {...props}>{children}</Link>
       } else {
         const rel = this.isLocal() ? '' : 'external';
-        const target = this.isLocal() ? '' : '_blank';
+        const target = this.isLocal() ? '_self' : '_blank';
         return <a href={`${foi.url}${props.to}`} rel={rel} target={target} {...props}>{children}</a>
       }
     }
