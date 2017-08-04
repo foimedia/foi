@@ -74,7 +74,7 @@ class PostVideo extends PostMedia {
     const src = this.getVideoSrc();
     const ar = this.getAspectRatio();
     return (
-      <VideoBox className={`type-${ type }`}>
+      <VideoBox className={`type-${ type } interactive`}>
         <div className="video-container">
           <VideoPlayer
             aspectRatio={`${ar[0]}:${ar[1]}`}

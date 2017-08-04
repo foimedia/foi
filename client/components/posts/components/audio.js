@@ -20,7 +20,7 @@ const AudioBox = styled.div`
 class PostAudio extends PostMedia {
 
   render() {
-    return <AudioBox>
+    return <AudioBox className="interactive">
       <audio controls>
         <source src={this.getFileUrl()} type={this.getMime()} />
         Your browser does not support the audio element.

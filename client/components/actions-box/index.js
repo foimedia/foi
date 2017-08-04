@@ -114,7 +114,6 @@ export default class Actions extends Component {
     if(event.target !== node && !node.contains(event.target) && this.state.active) {
       event.preventDefault();
       this.hide();
-      return false;
     }
   }
   componentDidMount () {
