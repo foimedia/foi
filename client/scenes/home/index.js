@@ -5,6 +5,7 @@ import client from 'services/feathers';
 import styleUtils from 'services/style-utils';
 import ContentHeader from 'components/content/header';
 import Button, { ButtonGroup } from 'components/button';
+import { Code, SelectableCode } from 'components/code';
 
 const HomeWrapper = styled.section`
   .description {
@@ -89,14 +90,14 @@ class Home extends Component {
           </ol>
           <p>If the invitation is sent by an authorized publisher the bot will start watching the group and publish its content in real-time.</p>
           <h3>Share your feed</h3>
-          <p>To publish your live feed on your website you can use our widget! Paste the code below right before the <code>{`</body>`}</code> closing tag:</p>
-          <pre><code>
+          <p>To publish your live feed on your website you can use our widget! Paste the code below right before the <Code>{`</body>`}</Code> closing tag:</p>
+          <SelectableCode>
             {`<script type="text/javascript" src="${foi.url}/widget.js" async></script>`}
-          </code></pre>
-          <p>Use the <code>{`<div />`}</code> below where you'd like to display your feed, changing the <code>data-chat</code> property to your chat id:</p>
-          <pre><code>
+          </SelectableCode>
+          <p>Use the <Code>{`<div />`}</Code> below where you'd like to display your feed, changing the <Code>data-chat</Code> property to your chat id:</p>
+          <SelectableCode>
             {`<div class="foi-widget" data-chat="[your-chat-id]"></div>`}
-          </code></pre>
+          </SelectableCode>
         </div>
       </HomeWrapper>
     )

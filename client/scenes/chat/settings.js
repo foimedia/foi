@@ -7,6 +7,7 @@ import { hasUser, hasRole } from 'services/auth';
 import Loader from 'components/loader';
 import Table from 'components/table';
 import Form from 'components/form';
+import { SelectableCode } from 'components/code';
 import Button, { InputButton, ButtonGroup } from 'components/button';
 
 class ChatSettings extends Component {
@@ -123,17 +124,23 @@ class ChatSettings extends Component {
                 <p>
                   <label>
                     URL
-                    <input type="text" value={`${foi.url}/c/${chat.data.id}`} />
+                    <SelectableCode>
+                      {`${foi.url}/c/${chat.data.id}`}
+                    </SelectableCode>
                   </label>
                 </p>
                 <p>
                   <label>
                     Widget code
-                    <textarea value={`<div class="foi-widget" data-chat="${chat.data.id}"></div>`}></textarea>
+                    <SelectableCode>
+                      {`<div class="foi-widget" data-chat="${chat.data.id}"></div>`}
+                    </SelectableCode>
                   </label>
                 </p>
                 <p>Make sure to add the widget javascript to your page:</p>
-                <pre><code>{`<script type="text/javascript" src="${foi.url}/widget.js" async></script>`}</code></pre>
+                <SelectableCode>
+                  {`<script type="text/javascript" src="${foi.url}/widget.js" async></script>`}
+                </SelectableCode>
               </Form>
             </div>
             {chat.data.type !== 'private' &&

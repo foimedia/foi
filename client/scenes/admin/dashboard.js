@@ -22,7 +22,7 @@ class Dashboard extends Component {
               </tr>
               <tr>
                 <th>Default user roles</th>
-                <td>{foi.defaultUserRoles}</td>
+                <td>{foi.defaultUserRoles.join(', ')}</td>
               </tr>
             </tbody>
           </Table>

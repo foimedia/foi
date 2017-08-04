@@ -1,0 +1,19 @@
+ul,
+ol {
+  font-family: 'Inconsolata', monospace;
+  margin: 1rem 0;
+  border-radius: 7px;
+}
+ul,
+ol {
+  padding: 1rem 1rem 1rem 3rem;
+}
+ul li,
+ol li {
+  margin: 0 0 1rem;
+  padding-left: .5rem;
+}
+ul li:last-child,
+ol li:last-child {
+  margin: 0;
+}

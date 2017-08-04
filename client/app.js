@@ -25,7 +25,7 @@ import Admin from 'scenes/admin';
 
 import 'styles';
 import 'styles/global.css';
-import 'styles/lists-code.css';
+import 'styles/lists.css';
 import 'styles/scrollbar.css';
 
 const AppContainer = styled.div`
