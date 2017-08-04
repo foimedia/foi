@@ -57,7 +57,6 @@ const FooterWrapper = styled.footer`
 
 export default class Footer extends Component {
   render() {
-    console.log(foi);
     return (
       <FooterWrapper>
         <hr/>
