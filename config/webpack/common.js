@@ -3,6 +3,10 @@ const webpack = require('webpack');
 const config = require('config');
 const env = process.env.NODE_ENV || 'development';
 
+const GitRevisionPlugin = require('git-revision-webpack-plugin');
+
+const gitRevisionPlugin = new GitRevisionPlugin();
+
 module.exports = {
   entry: {
     main: ['./client/index']
@@ -30,7 +34,8 @@ module.exports = {
       'foi': {
         'url': JSON.stringify(config.get('url')),
         'botName': JSON.stringify(config.get('telegram').username),
-        'defaultUserRoles': JSON.stringify(config.get('defaultUserRoles'))
+        'defaultUserRoles': JSON.stringify(config.get('defaultUserRoles')),
+        'VERSION': JSON.stringify(gitRevisionPlugin.version())
       }
     })
   ],

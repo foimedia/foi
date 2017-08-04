@@ -31,7 +31,8 @@ const FooterWrapper = styled.footer`
       display: inline-block;
     }
     a {
-      margin: 0 1rem;
+      margin: 0 1rem 1rem;
+      font-weight: 700;
     }
     img {
       max-height: 1rem;
@@ -56,12 +57,16 @@ const FooterWrapper = styled.footer`
 
 export default class Footer extends Component {
   render() {
+    console.log(foi);
     return (
       <FooterWrapper>
         <hr/>
         <nav>
           <a href="https://github.com/miguelpeixe/foi/issues/new" rel="external" target="_blank">File an issue</a>
           <a href="https://github.com/miguelpeixe/foi" rel="external" target="_blank">Source code</a>
+          <a href={`https://github.com/miguelpeixe/foi/tree/${foi.VERSION}`} rel="external" target="_blank">
+            Version {foi.VERSION}
+          </a>
           <a href="https://foi.media" rel="external" target="_blank"><img src={require('images/logo.svg')} /></a>
         </nav>
       </FooterWrapper>
