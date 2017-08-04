@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Link, Switch, Redirect } from 'react-router-dom';
+import { Route, Link, NavLink, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { hasUser, hasRole } from 'services/auth';
 import ContentHeader from 'components/content/header';
@@ -27,14 +27,14 @@ class Admin extends Component {
               <Link to="/admin">Administration</Link>
             </h2>
             <nav>
-              <Link to="/admin">
+              <NavLink exact={true} to="/admin">
                 <span className="fa fa-gear"></span>
                 Dashboard
-              </Link>
-              <Link to="/admin/users">
+              </NavLink>
+              <NavLink to="/admin/users">
                 <span className="fa fa-users"></span>
                 Users
-              </Link>
+              </NavLink>
             </nav>
           </ContentHeader>
           <Switch>

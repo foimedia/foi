@@ -88,7 +88,10 @@ const Wrapper = styled.header`
       &:focus {
         color: #333;
       }
-      .fa {
+      &.active {
+        background: ${styleUtils.color};
+        color: #fff;
+        border-color: transparent;
       }
     }
     ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
