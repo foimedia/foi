@@ -2,7 +2,6 @@ const errors = require('feathers-errors');
 const TelegramBot = require('node-telegram-bot-api');
 
 const post = require('./post');
-const auth = require('./auth');
 const story = require('./story');
 
 module.exports = function () {
@@ -20,6 +19,5 @@ module.exports = function () {
 
   app.configure(post);
   app.configure(story);
-  app.configure(auth);
 
 };

@@ -48,11 +48,12 @@ app.configure(socketio());
 
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);
+// Configure authentication (see `authentication.js`)
 app.configure(authentication);
+// Set up Telegram Bot (see `telegram.js`)
+app.configure(telegram);
 // Set up our services (see `services/index.js`)
 app.configure(services);
-// Set up Telegram Bot (see `telegram/index.js`)
-app.configure(telegram);
 
 // Configure a middleware for the error handler
 app.use(handler());

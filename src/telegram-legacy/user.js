@@ -7,9 +7,6 @@ module.exports = function () {
   const service = app.service('users');
 
   function updateUser (user) {
-    // bot.getUserProfilePhotos(user.id).then(data => {
-    // console.log(data.photos[0]);
-    // });
     return service.find({ query: { id: user.id } }).then(res => {
       if(res.data.length) {
         user.chats = _.union(user.chats, res.data[0].chats || []);
