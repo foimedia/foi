@@ -6,7 +6,6 @@ module.exports = function () {
 
   const app = this;
   const telegram = app.telegram;
-  const bot = telegram.bot;
   const passport = app.passport;
   const config = app.get('authentication');
 
@@ -22,16 +21,16 @@ module.exports = function () {
       };
       return passport.createJWT(payload, config).then(accessToken => {
         this.intents[user.id] = Date.now();
-        bot.sendMessage(user.id, 'Waiting for browser response...', {
+        telegram.sendMessage(user.id, 'Waiting for browser response...', {
           disable_notification: true
         });
-        bot.sendChatAction(user.id, 'typing');
+        telegram.sendChatAction(user.id, 'typing');
         return { accessToken };
       });
     },
     patch (id, data, params) {
       if(data.authenticated) {
-        bot.sendMessage(id, 'You are authenticated! You can go back to your browser now.');
+        telegram.sendMessage(id, 'You are authenticated! You can go back to your browser now.');
       }
       return true;
     },
@@ -44,7 +43,7 @@ module.exports = function () {
       for(let id in this.intents) {
         if(this.intents[id] + this.timeout < now) {
           this.remove(id);
-          bot.sendMessage(id, 'No browser response, authentication timed out. Refresh your browser page and try again.');
+          telegram.sendMessage(id, 'No browser response, authentication timed out. Refresh your browser page and try again.');
         }
       }
     },
@@ -70,7 +69,7 @@ module.exports = function () {
     });
   });
 
-  bot.onText(/\/start ([a-zA-Z0-9]{12})/, (data, match) => {
+  telegram.onText(/\/start ([a-zA-Z0-9]{12})/, (data, match) => {
     service.create({
       userId: data.from.id,
       userKey: match[1],

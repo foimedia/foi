@@ -1,12 +1,16 @@
 // Application hooks that run for every service
 const logger = require('./hooks/logger');
 const { when } = require('feathers-hooks-common');
-const telegram = require('./hooks/telegram');
+const telegram = require('./telegram').hooks;
 
 module.exports = {
   before: {
     all: [
       when(hook => hook.params.telegram, [
+        telegram.patchOrCreateMessageChats({
+          idField: 'id',
+          telegramIdField: 'id'
+        }),
         telegram.patchOrCreateMessageUsers({
           idField: 'id',
           telegramIdField: 'id',
@@ -41,7 +45,15 @@ module.exports = {
   },
 
   error: {
-    all: [ logger() ],
+    all: [
+      logger(),
+      when(hook => hook.params.telegram, [
+        hook => {
+          const chatId = hook.params.message.chat.id;
+          hook.app.telegram.sendMessage(chatId, hook.error.message);
+        }
+      ])
+    ],
     find: [],
     get: [],
     create: [],

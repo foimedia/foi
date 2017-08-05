@@ -1,6 +1,5 @@
 const errors = require('feathers-errors');
 const { when, disallow } = require('feathers-hooks-common');
-const { populateTelegramUser, patchOrCreateMessageUsers } = require('../../hooks/telegram');
 
 const validateIntent = () => hook => {
   const intent = hook.service.intents[hook.id];
@@ -44,11 +43,6 @@ module.exports = {
     ]
   },
   error: {
-    all: hook => {
-      const id = hook.id || hook.data.userId;
-      if(id !== undefined && !isNaN(id))
-        hook.app.telegram.bot.sendMessage(id, hook.error.message);
-    },
     create: [
       hook => {
         if(!hook.data.userId) {

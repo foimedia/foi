@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const errors = require('feathers-errors');
-const { when, iffElse, discard, disallow } = require('feathers-hooks-common');
+const { when, iffElse, discard, disallow, setCreatedAt, setUpdatedAt } = require('feathers-hooks-common');
 const { restrictToAuthenticated, restrictToOwner } = require('feathers-authentication-hooks');
 
 const isPrivate = () => hook => {
@@ -101,13 +101,16 @@ module.exports = {
       }
     ],
     create: [
-      disallow('external')
+      disallow('external'),
+      setCreatedAt()
     ],
     update: [
-      disallow('external')
+      disallow('external'),
+      setUpdatedAt()
     ],
     patch: [
-      when(hook => hook.params.provider, [...restrict, parsePatch()])
+      when(hook => hook.params.provider, [...restrict, parsePatch()]),
+      setUpdatedAt()
     ],
     remove: [
       when(hook => hook.params.provider, [...restrict]),
