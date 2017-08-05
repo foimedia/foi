@@ -1,5 +1,5 @@
 const { authenticate } = require('feathers-authentication').hooks;
-const { when, iff, discard, disallow } = require('feathers-hooks-common');
+const { when, iff, discard, disallow, setCreatedAt, setUpdatedAt } = require('feathers-hooks-common');
 const { restrictToOwner } = require('feathers-authentication-hooks');
 
 const restrict = [
@@ -47,10 +47,18 @@ module.exports = {
     create: [
       disallow('external'),
       defaultRoles(),
-      firstUser()
+      firstUser(),
+      setCreatedAt()
     ],
-    update: [ disallow('external') ],
-    patch: [ parsePatch(), ...restrict ],
+    update: [
+      disallow('external'),
+      setUpdatedAt()
+    ],
+    patch: [
+      when(hook => hook.params.provider, parsePatch()),
+      ...restrict,
+      setUpdatedAt()
+    ],
     remove: [ ...restrict ]
   },
 

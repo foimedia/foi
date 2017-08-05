@@ -74,6 +74,9 @@ module.exports = function () {
     service.create({
       userId: data.from.id,
       userKey: match[1],
+    }, {
+      telegram: true,
+      message: data
     });
   });
 

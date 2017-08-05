@@ -1,5 +1,6 @@
 const errors = require('feathers-errors');
 const { when, disallow } = require('feathers-hooks-common');
+const { populateTelegramUser, patchOrCreateMessageUsers } = require('../../hooks/telegram');
 
 const validateIntent = () => hook => {
   const intent = hook.service.intents[hook.id];

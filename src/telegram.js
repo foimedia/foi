@@ -9,7 +9,12 @@ module.exports = function () {
 
   const config = app.get('telegram');
 
-  const bot = telegram.bot = new TelegramBot(config.token, {polling: true})
+  const bot = telegram.bot = new TelegramBot(config.token, {polling: true});
+
+  app.use(function (req, res, next) {
+    req.feathers.provider = 'telegram';
+    next();
+  });
 
   // wat?
   telegram.service = {};
