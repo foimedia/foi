@@ -11,20 +11,4 @@ module.exports = function () {
 
   const bot = telegram.bot = new TelegramBot(config.token, {polling: true});
 
-  app.use(function (req, res, next) {
-    req.feathers.provider = 'telegram';
-    next();
-  });
-
-  // wat?
-  telegram.service = {};
-  app.providers.push(function (path, service, options) {
-    let before = [
-      (req, res, next) => {
-        req.feathers = { provider: 'telegram' }
-        next();
-      }
-    ];
-  });
-
 };
