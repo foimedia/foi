@@ -33,4 +33,4 @@ module.exports = (options = {}) => hook => {
     return Promise.all(promises).then(() => hook);
   }
   return hook;
-}
+};

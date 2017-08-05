@@ -17,7 +17,7 @@ module.exports = (options = {}) => hook => {
       paginate: false
     }).then(data => {
       hook.params = Object.assign(
-        {authenticated: true},
+        { authenticated: true },
         hook.params,
         { user: data[0] }
       );
@@ -25,4 +25,4 @@ module.exports = (options = {}) => hook => {
     });
   }
   return hook;
-}
+};

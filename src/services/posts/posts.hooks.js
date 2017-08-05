@@ -1,6 +1,7 @@
 const errors = require('feathers-errors');
 const { authenticate } = require('feathers-authentication').hooks;
-const { when, populate, discard, disallow } = require('feathers-hooks-common');
+const { when, iff, populate, discard, disallow } = require('feathers-hooks-common');
+const { restrictToRoles } = require('feathers-authentication-hooks');
 
 const assignToStory = () => hook => {
   const storyService = hook.app.service('stories');
@@ -73,6 +74,11 @@ module.exports = {
     ],
     create: [
       disallow('external'),
+      when(hook => hook.params.telegram, [
+        iff(hook => hook.params.message.chat.type == 'private', [
+          restrictToRoles({ roles: 'publisher' })
+        ])
+      ]),
       assignToStory()
     ],
     update: [

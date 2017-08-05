@@ -2,6 +2,7 @@ const _ = require('lodash');
 const errors = require('feathers-errors');
 const { when, iffElse, discard, disallow, setCreatedAt, setUpdatedAt } = require('feathers-hooks-common');
 const { restrictToAuthenticated, restrictToOwner } = require('feathers-authentication-hooks');
+const { restrictToChatMember, restrictToChatAdmin } = require('../../telegram').hooks;
 
 const isPrivate = () => hook => {
   return hook.service.get(hook.id)
@@ -11,16 +12,6 @@ const isPrivate = () => hook => {
 const allMembersAreAdmin = () => hook => {
   return hook.service.get(hook.id)
     .then(data => !!data.all_members_are_administrators);
-}
-
-const isChatMember = () => hook => {
-  const bot = hook.app.telegram.bot;
-  const userId = hook.params.user.id;
-  return bot.getChatMember(hook.id, userId)
-    .then(() => hook)
-    .catch(() => {
-      throw new errors.Forbidden('You are not part of this chat.');
-    });
 }
 
 const removeStories = () => hook => {
@@ -49,7 +40,10 @@ const restrict = [
   iffElse(
     allMembersAreAdmin(),
     [
-      isChatMember()
+      restrictToChatMember({
+        userIdField: 'id',
+        chatIdField: 'id'
+      })
     ],
     [
       iffElse(
@@ -68,9 +62,9 @@ const restrict = [
           }
         ],
         [
-          restrictToOwner({
-            idField: 'id',
-            ownerField: 'admins'
+          restrictToChatAdmin({
+            userIdField: 'id',
+            chatIdField: 'id'
           })
         ]
       )

@@ -5,6 +5,7 @@ const filters = require('./posts.filters');
 
 module.exports = function () {
   const app = this;
+  const telegram = app.telegram;
   const paginate = app.get('paginate');
   const mongoClient = app.get('mongoClient');
   const options = { paginate, id: 'id' };

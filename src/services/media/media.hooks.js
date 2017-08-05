@@ -5,7 +5,7 @@ const errors = require('feathers-errors');
 const { when, iff, discard, disallow } = require('feathers-hooks-common');
 
 const fetchFiles = () => hook => {
-  const bot = hook.app.telegram.bot;
+  const telegram = hook.app.telegram;
   if(!hook.data.file_id) {
     throw new errors.BadRequest('Missing file id.');
   } else {
@@ -14,7 +14,7 @@ const fetchFiles = () => hook => {
     return new Promise((resolve, reject) => {
       mkdirp(path, () => {
         resolve(
-          bot.downloadFile(fileId, path).then(res => {
+          telegram.downloadFile(fileId, path).then(res => {
             hook.data.file_name = res.split('/').slice(-1)[0];
             return hook;
           }).catch(err => {
