@@ -23,7 +23,6 @@ const styles = css`
   resize: none;
   outline: none;
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
-    margin-top: ${styleUtils.margins[i]}rem;
     margin-bottom: ${styleUtils.margins[i]}rem;
     padding: ${styleUtils.margins[i]/2}rem;
   `)}
@@ -45,8 +44,8 @@ const SelectableWrapper = styled.div`
     background: ${styleUtils.color};
     position: absolute;
     color: #fff;
-    bottom: 0;
-    right: 0;
+    bottom: 2px;
+    right: 2px;
     line-height: 100%;
     padding: .5rem;
     border-radius: ${radius} 0 ${radius} 0;
