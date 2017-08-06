@@ -36,7 +36,15 @@ module.exports = {
       }
     ],
     patch: [
-      when(hook => hook.data.authenticated, validateIntent())
+      when(hook => hook.data.authenticated, [
+        validateIntent(),
+        hook => {
+          const telegram = hook.app.telegram;
+          if(hook.data.authenticated) {
+            telegram.sendMessage(hook.id, 'You are authenticated! You can go back to your browser now.');
+          }
+        }
+      ])
     ],
     remove: [
       disallow(['rest', 'socketio']),
@@ -58,16 +66,7 @@ module.exports = {
         });
         telegram.sendChatAction(user.id, 'typing');
       }
-    ],
-    patch: [
-      hook => {
-        const telegram = hook.app.telegram;
-        if(hook.data.authenticated) {
-          telegram.sendMessage(hook.id, 'You are authenticated! You can go back to your browser now.');
-        }
-      }
-    ],
-    remove: []
+    ]
   },
   error: {
     create: [

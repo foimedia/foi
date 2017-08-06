@@ -1,8 +1,7 @@
 const errors = require('feathers-errors');
-const { when, iff, populate, discard, disallow, setCreatedAt, setUpdatedAt } = require('feathers-hooks-common');
-const { restrictToAuthenticated, restrictToOwner, restrictToRoles } = require('feathers-authentication-hooks');
-const { isTelegram, isChatType } = require('../../telegram').hooks;
-const { restrictArchived, restrictMuted } = require('../../hooks/chat-restrictions');
+const { when, populate, discard, disallow, setCreatedAt, setUpdatedAt } = require('feathers-hooks-common');
+const { restrictToAuthenticated, restrictToOwner } = require('feathers-authentication-hooks');
+const { restrictChatContent } = require('../../hooks/chat-restrictions');
 
 const restrictToOneRunningStory = () => hook => {
   return hook.service.find({
@@ -60,15 +59,7 @@ module.exports = {
     ],
     create: [
       disallow(['rest', 'socketio']),
-      restrictArchived(),
-      restrictMuted(),
-      when(
-        isTelegram(),
-        iff(
-          isChatType({ type: 'private' }),
-          restrictToRoles({ roles: 'publisher', idField: 'id' })
-        )
-      ),
+      ...restrictChatContent,
       restrictToOneRunningStory(),
       setCreatedAt()
     ],
@@ -150,7 +141,14 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [],
+    create: [
+      hook => {
+        if(hook.error.message == 'You do not have valid permissions to access this.') {
+          hook.error = new errors.Forbidden(`You do not have valid permissions to create a story.`);
+        }
+        return hook;
+      }
+    ],
     update: [],
     patch: [],
     remove: []

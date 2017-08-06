@@ -1,4 +1,22 @@
 const errors = require('feathers-errors');
+const { when, iffElse } = require('feathers-hooks-common');
+const { restrictToRoles } = require('feathers-authentication-hooks');
+const { isTelegram, isChatType } = require('../telegram').hooks;
+
+const restrictToActive = () => hook => {
+  const chatId = hook.data.chatId;
+  if(chatId !== undefined) {
+    const chatService = hook.app.service('chats');
+    return chatService.get(chatId).then(chat => {
+      if(!chat.active) {
+        throw new errors.Forbidden('This is not an active chat');
+      }
+      return hook;
+    });
+  } else {
+    return hook;
+  }
+};
 
 const restrictMuted = () => hook => {
   const chatId = hook.data.chatId;
@@ -23,7 +41,26 @@ const restrictArchived = () => hook => {
   }
 };
 
+const restrictChatContent = [
+  restrictArchived(),
+  restrictMuted(),
+  when(
+    isTelegram(),
+    iffElse(
+      isChatType({ type: 'private' }),
+      [
+        restrictToRoles({ roles: 'publisher', idField: 'id' })
+      ],
+      [
+        restrictToActive()
+      ]
+    )
+  )
+];
+
 module.exports = {
+  restrictToActive,
   restrictMuted,
-  restrictArchived
-}
+  restrictArchived,
+  restrictChatContent
+};

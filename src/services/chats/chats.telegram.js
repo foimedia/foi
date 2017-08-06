@@ -65,11 +65,7 @@ module.exports = function (app, path) {
         message: message
       }).then(() => {
         telegram.sendMessage(chatId, 'I\'m ready to start publishing content from this group!');
-      }).catch(() => {
-        telegram.sendMessage(chatId, 'I\'m not authorized to publish content from this group! I must be invited by a publisher.').then(() => {
-          telegram.leaveChat(chatId);
-        });
-      })
+      });
     }
   });
 };

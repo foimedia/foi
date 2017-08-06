@@ -145,7 +145,12 @@ module.exports = {
     get: [],
     create: [],
     update: [],
-    patch: [],
+    patch: [
+      iff(isChatActivation(), hook => {
+        hook.error = new errors.Forbidden('I\'m not authorized to publish content from this group! I must be invited by a publisher.');
+        hook.error.leaveChat = true;
+      })
+    ],
     remove: []
   }
 };

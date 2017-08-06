@@ -45,8 +45,12 @@ module.exports = {
       logger(),
       when(telegram.isTelegram(), [
         hook => {
+          const telegram = hook.app.telegram;
           const chatId = hook.params.message.chat.id;
-          hook.app.telegram.sendMessage(chatId, hook.error.message);
+          telegram.sendMessage(chatId, hook.error.message);
+          if(hook.error.leaveChat) {
+            telegram.leaveChat(chatId);
+          }
           return hook;
         }
       ])
