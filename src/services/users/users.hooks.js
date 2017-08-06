@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const { authenticate } = require('feathers-authentication').hooks;
 const { when, iff, discard, disallow, setCreatedAt, setUpdatedAt } = require('feathers-hooks-common');
 const { restrictToOwner } = require('feathers-authentication-hooks');
@@ -28,8 +29,9 @@ const defaultRoles = () => hook => {
 }
 
 const parsePatch = () => hook => {
-  // hook.data = _.pick(hook.data, ['']);
-  hook.data = {}; // currently no data is going to be patched
+  // Needs to parse nested properties patch
+  // hook.data = _.pick(hook.data, ['chats']);
+  // console.log(hook.data);
   return hook;
 }
 
@@ -64,9 +66,11 @@ module.exports = {
 
   after: {
     all: [
-      discard('_id'),
-      discard('chats'),
-      discard('language_code')
+      when(hook => hook.params.provider, [
+        discard('_id'),
+        discard('chats'),
+        discard('language_code')
+      ])
     ],
     find: [],
     get: [],

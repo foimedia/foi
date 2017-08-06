@@ -1,8 +1,8 @@
 const _ = require('lodash');
 const errors = require('feathers-errors');
-const { when, iffElse, discard, disallow, setCreatedAt, setUpdatedAt } = require('feathers-hooks-common');
-const { restrictToAuthenticated, restrictToOwner } = require('feathers-authentication-hooks');
-const { restrictToChatMember, restrictToChatAdmin } = require('../../telegram').hooks;
+const { when, iff, iffElse, discard, disallow, setCreatedAt, setUpdatedAt } = require('feathers-hooks-common');
+const { restrictToAuthenticated, restrictToOwner, restrictToRoles } = require('feathers-authentication-hooks');
+const telegram = require('../../telegram').hooks;
 
 const isPrivate = () => hook => {
   return hook.service.get(hook.id)
@@ -30,8 +30,12 @@ const removeStories = () => hook => {
   })
 }
 
+const isChatActivation = () => hook => {
+  return hook.data.active !== undefined;
+};
+
 const parsePatch = () => hook => {
-  hook.data = _.pick(hook.data, ['description', 'archived']);
+  hook.data = _.pick(hook.data, ['description', 'archived', 'active']);
   return hook;
 }
 
@@ -40,14 +44,14 @@ const restrict = [
   iffElse(
     allMembersAreAdmin(),
     [
-      restrictToChatMember({
+      telegram.restrictToChatMember({
         userIdField: 'id',
         chatIdField: 'id'
       })
     ],
     [
       iffElse(
-        isPrivate(),
+        telegram.isChatType('private'),
         [
           restrictToOwner({
             idField: 'id',
@@ -62,7 +66,7 @@ const restrict = [
           }
         ],
         [
-          restrictToChatAdmin({
+          telegram.restrictToChatAdmin({
             userIdField: 'id',
             chatIdField: 'id'
           })
@@ -95,15 +99,28 @@ module.exports = {
       }
     ],
     create: [
-      disallow('external'),
+      disallow(['rest', 'socketio']),
       setCreatedAt()
     ],
     update: [
-      disallow('external'),
+      disallow(['rest', 'socketio']),
       setUpdatedAt()
     ],
     patch: [
-      when(hook => hook.params.provider, [...restrict, parsePatch()]),
+      when(
+        hook => hook.params.provider,
+        [
+          ...restrict,
+          parsePatch(),
+          iff(
+            isChatActivation(),
+            restrictToRoles({
+              roles: 'publisher',
+              idField: 'id'
+            })
+          )
+        ]
+      ),
       setUpdatedAt()
     ],
     remove: [

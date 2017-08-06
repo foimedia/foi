@@ -1,11 +1,13 @@
 const errors = require('feathers-errors');
 const TelegramBot = require('node-telegram-bot-api');
 const hooks = require('./hooks');
+const Message = require('./message');
 
 const init = function (config = {}) {
   const app = this;
   const _super = app.setup;
   const options = Object.assign({}, app.get('telegram') || {}, config);
+  app.set('telegram', options);
   if(app.telegram) {
     throw new Error('You have already registered a Telegram Bot.');
   }
@@ -20,5 +22,6 @@ const init = function (config = {}) {
 };
 
 module.exports = Object.assign(init, {
-  hooks
+  hooks,
+  Message
 });

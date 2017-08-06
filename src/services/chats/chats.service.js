@@ -2,6 +2,7 @@
 const createService = require('feathers-mongodb');
 const hooks = require('./chats.hooks');
 const filters = require('./chats.filters');
+const telegram = require('./chats.telegram');
 
 module.exports = function () {
   const app = this;
@@ -10,7 +11,13 @@ module.exports = function () {
   const options = { paginate, id: 'id' };
 
   // Initialize our service with any options it requires
-  app.use('/chats', createService(options));
+  app.use('/chats', createService(options).extend({
+    setup (app, path) {
+      let result = this._super ? this._super.apply(this, arguments) : undefined;
+      telegram(app, path);
+      return result;
+    }
+  }));
 
   // Get our initialized service so that we can register hooks and filters
   const service = app.service('chats');

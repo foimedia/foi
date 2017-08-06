@@ -1,6 +1,5 @@
 module.exports = (options = {}) => hook => {
   options = Object.assign({
-    idField: '_id',
     telegramIdField: 'telegramId',
     as: 'telegram',
     service: 'users',
@@ -16,7 +15,7 @@ module.exports = (options = {}) => hook => {
     }).then(data => {
       const userData = options.as ? { [options.as]: user } : user;
       if(data.length) {
-        return service.patch(data[0][options.idField], userData);
+        return service.patch(data[0][service.id], userData);
       } else {
         return service.create(userData);
       }

@@ -6,24 +6,20 @@ const telegram = require('./telegram').hooks;
 module.exports = {
   before: {
     all: [
-      when(hook => hook.params.telegram, [
-        telegram.patchOrCreateMessageChats({
-          idField: 'id',
-          telegramIdField: 'id'
-        }),
+      when(telegram.isTelegram(), [
+        telegram.patchOrCreateMessageChats(),
         telegram.patchOrCreateMessageUsers({
-          idField: 'id',
           telegramIdField: 'id',
           as: ''
         }),
-        telegram.patchMessageUserChatId({
-          idField: 'id',
+        telegram.patchMessageUserChat({
           telegramIdField: 'id',
           as: 'chats'
         }),
         telegram.authenticate({
           telegramIdField: 'id'
-        })
+        }),
+        hook => { hook.params.provider = 'telegram' }
       ])
     ],
     find: [],
@@ -47,10 +43,11 @@ module.exports = {
   error: {
     all: [
       logger(),
-      when(hook => hook.params.telegram, [
+      when(telegram.isTelegram(), [
         hook => {
           const chatId = hook.params.message.chat.id;
           hook.app.telegram.sendMessage(chatId, hook.error.message);
+          return hook;
         }
       ])
     ],

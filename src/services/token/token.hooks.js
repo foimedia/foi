@@ -4,7 +4,7 @@ const { when, disallow } = require('feathers-hooks-common');
 const validateIntent = () => hook => {
   const intent = hook.service.intents[hook.id];
   if(intent !== undefined) {
-    hook.service.remove(hook.id);
+    hook.service.remove(hook.id, { validated: true });
   } else {
     throw new errors.NotFound('Authentication intent not found.');
   }
@@ -13,7 +13,7 @@ const validateIntent = () => hook => {
 module.exports = {
   before: {
     create: [
-      disallow('external'),
+      disallow(['rest', 'socketio']),
       // Check token
       hook => {
         if(!hook.data.userKey)
@@ -39,8 +39,35 @@ module.exports = {
       when(hook => hook.data.authenticated, validateIntent())
     ],
     remove: [
-      disallow('external')
+      disallow(['rest', 'socketio']),
+      hook => {
+        const telegram = hook.app.telegram;
+        if(!hook.params.validated) {
+          telegram.sendMessage(hook.id, 'No browser response, authentication timed out. Refresh your browser page and try again.');
+        }
+      }
     ]
+  },
+  after: {
+    create: [
+      hook => {
+        const user = hook.data.user;
+        const telegram = hook.app.telegram;
+        telegram.sendMessage(user.id, 'Waiting for browser response...', {
+          disable_notification: true
+        });
+        telegram.sendChatAction(user.id, 'typing');
+      }
+    ],
+    patch: [
+      hook => {
+        const telegram = hook.app.telegram;
+        if(hook.data.authenticated) {
+          telegram.sendMessage(hook.id, 'You are authenticated! You can go back to your browser now.');
+        }
+      }
+    ],
+    remove: []
   },
   error: {
     create: [

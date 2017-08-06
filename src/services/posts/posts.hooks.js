@@ -1,7 +1,10 @@
 const errors = require('feathers-errors');
 const { authenticate } = require('feathers-authentication').hooks;
-const { when, iff, populate, discard, disallow } = require('feathers-hooks-common');
+const { when, iff, some, populate, discard, disallow, setCreatedAt, setUpdatedAt } = require('feathers-hooks-common');
 const { restrictToRoles } = require('feathers-authentication-hooks');
+const { isTelegram, isChatType } = require('../../telegram').hooks;
+const { restrictArchived, restrictMuted } = require('../../hooks/chat-restrictions');
+const Message = require('../../telegram').Message;
 
 const assignToStory = () => hook => {
   const storyService = hook.app.service('stories');
@@ -18,6 +21,49 @@ const assignToStory = () => hook => {
     }
     return hook;
   });
+};
+
+const createMedia = (service, file) => {
+  return service.find({
+    query: {
+      file_id: file.file_id
+    }
+  }).then(res => {
+    if(res.data.length) {
+      return Promise.resolve();
+    } else {
+      return service.create(file);
+    }
+  });
+};
+
+const createMessageMedia = () => hook => {
+  const mediaService = hook.app.service('media');
+  let message = hook.params.message;
+  if(!(message instanceof Message)) {
+    message = new Message(message);
+  }
+  const type = message.getType();
+  let promises = [];
+  if(type !== undefined) {
+    const media = message[type];
+    if(typeof media !== 'string') {
+      if(Array.isArray(media) && media[0].file_id) {
+        media.forEach(file => {
+          promises.push(createMedia(mediaService, file));
+          if(file.thumb) {
+            promises.push(createMedia(mediaService, file.thumb));
+          }
+        });
+      } else if(media.file_id) {
+        promises.push(createMedia(mediaService, media));
+        if(media.thumb) {
+          promises.push(createMedia(mediaService, media.thumb));
+        }
+      }
+    }
+  }
+  return Promise.all(promises).then(() => hook);
 };
 
 const createPostStory = () => hook => {
@@ -73,19 +119,24 @@ module.exports = {
       }
     ],
     create: [
-      disallow('external'),
-      when(hook => hook.params.telegram, [
-        iff(hook => hook.params.message.chat.type == 'private', [
-          restrictToRoles({ roles: 'publisher' })
-        ])
-      ]),
+      disallow(['rest', 'socketio']),
+      restrictArchived(),
+      restrictMuted(),
+      when(
+        isTelegram(),
+        iff(
+          isChatType({ type: 'private' }),
+          restrictToRoles({ roles: 'publisher', idField: 'id' })
+        ),
+        createMessageMedia()
+      ),
       assignToStory()
     ],
     update: [
       disallow('external')
     ],
     patch: [
-      disallow('external')
+      disallow(['rest', 'socketio'])
     ],
     remove: [
       disallow('external'),
@@ -142,7 +193,14 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [],
+    create: [
+      hook => {
+        // if(hook.error.code == 403) {
+        //   hook.error = new errors.Forbidden(`You don't have permissions to create a post.`);
+        // }
+        return hook;
+      }
+    ],
     update: [],
     patch: [],
     remove: []

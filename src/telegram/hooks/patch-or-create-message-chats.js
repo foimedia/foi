@@ -2,8 +2,6 @@ const _ = require('lodash');
 
 module.exports = (options = {}) => hook => {
   options = Object.assign({
-    idField: '_id',
-    telegramIdField: 'telegramId',
     service: 'chats',
     userAs: 'users',
     all: true
@@ -12,7 +10,7 @@ module.exports = (options = {}) => hook => {
   const patchOrCreate = chat => {
     return service.find({
       query: {
-        [options.telegramIdField]: chat.id
+        [service.id]: chat.id
       },
       paginate: false
     }).then(data => {
@@ -20,10 +18,10 @@ module.exports = (options = {}) => hook => {
         if(chat[options.userAs]) {
           chat[options.userAs] = _.union(data[0][options.userAs] || [], chat[options.userAs]);
         }
-        return service.patch(data[0][options.idField], _.omit(chat, ['id']));
+        return service.patch(data[0][service.id], _.omit(chat, ['id']));
       } else {
         return service.create(Object.assign({
-          [options.telegramIdField]: chat.id
+          [service.id]: chat.id
         }, _.omit(chat, ['id'])));
       }
     })

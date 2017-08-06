@@ -29,10 +29,8 @@ module.exports = (options = {}) => hook => {
       return hook;
     } else {
       return hook.app.telegram.getChatAdministrators(chatId).then(admins => {
-        const ids = admins.map(admin => admin.user.id);
-        if(ids.indexOf(userId) === -1) {
+        if(!admins.some(admin => admin.user.id == userId))
           throw new errors.Forbidden('You must be a chat admin to perform this action');
-        }
         return hook;
       })
     }

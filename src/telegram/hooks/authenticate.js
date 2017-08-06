@@ -1,6 +1,7 @@
 module.exports = (options = {}) => hook => {
   options = Object.assign({
-    telegramIdField: 'telegramId'
+    telegramIdField: 'telegramId',
+    service: 'users'
   }, hook.app.get('authentication'), options);
   if(hook.type !== 'before') {
     throw new Error(`The telegram 'authenticate' hook should only be used as a 'before' hook.`);
@@ -16,11 +17,13 @@ module.exports = (options = {}) => hook => {
       },
       paginate: false
     }).then(data => {
-      hook.params = Object.assign(
-        { authenticated: true },
-        hook.params,
-        { user: data[0] }
-      );
+      if(data.length) {
+        hook.params = Object.assign(
+          { authenticated: true },
+          hook.params,
+          { user: data[0] }
+        );
+      }
       return hook;
     });
   }

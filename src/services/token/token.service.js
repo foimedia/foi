@@ -1,18 +1,17 @@
-const AUTH_INTENT_TIMEOUT = 10; // in seconds
+const AUTH_INTENT_TIMEOUT = 6; // in seconds
 
 const hooks = require('./token.hooks');
+const telegram = require('./token.telegram');
 
 module.exports = function () {
 
   const app = this;
-  const telegram = app.telegram;
   const passport = app.passport;
   const config = app.get('authentication');
 
   // Internal auth service
   const AuthService = {
     timeout: AUTH_INTENT_TIMEOUT * 1000,
-    intents: {},
     create (data, params) {
       const { user } = data;
       const payload = {
@@ -21,34 +20,31 @@ module.exports = function () {
       };
       return passport.createJWT(payload, config).then(accessToken => {
         this.intents[user.id] = Date.now();
-        telegram.sendMessage(user.id, 'Waiting for browser response...', {
-          disable_notification: true
-        });
-        telegram.sendChatAction(user.id, 'typing');
         return { accessToken };
       });
     },
     patch (id, data, params) {
-      if(data.authenticated) {
-        telegram.sendMessage(id, 'You are authenticated! You can go back to your browser now.');
-      }
-      return true;
+      return this.intents[id];
     },
-    remove (id) {
+    remove (id, params) {
       delete this.intents[id];
       return this.intents;
     },
-    flush () {
-      const now = Date.now();
-      for(let id in this.intents) {
-        if(this.intents[id] + this.timeout < now) {
-          this.remove(id);
-          telegram.sendMessage(id, 'No browser response, authentication timed out. Refresh your browser page and try again.');
+    flush (path) {
+      const service = app.service(path);
+      return function () {
+        const now = Date.now();
+        for(let id in this.intents) {
+          if(this.intents[id] + this.timeout < now) {
+            service.remove(id);
+          }
         }
       }
     },
-    setup () {
-      setInterval(this.flush.bind(this), this.timeout/2);
+    setup (app, path) {
+      this.intents = {};
+      setInterval(this.flush(path).bind(this), this.timeout/2);
+      telegram(app, path);
     }
   };
 
@@ -66,16 +62,6 @@ module.exports = function () {
       } else {
         return false;
       }
-    });
-  });
-
-  telegram.onText(/\/start ([a-zA-Z0-9]{12})/, (data, match) => {
-    service.create({
-      userId: data.from.id,
-      userKey: match[1],
-    }, {
-      telegram: true,
-      message: data
     });
   });
 

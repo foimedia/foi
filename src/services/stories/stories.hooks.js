@@ -1,10 +1,13 @@
 const errors = require('feathers-errors');
-const { when, populate, discard, disallow } = require('feathers-hooks-common');
-const { restrictToAuthenticated, restrictToOwner } = require('feathers-authentication-hooks');
+const { when, iff, populate, discard, disallow, setCreatedAt, setUpdatedAt } = require('feathers-hooks-common');
+const { restrictToAuthenticated, restrictToOwner, restrictToRoles } = require('feathers-authentication-hooks');
+const { isTelegram, isChatType } = require('../../telegram').hooks;
+const { restrictArchived, restrictMuted } = require('../../hooks/chat-restrictions');
 
 const restrictToOneRunningStory = () => hook => {
   return hook.service.find({
     query: {
+      chatId: hook.data.chatId,
       userId: hook.data.userId,
       status: 'active'
     }
@@ -15,7 +18,7 @@ const restrictToOneRunningStory = () => hook => {
       return hook;
     }
   });
-}
+};
 
 const removePosts = () => hook => {
   const postService = hook.app.service('posts');
@@ -31,7 +34,7 @@ const removePosts = () => hook => {
     });
     return Promise.all(promises).then(() => hook);
   })
-}
+};
 
 module.exports = {
   before: {
@@ -56,14 +59,26 @@ module.exports = {
       }
     ],
     create: [
-      disallow('external'),
-      restrictToOneRunningStory()
+      disallow(['rest', 'socketio']),
+      restrictArchived(),
+      restrictMuted(),
+      when(
+        isTelegram(),
+        iff(
+          isChatType({ type: 'private' }),
+          restrictToRoles({ roles: 'publisher', idField: 'id' })
+        )
+      ),
+      restrictToOneRunningStory(),
+      setCreatedAt()
     ],
     update: [
-      disallow('external')
+      disallow(['rest', 'socketio']),
+      setUpdatedAt()
     ],
     patch: [
-      disallow('external')
+      disallow(['rest', 'socketio']),
+      setUpdatedAt()
     ],
     remove: [
       restrictToAuthenticated(),

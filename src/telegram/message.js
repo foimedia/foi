@@ -141,4 +141,4 @@ Message.prototype.toPost = function () {
   return false;
 };
 
-exports = module.exports = Message;
+module.exports = Message;
