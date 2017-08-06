@@ -2,6 +2,7 @@ const errors = require('feathers-errors');
 const { authenticate } = require('feathers-authentication').hooks;
 const { when, populate, discard, disallow, setCreatedAt, setUpdatedAt } = require('feathers-hooks-common');
 const { restrictChatContent } = require('../../hooks/chat-restrictions');
+const { isTelegram } = require('../../telegram').hooks;
 const Message = require('../../telegram').Message;
 
 const assignToStory = () => hook => {
@@ -119,6 +120,7 @@ module.exports = {
     create: [
       disallow(['rest', 'socketio']),
       ...restrictChatContent,
+      when(isTelegram(), createMessageMedia()),
       assignToStory()
     ],
     update: [
