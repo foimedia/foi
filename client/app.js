@@ -20,7 +20,6 @@ import UserChats from 'containers/user-chats';
 
 import Home from 'scenes/home';
 import Chat from 'scenes/chat';
-import Story from 'scenes/story';
 import Admin from 'scenes/admin';
 
 import 'styles';
@@ -90,7 +89,6 @@ class Application extends Component {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/c/:chatId" component={Chat} />
-            <Route path="/s/:storyId" component={Story} />
             <Route path="/admin" component={Admin} />
             <Route render={() => (
               <ContentHeader icon="meh-o">

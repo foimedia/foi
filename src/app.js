@@ -50,7 +50,7 @@ app.configure(socketio());
 app.configure(middleware);
 // Configure authentication (see `authentication.js`)
 app.configure(authentication);
-// Set up Telegram Bot (see `telegram.js`)
+// Set up Telegram Bot (see `telegram/index.js`)
 app.configure(telegram);
 // Set up our services (see `services/index.js`)
 app.configure(services);
