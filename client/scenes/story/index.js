@@ -7,6 +7,7 @@ import { services } from 'services/feathers';
 import { getTitle } from 'services/chats';
 import StoryContainer from 'containers/story';
 import ContentHeader from 'components/content/header';
+import Loader from 'components/loader';
 
 const Wrapper = styled.section`
   ${styleUtils.media.desktopHD`
@@ -85,7 +86,7 @@ class Story extends Component {
         </div>
       )
     } else {
-      return null;
+      return <Loader size={20} />
     }
   }
 }
