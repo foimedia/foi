@@ -104,7 +104,7 @@ class StoryFooter extends Component {
           {story.user.first_name} {story.user.last_name}
         </p>
         <p>
-          <Link to={`/s/${story.id}`}>{this.getStoryDate()}</Link>
+          <Link to={`/c/${story.chatId}/s/${story.id}`}>{this.getStoryDate()}</Link>
         </p>
         {this.props.canRemove &&
           <ActionsBox className="actions">

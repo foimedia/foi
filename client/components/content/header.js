@@ -112,12 +112,18 @@ const Wrapper = styled.header`
   `}
   ${props => props.inner && css`
     margin-top: 0;
-    margin-bottom: 0;
     height: auto;
+    ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+      margin-bottom ${styleUtils.margins[i]}rem;
+    `)}
     ${styleUtils.media.desktop`
       margin-top: 0;
-      margin-bottom: 0;
       height: auto;
+      .header-container {
+        > div {
+          height: auto;
+        }
+      }
     `}
   `}
 `

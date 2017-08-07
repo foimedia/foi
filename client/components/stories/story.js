@@ -59,7 +59,7 @@ class Story extends Component {
     const { story } = this.props;
     return (
       <Wrapper>
-        <Link to={`/s/${story.id}`} block className="block-link">
+        <Link to={`/c/${story.chatId}/s/${story.id}`} block className="block-link">
           <StoryBox id={`story-${story.id}`} className="story-item">
             {story.title &&
               <header className="story-header">

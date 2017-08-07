@@ -2,10 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Route, Link, Switch, Redirect } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+
 import { services } from 'services/feathers';
 import { getTitle } from 'services/chats';
+
 import Stories from 'containers/chat-stories';
+
 import Settings from './settings';
+import Story from './story';
+
 import ContentHeader from 'components/content/header';
 import Loader from 'components/loader';
 
@@ -74,6 +79,7 @@ class Chat extends Component {
           </ContentHeader>
           <Switch>
             <Route path={`${match.url}/settings`} component={Settings} />
+            <Route path={`${match.url}/s/:storyId`} component={Story} />
             <Route component={Stories} />
           </Switch>
         </section>

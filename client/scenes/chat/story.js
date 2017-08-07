@@ -32,12 +32,12 @@ class Story extends Component {
   }
   componentDidMount () {
     const { storyId } = this.state;
-    this.props.fetchStory(storyId);
+    this.props.fetch(storyId);
   }
   componentDidUpdate (prevProps, prevState) {
     const { storyId } = this.state;
     if(storyId !== prevState.storyId) {
-      this.props.fetchStory(storyId);
+      this.props.fetch(storyId);
     }
   }
   componentWillReceiveProps (nextProps, nextState) {
@@ -50,31 +50,18 @@ class Story extends Component {
         });
       }
     }
-    if(nextProps.story.data !== null && nextProps.story.data.chatId !== this.props.chat.data.id) {
-      this.props.fetchStory(nextProps.story.data.chatId);
-    }
   }
   render () {
-    const { story, chat } = this.props;
+    const { story } = this.props;
     if(story.isError) {
       return (
-        <ContentHeader icon="frown-o">
+        <ContentHeader icon="frown-o" inner={true}>
           <p>ERROR: {story.isError.message}</p>
         </ContentHeader>
       )
     } else if(story.data !== null) {
       return (
         <div>
-          <ContentHeader icon="bullhorn">
-            <h2>
-              <Link to={`/c/${chat.data.id}`}>
-                {getTitle(chat.data)}
-              </Link>
-            </h2>
-            {story.data.chat.description &&
-              <p className="description">{story.data.chat.description}</p>
-            }
-          </ContentHeader>
           <Wrapper className="single-story">
             <StoryContainer story={story.data} />
             <Footer>
@@ -94,16 +81,12 @@ class Story extends Component {
 function mapStateToProps (state, ownProps) {
   return {
     auth: state.auth,
-    chat: state.chats,
     story: state.stories
   };
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchChat: (chatId) => {
-    dispatch(services.chats.get(chatId))
-  },
-  fetchStory: (storyId) => {
+  fetch: (storyId) => {
     dispatch(services.stories.get(storyId))
   }
 });
