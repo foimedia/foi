@@ -88,7 +88,7 @@ const removeMedia = () => hook => {
     if(data.mediaId) {
       const media = Array.isArray(data.mediaId) ? data.mediaId : [data.mediaId];
       media.forEach(mediaId => {
-        promises.push(mediaService.remove(mediaId));
+        promises.push(mediaService.remove(mediaId).catch(() => hook));
       });
     }
     return Promise.all(promises).then(() => hook);

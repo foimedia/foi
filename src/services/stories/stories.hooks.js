@@ -29,7 +29,7 @@ const removePosts = () => hook => {
     }
   }).then(data => {
     data.forEach(post => {
-      promises.push(postService.remove(post.id));
+      promises.push(postService.remove(post.id).catch(() => hook));
     });
     return Promise.all(promises).then(() => hook);
   })

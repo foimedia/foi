@@ -24,7 +24,7 @@ const removeStories = () => hook => {
     }
   }).then(data => {
     data.forEach(story => {
-      promises.push(storyService.remove(story.id));
+      promises.push(storyService.remove(story.id).catch(() => hook));
     });
     return Promise.all(promises).then(() => hook);
   })
