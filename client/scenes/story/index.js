@@ -49,9 +49,12 @@ class Story extends Component {
         });
       }
     }
+    if(nextProps.story.data !== null && nextProps.story.data.chatId !== this.props.chat.data.id) {
+      this.props.fetchStory(nextProps.story.data.chatId);
+    }
   }
   render () {
-    const { story } = this.props;
+    const { story, chat } = this.props;
     if(story.isError) {
       return (
         <ContentHeader icon="frown-o">
@@ -63,8 +66,8 @@ class Story extends Component {
         <div>
           <ContentHeader icon="bullhorn">
             <h2>
-              <Link to={`/c/${story.data.chat.id}`}>
-                {getTitle(story.data.chat)}
+              <Link to={`/c/${chat.data.id}`}>
+                {getTitle(chat.data)}
               </Link>
             </h2>
             {story.data.chat.description &&
@@ -90,11 +93,15 @@ class Story extends Component {
 function mapStateToProps (state, ownProps) {
   return {
     auth: state.auth,
+    chat: state.chats,
     story: state.stories
   };
 }
 
 const mapDispatchToProps = (dispatch) => ({
+  fetchChat: (chatId) => {
+    dispatch(services.chats.get(chatId))
+  },
   fetchStory: (storyId) => {
     dispatch(services.stories.get(storyId))
   }

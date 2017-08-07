@@ -19,7 +19,10 @@ class Chat extends Component {
 
   componentDidMount () {
     const { chatId } = this.state;
-    this.props.fetch(chatId);
+    const { chat } = this.props;
+    if(chat.data === null || chat.data.id !== chatId) {
+      this.props.fetch(chatId);
+    }
   }
 
   componentDidUpdate (prevProps, prevState) {
