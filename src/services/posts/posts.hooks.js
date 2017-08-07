@@ -1,7 +1,7 @@
 const errors = require('feathers-errors');
-const { authenticate } = require('feathers-authentication').hooks;
+const { restrictToAuthenticated } = require('feathers-authentication-hooks');
 const { when, populate, discard, disallow, setCreatedAt, setUpdatedAt } = require('feathers-hooks-common');
-const { restrictChatContent } = require('../../hooks/chat-restrictions');
+const { restrictChatContent, restrictChatContentErrors } = require('../../hooks/chat-restrictions');
 const { isTelegram } = require('../../telegram').hooks;
 const Message = require('../../telegram').Message;
 
@@ -119,6 +119,7 @@ module.exports = {
     ],
     create: [
       disallow(['rest', 'socketio']),
+      restrictToAuthenticated(),
       ...restrictChatContent,
       when(isTelegram(), createMessageMedia()),
       assignToStory()
@@ -185,6 +186,7 @@ module.exports = {
     find: [],
     get: [],
     create: [
+      ...restrictChatContentErrors,
       hook => {
         if(hook.error.message == 'You do not have valid permissions to access this.') {
           hook.error = new errors.Forbidden(`You do not have valid permissions to create a post.`);

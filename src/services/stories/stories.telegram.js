@@ -22,7 +22,7 @@ module.exports = function(app, path) {
   telegram.onText(/\/story( .+)?/, (data, match) => {
     const chatId = data.chat.id;
     const message = new Message(data);
-    const title = match[1].trim();
+    const title = (match[1] || '').trim();
     service.create(parse(message, title), {
       telegram: true,
       message: message

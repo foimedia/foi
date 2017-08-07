@@ -80,7 +80,6 @@ class Story extends Component {
 
 function mapStateToProps (state, ownProps) {
   return {
-    auth: state.auth,
     story: state.stories
   };
 }

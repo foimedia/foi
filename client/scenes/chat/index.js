@@ -6,15 +6,19 @@ import { Helmet } from 'react-helmet';
 import { services } from 'services/feathers';
 import { getTitle } from 'services/chats';
 
-import Stories from 'containers/chat-stories';
-
-import Settings from './settings';
-import Story from './story';
-
 import ContentHeader from 'components/content/header';
 import Loader from 'components/loader';
 
+import Home from './home';
+import Settings from './settings';
+import Story from './story';
+
+import Gallery from 'containers/chat-gallery';
+
 class Chat extends Component {
+
+  previousLocation = this.props.location
+
   constructor (props) {
     super(props);
     this.state = {
@@ -57,6 +61,12 @@ class Chat extends Component {
   render () {
     const { match, chat } = this.props;
     const { stories } = this.state;
+    const { location } = this.props;
+    const isModal = !!(
+      location.state &&
+      location.state.modal &&
+      this.previousLocation !== location // not initial render
+    )
     if(chat.isError) {
       return (
         <ContentHeader icon="frown-o">
@@ -77,11 +87,12 @@ class Chat extends Component {
               <p className="description">{chat.data.description}</p>
             }
           </ContentHeader>
-          <Switch>
+          <Switch location={isModal ? this.previousLocation : location}>
             <Route path={`${match.url}/settings`} component={Settings} />
             <Route path={`${match.url}/s/:storyId`} component={Story} />
-            <Route component={Stories} />
+            <Route component={Home} />
           </Switch>
+          {isModal ? <Route path={`${match.url}/s/:storyId`} component={Gallery} /> : null}
         </section>
       )
     } else {
@@ -92,7 +103,6 @@ class Chat extends Component {
 
 function mapStateToProps (state, ownProps) {
   return {
-    auth: state.auth,
     chat: state.chats
   };
 }

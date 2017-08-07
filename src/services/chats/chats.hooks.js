@@ -35,7 +35,13 @@ const isChatActivation = () => hook => {
 };
 
 const parsePatch = () => hook => {
-  hook.data = _.pick(hook.data, ['description', 'archived', 'active']);
+  hook.data = _.pick(hook.data, [
+    'liveURL',
+    'description',
+    'archived',
+    'active',
+    'displayGallery'
+  ]);
   return hook;
 }
 

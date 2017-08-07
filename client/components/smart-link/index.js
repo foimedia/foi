@@ -27,7 +27,7 @@ export default class SmartLink extends Component {
           redirect: true
         });
       } else if(router === undefined) {
-        window.open(event.target.href || foi.url + to, this.isLocal() ? '_self' : '_blank');
+        window.open(event.target.href || foi.url + (to.pathname || to), this.isLocal() ? '_self' : '_blank');
       }
     }
   }
@@ -37,10 +37,10 @@ export default class SmartLink extends Component {
   render () {
     const { router } = this.context;
     const { redirect } = this.state;
-    const { children, block, ...props } = this.props;
+    const { children, block, to, ...props } = this.props;
     if(block) {
       if(redirect) {
-        return <Redirect push to={props.to} />
+        return <Redirect push to={to} />
       } else {
         return (
           <div onClick={this.handleBlockClick}>{children}</div>
@@ -48,11 +48,11 @@ export default class SmartLink extends Component {
       }
     } else {
       if(router !== undefined) {
-        return <Link {...props}>{children}</Link>
+        return <Link to={to} {...props}>{children}</Link>
       } else {
         const rel = this.isLocal() ? '' : 'external';
         const target = this.isLocal() ? '_self' : '_blank';
-        return <a href={`${foi.url}${props.to}`} rel={rel} target={target} {...props}>{children}</a>
+        return <a href={`${foi.url}${to.pathname || to}`} rel={rel} target={target} {...props}>{children}</a>
       }
     }
 

@@ -58,9 +58,31 @@ const restrictChatContent = [
   )
 ];
 
+const mutedError = () => hook => {
+  if(hook.error.message == 'You are muted') {
+    hook.error.silent = true;
+  };
+  return hook;
+};
+
+const archivedError = () => hook => {
+  if(hook.error.message == 'This chat is archived') {
+    hook.error.silent = true;
+  };
+  return hook;
+}
+
+const restrictChatContentErrors = [
+  mutedError(),
+  archivedError()
+];
+
 module.exports = {
   restrictToActive,
   restrictMuted,
   restrictArchived,
-  restrictChatContent
+  restrictChatContent,
+  mutedError,
+  archivedError,
+  restrictChatContentErrors
 };

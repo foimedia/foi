@@ -7,6 +7,7 @@ import { store } from 'services/feathers';
 import 'styles';
 
 import Bundle from 'components/bundle';
+import loadChatGallery from 'bundle-loader?lazy!containers/chat-gallery';
 import loadChatStories from 'bundle-loader?lazy!containers/chat-stories';
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -20,18 +21,29 @@ document.addEventListener('DOMContentLoaded', function() {
         xhr.open('GET', `${foi.url}/chats/${chatId}`, true);
         xhr.send();
         xhr.addEventListener('load', function(res) {
+          const chat = JSON.parse(res.target.response);
           if(this.status == 200) {
             const props = {
-              widgetChat: JSON.parse(res.target.response),
+              widgetChat: chat,
+              displayGallery: node.dataset.gallery || chat.displayGallery,
               more: node.dataset.more || 'button'
             };
             ReactDom.render(
               <Provider store={store}>
-                <Bundle load={loadChatStories}>
-                  {ChatStories => (
-                    <ChatStories {...props} />
-                  )}
-                </Bundle>
+                <div>
+                  {props.displayGallery &&
+                    <Bundle load={loadChatGallery}>
+                      {ChatGallery => (
+                        <ChatGallery {...props} />
+                      )}
+                    </Bundle>
+                  }
+                  <Bundle load={loadChatStories}>
+                    {ChatStories => (
+                      <ChatStories {...props} />
+                    )}
+                  </Bundle>
+                </div>
               </Provider>,
               node
             );

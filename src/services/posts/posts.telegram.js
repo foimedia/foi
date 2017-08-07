@@ -3,6 +3,7 @@ const Message = require('../../telegram').Message;
 module.exports = function(app, path) {
   const telegram = app.telegram;
   const service = app.service(path);
+  const userService = app.service('users');
 
   /*
    * New message
@@ -10,13 +11,20 @@ module.exports = function(app, path) {
   telegram.on('message', data => {
     const message = new Message(data);
     if(!message.isBotCommand()) {
-      const post = message.toPost();
-      if(post) {
-        service.create(post, {
-          telegram: true,
-          message: message
-        })
-      }
+      userService.get(message.from.id).then(user => {
+
+        if(user.chats[message.chat.id].muted === true)
+          return;
+
+        const post = message.toPost();
+        if(post) {
+          service.create(post, {
+            telegram: true,
+            message: message
+          })
+        }
+
+      });
     }
   });
 

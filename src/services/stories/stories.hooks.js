@@ -1,7 +1,7 @@
 const errors = require('feathers-errors');
 const { when, populate, discard, disallow, setCreatedAt, setUpdatedAt } = require('feathers-hooks-common');
 const { restrictToAuthenticated, restrictToOwner } = require('feathers-authentication-hooks');
-const { restrictChatContent } = require('../../hooks/chat-restrictions');
+const { restrictChatContent, restrictChatContentErrors } = require('../../hooks/chat-restrictions');
 
 const restrictToOneRunningStory = () => hook => {
   return hook.service.find({
@@ -142,6 +142,7 @@ module.exports = {
     find: [],
     get: [],
     create: [
+      ...restrictChatContentErrors,
       hook => {
         if(hook.error.message == 'You do not have valid permissions to access this.') {
           hook.error = new errors.Forbidden(`You do not have valid permissions to create a story.`);

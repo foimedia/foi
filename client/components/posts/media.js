@@ -22,8 +22,8 @@ class PostMedia extends Component {
     return file;
   }
 
-  getFileUrl (index = null) {
-    const file = this.getFile(index);
+  getFileUrl (index = null, thumb = false) {
+    const file = thumb ? this.getFile(index).thumb : this.getFile(index);
     if(file !== undefined)
       return foi.url + '/files/' + file.file_id + '/' + file.file_name;
     else

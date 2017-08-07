@@ -8,9 +8,6 @@ const Form = styled.form`
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
     p {
       margin-bottom: ${styleUtils.margins[i]}rem;
-      &:last-child {
-        margin-bottom: 0;
-      }
     }
     input[type=text],
     input[type=password],
@@ -19,7 +16,17 @@ const Form = styled.form`
       margin-top: ${styleUtils.margins[i]/2}rem;
       padding: ${styleUtils.margins[i]/2}rem;
     }
+    span.checkbox {
+      margin-top: ${styleUtils.margins[i]/2}rem;
+      padding: ${styleUtils.margins[i]/2}rem;
+      input[type=checkbox] {
+        margin-right: ${styleUtils.margins[i]/3}rem;
+      }
+    }
   `)}
+  p:last-child {
+    margin-bottom: 0;
+  }
   p.form-actions {
     text-align: right;
   }
@@ -50,6 +57,13 @@ const Form = styled.form`
   }
   textarea {
     min-height: 100px;
+  }
+  span.checkbox {
+    color: #333;
+    display: block;
+    border: 1px solid #ddd;
+    border-radius: ${styleUtils.radius/3}px;
+    font-family: "Helvetica", "Open Sans", "Arial", sans-serif;
   }
 `
 

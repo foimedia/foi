@@ -47,12 +47,24 @@ module.exports = {
         hook => {
           const telegram = hook.app.telegram;
           const chatId = hook.params.message.chat.id;
-          telegram.sendMessage(chatId, hook.error.message);
+          if(!hook.error.silent)
+            telegram.sendMessage(chatId, hook.error.message);
           if(hook.error.leaveChat) {
             telegram.leaveChat(chatId);
           }
           return hook;
-        }
+        },
+        // Always send error message for bot commands
+        when(telegram.isBotCommand(), [
+          hook => {
+            const telegram = hook.app.telegram;
+            const chatId = hook.params.message.chat.id;
+            if(hook.error.silent) {
+              telegram.sendMessage(chatId, hook.error.message);
+            }
+            return hook;
+          }
+        ])
       ])
     ],
     find: [],

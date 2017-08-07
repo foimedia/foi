@@ -40,7 +40,7 @@ class ChatStories extends Component {
     };
   }
 
-  fetchStories () {
+  fetch () {
     // Clear stories before continuing
     this.setState({
       stories: undefined
@@ -101,7 +101,7 @@ class ChatStories extends Component {
 
   componentDidMount () {
     const chat = this.props.chat.data || this.props.widgetChat;
-    this.fetchStories(chat.id);
+    this.fetch(chat.id);
     this.service.on('created', this.newStory);
     this.service.on('removed', this.removedStory);
   }
@@ -116,7 +116,7 @@ class ChatStories extends Component {
     const prevChat = prevProps.chat.data || prevProps.widgetChat;
     if(chat) {
       if(chat !== prevChat) {
-        this.fetchStories(chat.id);
+        this.fetch(chat.id);
       }
     } else {
       this.setState({stories: undefined});
@@ -170,7 +170,6 @@ class ChatStories extends Component {
 
 function mapStateToProps (state, ownProps) {
   return {
-    auth: state.auth,
     chat: state.chats
   };
 }

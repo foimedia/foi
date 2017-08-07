@@ -15,7 +15,8 @@ class ChatSettings extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      formData: {}
+      formData: {},
+      removing: false
     };
     this.remove = this.remove.bind(this);
     this.archive = this.archive.bind(this);
@@ -30,8 +31,21 @@ class ChatSettings extends Component {
   remove () {
     const { chat, remove } = this.props;
     if(confirm('Are you sure? This will remove all chat data, including posts, stories and media!')) {
+      // This setState is not firing
+      this.setState({
+        removing: true
+      });
       remove(chat.data.id);
     }
+  }
+
+  removed () {
+    const { chat } = this.props;
+    const { removing } = this.state;
+    if(removing && chat.isFinished) {
+      return true;
+    }
+    return false;
   }
 
   archive () {
@@ -46,10 +60,21 @@ class ChatSettings extends Component {
 
   handleChange (event) {
     const { formData } = this.state;
-    const { name, value } = event.target;
+    const { target } = event;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
     this.setState({
-      formData: Object.assign({}, formData, {[name]: value})
+      formData: Object.assign({}, formData, {[target.name]: value})
     });
+  }
+
+  isCheckedInput (name) {
+    const { chat } = this.props;
+    const { formData } = this.state;
+    if(formData[name] !== undefined) {
+      return !!formData[name];
+    } else {
+      return !!chat.data[name];
+    }
   }
 
   handleSubmit (event) {
@@ -60,11 +85,11 @@ class ChatSettings extends Component {
 
   render () {
     const { chat, auth } = this.props;
-    const { formData } = this.state;
+    const { formData, removing } = this.state;
     if(chat.data !== null && auth.user !== null) {
       return (
         <section id="chat-settings">
-          {!canManage(chat.data, auth) &&
+          {(!canManage(chat.data, auth) || this.removed()) &&
             <Redirect to="/" />
           }
           <div className="sections">
@@ -108,6 +133,20 @@ class ChatSettings extends Component {
                   <label>
                     Description
                     <textarea name="description" value={formData.description || chat.data.description} onChange={this.handleChange}></textarea>
+                  </label>
+                </p>
+                <p>
+                  <label>
+                    Live video URL
+                    <input name="liveURL" type="text" value={formData.liveURL || chat.data.liveURL} onChange={this.handleChange} />
+                  </label>
+                </p>
+                <p>
+                  <label>
+                    Media Gallery
+                    <span className="checkbox">
+                      <input name="displayGallery" type="checkbox" checked={this.isCheckedInput('displayGallery')} onChange={this.handleChange} /> Display latest media gallery
+                    </span>
                   </label>
                 </p>
                 <p className="form-actions">
@@ -184,12 +223,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  patch: (chatId, data = {}) => {
-    dispatch(services.chats.patch(chatId, data))
-  },
-  remove: (chatId) => {
-    dispatch(services.chats.remove(chatId))
-  }
+  patch: (chatId, data = {}) => dispatch(services.chats.patch(chatId, data)),
+  remove: (chatId) => dispatch(services.chats.remove(chatId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatSettings);

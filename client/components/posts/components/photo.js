@@ -46,18 +46,23 @@ class PostPhoto extends PostMedia {
   render() {
     const { caption } = this.props;
     const ar = this.getPhotoAspectRatio();
+    const src = this.getFileUrl();
+    const preview = this.getFileUrl(0);
     return <PhotoBox>
       <ProgressiveImage
-        src={this.getFileUrl()}
-        preview={this.getFileUrl(0)}
+        src={src}
+        preview={preview}
         transitionTime={200}
-        render={(src, style) =>
-          <div className="img" style={Object.assign(style, {
-            backgroundImage: `url(${src})`,
-            paddingBottom: `${ar}%`,
-            backgroundSize: 'cover'
-          })}
-        />}
+        render={(source, style) => {
+          return (
+            <div className="img" style={Object.assign(style, {
+              backgroundImage: `url(${src})`,
+              paddingBottom: `${ar}%`,
+              backgroundSize: 'cover'
+            })}
+            />
+          )}
+        }
       />
       {typeof caption == 'string' &&
         <p className="caption">{caption}</p>
