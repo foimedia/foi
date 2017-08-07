@@ -18,7 +18,7 @@ class Chat extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      chatId: props.match.params.chatId
+      chatId: parseInt(props.match.params.chatId)
     }
   }
 
