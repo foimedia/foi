@@ -40,7 +40,7 @@ const parsePatch = () => hook => {
     'description',
     'archived',
     'active',
-    'displayGallery'
+    'hideGallery'
   ]);
   return hook;
 }

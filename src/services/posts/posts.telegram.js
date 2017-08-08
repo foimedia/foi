@@ -13,7 +13,7 @@ module.exports = function(app, path) {
     if(!message.isBotCommand()) {
       userService.get(message.from.id).then(user => {
 
-        if(user.chats[message.chat.id].muted === true)
+        if(user.chats[message.chat.id] && user.chats[message.chat.id].muted === true)
           return;
 
         const post = message.toPost();
