@@ -81,6 +81,23 @@ const createPostStory = () => hook => {
   return hook;
 };
 
+const _removeMedia = (hook, id) => {
+  const service = hook.service;
+  const mediaService = hook.app.service('media');
+  return service.find({
+    query: {
+      $limit: 0,
+      mediaId: id
+    },
+  }).then(res => {
+    if(res.total <= 1) {
+      return mediaService.remove(mediaId).catch(() => hook);
+    }
+    return hook;
+  }).catch(() => hook);
+}
+
+
 const removeMedia = () => hook => {
   const mediaService = hook.app.service('media');
   return hook.service.get(hook.id).then(data => {
@@ -88,7 +105,7 @@ const removeMedia = () => hook => {
     if(data.mediaId) {
       const media = Array.isArray(data.mediaId) ? data.mediaId : [data.mediaId];
       media.forEach(mediaId => {
-        promises.push(mediaService.remove(mediaId).catch(() => hook));
+        promises.push(_removeMedia(hook, mediaId));
       });
     }
     return Promise.all(promises).then(() => hook);
