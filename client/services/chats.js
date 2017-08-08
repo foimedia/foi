@@ -4,6 +4,10 @@ export function getTitle (chat) {
   return chat.title || `${chat.first_name} ${chat.last_name}`.trim();
 }
 
+export function isActive (chat) {
+  return chat.type === 'private' || chat.active;
+}
+
 export function canManage (chat, auth = false) {
   if(chat.type == 'private' || hasRole(auth, 'admin')) {
     return true;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { canManage } from 'services/chats';
+import { canManage, isActive } from 'services/chats';
 import { services } from 'services/feathers';
 import { hasUser, hasRole } from 'services/auth';
 import Loader from 'components/loader';
@@ -21,6 +21,7 @@ class ChatSettings extends Component {
     this.remove = this.remove.bind(this);
     this.archive = this.archive.bind(this);
     this.unarchive = this.unarchive.bind(this);
+    this.activate = this.activate.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -58,6 +59,11 @@ class ChatSettings extends Component {
     patch(chat.data.id, { archived: false });
   }
 
+  activate () {
+    const { chat, patch } = this.props;
+    patch(chat.data.id, { active: true });
+  }
+
   handleChange (event) {
     const { formData } = this.state;
     const { target } = event;
@@ -93,6 +99,17 @@ class ChatSettings extends Component {
             <Redirect to="/" />
           }
           <div className="sections">
+            {(!isActive(chat.data) && hasRole(auth, 'publisher')) &&
+              <div className="chat-activation content-section">
+                <h3>
+                  <span className="fa fa-warning"></span>
+                  Chat activation
+                </h3>
+                <p>
+                  <Button primary block onClick={this.activate}>Your chat is not active. Click here to activate!</Button>
+                </p>
+              </div>
+            }
             <div className="chat-info content-section">
               <h3>
                 <span className="fa fa-info-circle"></span>

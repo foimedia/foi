@@ -7,12 +7,12 @@ const telegram = require('../../telegram').hooks;
 const isPrivate = () => hook => {
   return hook.service.get(hook.id)
     .then(data => data.type == 'private');
-}
+};
 
 const allMembersAreAdmin = () => hook => {
   return hook.service.get(hook.id)
     .then(data => !!data.all_members_are_administrators);
-}
+};
 
 const removeStories = () => hook => {
   const storyService = hook.app.service('stories');
@@ -28,7 +28,7 @@ const removeStories = () => hook => {
     });
     return Promise.all(promises).then(() => hook);
   })
-}
+};
 
 const isChatActivation = () => hook => {
   return hook.data.active !== undefined;
