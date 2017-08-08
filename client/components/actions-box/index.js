@@ -20,8 +20,8 @@ const Wrapper = styled.nav`
 
 const ActionsBox = styled.div`
   position: absolute;
-  right: -.7rem;
-  bottom: 1.7rem;
+  right: 0;
+  bottom: 2rem;
   background: #333;
   border-radius: ${styleUtils.radius/3}px;
   padding-top: .3rem;
@@ -29,6 +29,9 @@ const ActionsBox = styled.div`
   border: 1px solid #222;
   line-height: 1;
   max-width: 15em;
+  ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+    margin-right: ${styleUtils.margins[i]/2}rem;
+  `)}
   &.fade {
     transition: all 200ms ${styleUtils.transition};
   }
@@ -82,12 +85,8 @@ const ActionsBox = styled.div`
     }
   }
   ${styleUtils.media.phablet`
-    bottom: 2rem;
+    bottom: 2.5rem;
   `}
-  ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
-    a {
-    }
-  `)}
 `
 
 export default class Actions extends Component {

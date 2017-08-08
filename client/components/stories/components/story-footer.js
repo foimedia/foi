@@ -11,6 +11,7 @@ const StoryFooterBox = styled.footer`
   font-size: .7em;
   color: #999;
   border-radius: 0 0 3px 3px;
+  position: relative;
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
     padding-left: ${styleUtils.margins[i]}rem;
     padding-right: ${styleUtils.margins[i]}rem;
@@ -38,7 +39,15 @@ const StoryFooterBox = styled.footer`
     }
   }
   .actions {
-    float: right;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+      padding-top: ${styleUtils.margins[i]/2}rem;
+      padding-bottom: ${styleUtils.margins[i]/2}rem;
+      padding-right: ${styleUtils.margins[i]}rem;
+      padding-left: ${styleUtils.margins[i]}rem;
+    `)}
   }
 `;
 
@@ -107,7 +116,7 @@ class StoryFooter extends Component {
           <Link to={`/c/${story.chatId}/s/${story.id}`}>{this.getStoryDate()}</Link>
         </p>
         {this.props.canRemove &&
-          <ActionsBox className="actions">
+          <ActionsBox className="actions interactive">
             <a href="javascript:void(0)" onClick={this.props.remove} title="Remove story">
               <span className="fa fa-remove"></span>
               Remove

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Twemoji } from 'react-emoji-render';
+// import { Twemoji } from 'react-emoji-render';
 import Linkify from 'react-linkify';
 
 import styleUtils from 'services/style-utils';
@@ -28,9 +28,11 @@ class PostText extends Component {
       <TextBox>
         <Linkify>
           {data.split('\n').map((item, key) =>
-            // Twemoji uses prop instead of children, Linkify doesnt work 
+            // Twemoji uses prop instead of children, Linkify doesnt work
             // <p key={key}><Twemoji text={item} /></p>
-            <p key={key}>{item}</p>
+            <p key={key}>
+              {item}
+            </p>
           )}
         </Linkify>
       </TextBox>
