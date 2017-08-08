@@ -41,6 +41,17 @@ class Chat extends Component {
     }
   }
 
+  componentWillUpdate (nextProps) {
+    const { location } = this.props
+    // set previousLocation if props.location is not modal
+    if (
+      nextProps.history.action !== 'POP' &&
+      (!location.state || !location.state.modal)
+    ) {
+      this.previousLocation = this.props.location
+    }
+  }
+
   componentWillReceiveProps (nextProps) {
     if(nextProps.match) {
       const { params } = nextProps.match;

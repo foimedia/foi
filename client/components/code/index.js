@@ -98,7 +98,7 @@ export class SelectableCode extends Component {
         <textarea className="selectable" readonly={true} {...props}>
           {children}
         </textarea>
-        <a href="javascript:void(0);" title="Copy to clipboard" class="clipboard fa fa-clipboard" onClick={this.handleClipboardClick}></a>
+        <a href="javascript:void(0);" title="Copy to clipboard" className="clipboard fa fa-clipboard" onClick={this.handleClipboardClick}></a>
       </SelectableWrapper>
     )
   }

@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Route } from 'react-router-dom';
 import client from 'services/feathers';
+import Bundle from 'components/bundle';
 import Loader from 'components/loader';
 import Button from 'components/button';
 import { GalleryList, Gallery } from 'components/gallery';
-import Thumb from 'components/posts/thumb';
+import loadThumb from 'bundle-loader?lazy!components/posts/thumb';
 
 class ChatGallery extends Component {
 
@@ -27,6 +28,7 @@ class ChatGallery extends Component {
     this.newPost = this.newPost.bind(this);
     this.fetchMore = this.fetchMore.bind(this);
     this.removedPost = this.removedPost.bind(this);
+    this.goBack = this.goBack.bind(this);
   }
 
   getChat () {
@@ -136,6 +138,13 @@ class ChatGallery extends Component {
     }
   }
 
+  goBack () {
+    const { history } = this.props;
+    if(history !== undefined) {
+      history.goBack();
+    }
+  }
+
   render () {
     var self = this;
     const chat = this.getChat();
@@ -150,27 +159,32 @@ class ChatGallery extends Component {
       if(posts.length) {
         if(!isModal) {
           return (
-            <section id={`chat-${chat.id}-gallery`}>
-              <GalleryList>
-                {posts.slice(0,5).map(post => (
-                  <Thumb key={`gallery-post-${post.id}`} post={post} />
-                ))}
-              </GalleryList>
-            </section>
+            <Bundle load={loadThumb}>
+              {Thumb => (
+                <section id={`chat-${chat.id}-gallery`}>
+                  <GalleryList>
+                    {posts.slice(0,5).map(post => (
+                      <Thumb key={`gallery-post-${post.id}`} post={post} />
+                    ))}
+                  </GalleryList>
+                </section>
+              )}
+            </Bundle>
           )
         } else {
           return (
-            <Gallery loadMore={this.fetchMore} hasMore={hasMore} posts={posts} post={location.state.post} index={location.state.index} />
+            <Gallery
+              loadMore={this.fetchMore}
+              hasMore={hasMore}
+              posts={posts}
+              post={location.state.post}
+              back={this.goBack} />
           )
         }
-      } else {
-        return null;
       }
-    } else {
-      return <Loader size={20} />
     }
+    return null;
   }
-
 }
 
 function mapStateToProps (state, ownProps) {

@@ -145,7 +145,7 @@ class ChatSettings extends Component {
                   <label>
                     Media Gallery
                     <span className="checkbox">
-                      <input name="displayGallery" type="checkbox" checked={this.isCheckedInput('displayGallery')} onChange={this.handleChange} /> Display latest media gallery
+                      <input name="hideGallery" type="checkbox" checked={this.isCheckedInput('hideGallery')} onChange={this.handleChange} /> Hide media gallery
                     </span>
                   </label>
                 </p>

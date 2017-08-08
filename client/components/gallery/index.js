@@ -15,7 +15,7 @@ const GalleryWrapper = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0,0,0,0.9);
+  background: rgba(0,0,0,0.95);
   z-index: 99999;
   overflow: auto;
   > div {
@@ -50,7 +50,8 @@ const Actions = styled.span`
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
     padding: ${styleUtils.margins[i]}rem;
   `)}
-  a {
+  a,
+  .disabled-nav-link {
     color: #fff;
     &:hover,
     &:active,
@@ -63,6 +64,13 @@ const Actions = styled.span`
         margin: 0 ${styleUtils.margins[i]/2}rem;
       `)}
     }
+  }
+  .disabled-nav-link,
+  .disabled-nav-link:hover,
+  .disabled-nav-link:active,
+  .disabled-nav-link:focus,
+  .disabled-nav-link .fa {
+    color: #666;
   }
   > * {
     float: right;
@@ -143,15 +151,14 @@ export class GalleryList extends Component {
     return (
       <ListWrapper>
         <TransitionGroup>
-          {childrenArray.slice(0,5).map((child, i) =>
+          {childrenArray.slice(0,5).map(child =>
             <Transition key={child.key} timeout={200}>
               {(status) => (
                 <Link to={{
                   pathname: `/c/${child.props.post.chatId}/s/${child.props.post.storyId}`,
                   state: {
                     modal: true,
-                    post: child.props.post,
-                    index: i
+                    post: child.props.post
                   }
                 }} className={`gallery-item fade-${status} type-${child.props.post.type}`}>
                   {child}
@@ -160,11 +167,34 @@ export class GalleryList extends Component {
             </Transition>
           )}
         </TransitionGroup>
-        {/* <a href="javascript:void(0);"  onClick={this.open(child, i)}>
-        </a> */}
         <div className="clear" />
       </ListWrapper>
     )
+  }
+}
+
+class GalleryNavLink extends Component {
+  render () {
+    const { post, index, nextIndex, ...props } = this.props;
+    if(post !== undefined) {
+      return (
+        <Link to={{
+          pathname: `/c/${post.chatId}/s/${post.storyId}`,
+          state: {
+            modal: true,
+            post: post
+          }
+        }} replace>
+          {props.children}
+        </Link>
+      )
+    } else {
+      return (
+        <span className="disabled-nav-link">
+          {props.children}
+        </span>
+      )
+    }
   }
 }
 
@@ -172,7 +202,6 @@ export class Gallery extends Component {
 
   static defaultProps = {
     post: undefined,
-    index: 0,
     loadMore: null,
     hasMore: false
   }
@@ -182,7 +211,6 @@ export class Gallery extends Component {
     this.state = {
       open: true,
       post: undefined,
-      index: 0,
       go: false
     };
     this.open = this.open.bind(this);
@@ -201,8 +229,11 @@ export class Gallery extends Component {
 
   componentDidUpdate () {
     const node = findDOMNode(this);
-    if(node.childNodes && node.childNodes.length) {
-      node.childNodes[0].focus();
+    if(node.childNodes.length) {
+      const index = node.querySelectorAll('div[tabindex]');
+      if(index.length) {
+        index[0].focus();
+      }
     }
   }
 
@@ -237,20 +268,17 @@ export class Gallery extends Component {
     }
   }
 
-  open (post, i) {
+  open (post) {
     window.addEventListener('keydown', this.attachKeys);
     const body = document.getElementsByTagName('BODY')[0];
     body.style.overflow = 'hidden';
     this.setState({
       open: true,
-      post: post,
-      index: i
-    });
-    this.setState({
-      prev: this.findPrev()
+      post: post
     });
     this.findNext().then(post => {
       this.setState({
+        prev: this.findPrev(),
         next: post
       });
     });
@@ -264,7 +292,7 @@ export class Gallery extends Component {
       open: false
     });
     if(redirect === true) {
-      this.setState({ go: 'home' });
+      this.props.back();
     }
   }
 
@@ -319,7 +347,7 @@ export class Gallery extends Component {
   }
 
   render () {
-    const { posts, hasMore } = this.props;
+    const { posts, hasMore, back, ...props } = this.props;
     const { open, post, index, next, prev, go } = this.state;
     if(go) {
       const target = this.state[go];
@@ -329,63 +357,42 @@ export class Gallery extends Component {
             pathname: `/c/${target.chatId}/s/${target.storyId}`,
             state: {
               modal: true,
-              post: target,
-              index: index+1
+              post: target
             }
-          }} />
-        )
-      } else if(go == 'home') {
-        return (
-          <Redirect to={`/c/${post.chatId}`} />
+          }} replace />
         )
       }
     } else if(open && post) {
       return (
-        <GalleryWrapper>
-          <div tabindex="0">
-            <Leave>
-              <Link to={`/c/${post.chatId}`}></Link>
-            </Leave>
-            <Actions>
-              <Link to={`/c/${post.chatId}`}>
-                Close
-                <span className="fa fa-close"></span>
-              </Link>
-              {next !== undefined &&
-                <Link to={{
-                  pathname: `/c/${next.chatId}/s/${next.storyId}`,
-                  state: {
-                    modal: true,
-                    post: next,
-                    index: index+1
-                  }
-                }}>
+        <div className="media-gallery">
+          <GalleryWrapper>
+            <div tabindex="0">
+              <Leave>
+                <Link to={`/c/${post.chatId}`}></Link>
+              </Leave>
+              <Actions>
+                <Link to={`/c/${post.chatId}`}>
+                  Close
+                  <span className="fa fa-close"></span>
+                </Link>
+                <GalleryNavLink post={next}>
                   Next
                   <span className="fa fa-chevron-right"></span>
-                </Link>
-              }
-              {prev !== undefined &&
-                <Link to={{
-                  pathname: `/c/${prev.chatId}/s/${prev.storyId}`,
-                  state: {
-                    modal: true,
-                    post: prev,
-                    index: index-1
-                  }
-                }}>
+                </GalleryNavLink>
+                <GalleryNavLink post={prev}>
                   <span className="fa fa-chevron-left"></span>
                   Previous
+                </GalleryNavLink>
+                <Link to={`/c/${post.chatId}/s/${post.storyId}`}>
+                  Go to story
                 </Link>
-              }
-              <Link to={`/c/${post.chatId}/s/${post.storyId}`}>
-                Go to story
-              </Link>
-            </Actions>
-            <PostWrapper>
-              <Post post={post} />
-            </PostWrapper>
-          </div>
-        </GalleryWrapper>
+              </Actions>
+              <PostWrapper>
+                <Post post={post} />
+              </PostWrapper>
+            </div>
+          </GalleryWrapper>
+        </div>
       );
     }
   }

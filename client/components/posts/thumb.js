@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { ProgressiveImage } from 'react-progressive-image-loading';
 
-import 'font-awesome/css/font-awesome.css';
-
 const Wrapper = styled.div`
   width: 100%;
   padding-top: 100%;
   position: relative;
+  background: #666;
   .img {
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: center;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -31,10 +31,6 @@ const Wrapper = styled.div`
 `
 
 export default class PostThumb extends Component {
-  constructor (props) {
-    super(props);
-    this.getStyle = this.getStyle.bind(this);
-  }
   getUrl (file) {
     return foi.url + '/files/' + file.file_id + '/' + file.file_name;
   }
@@ -54,19 +50,15 @@ export default class PostThumb extends Component {
     const { post } = this.props;
     return post.type == 'video' || post.type == 'video_note';
   }
-  getStyle (thumb) {
-    return {
-      backgroundImage: `url(${thumb})`
-    };
-  }
   render () {
     const { post } = this.props;
-    const thumb = this.getThumb();
+    const src = this.getThumb();
+    const preview = this.getThumb(0);
     return (
-      <Wrapper style={this.getStyle(thumb)}>
+      <Wrapper>
         <ProgressiveImage
-          src={this.getThumb()}
-          preview={this.getThumb(0)}
+          src={src}
+          preview={preview}
           transitionTime={200}
           render={(src, style) =>
             <div className="img" style={Object.assign(style, {

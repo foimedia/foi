@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
           if(this.status == 200) {
             const props = {
               widgetChat: chat,
-              displayGallery: node.dataset.gallery || chat.displayGallery,
+              hideGallery: !node.dataset.gallery || chat.hideGallery,
               more: node.dataset.more || 'button'
             };
             ReactDom.render(

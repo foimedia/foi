@@ -12,7 +12,7 @@ class ChatHome extends Component {
     if(chat.data !== null && chat.data !== undefined) {
       return (
         <section id="chat-home">
-          {chat.data.displayGallery &&
+          {!chat.data.hideGallery &&
             <Gallery />
           }
           <Stories />

@@ -14,8 +14,12 @@ export default class SmartLink extends Component {
     while ((el = el.parentElement) && !el.classList.contains('interactive'));
     return el;
   }
+  findLinkAncestor (el) {
+    while ((el = el.parentElement) && el.nodeName !== 'A');
+    return el;
+  }
   isInteractiveNode(el) {
-    return el.nodeName === 'A' || el.classList.contains('interactive') || this.findInteractiveAncestor(el);
+    return el.nodeName === 'A' || this.findLinkAncestor(el) || el.classList.contains('interactive') || this.findInteractiveAncestor(el);
   }
   handleBlockClick (event) {
     const { router } = this.context;
