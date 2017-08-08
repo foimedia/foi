@@ -53,13 +53,15 @@ class PostVideo extends PostMedia {
 
   getAspectRatio () {
     const file = this.getFile();
-    const w = file.width || 1;
-    const h = file.height || 1;
-    const r = gcd(w, h);
-    return [
-      w/r,
-      h/r
-    ];
+    if(file !== undefined) {
+      const w = file.width || 1;
+      const h = file.height || 1;
+      const r = gcd(w, h);
+      return [
+        w/r,
+        h/r
+      ];
+    }
   }
 
   getVideoSrc () {
