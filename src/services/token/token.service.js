@@ -1,7 +1,13 @@
 const AUTH_INTENT_TIMEOUT = 6; // in seconds
 
+const crypto = require('crypto');
+
 const hooks = require('./token.hooks');
 const telegram = require('./token.telegram');
+
+const generateToken = () => {
+  return crypto.randomBytes(6).toString('hex').toUpperCase();
+};
 
 module.exports = function () {
 
@@ -42,8 +48,16 @@ module.exports = function () {
       }
     },
     setup (app, path) {
+      const service = app.service(path);
       this.intents = {};
       setInterval(this.flush(path).bind(this), this.timeout/2);
+      if(app.io) {
+        app.io.on('connection', socket => {
+          const key = generateToken();
+          socket.feathers.key = key;
+          socket.emit('key', key);
+        });
+      }
       telegram(app, path);
     }
   };
@@ -57,7 +71,7 @@ module.exports = function () {
   service.filter((data, connection, hook) => {
     const { accessToken } = data;
     return app.passport.verifyJWT(accessToken, config).then(payload => {
-      if(payload.key == connection.payload.key) {
+      if(payload.key == connection.key) {
         return { accessToken };
       }
       return false;

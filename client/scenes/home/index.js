@@ -44,12 +44,8 @@ const HomeWrapper = styled.section`
 `
 
 class Home extends Component {
-  constructor (props) {
-    super(props);
-  }
-
   render () {
-    const { auth } = this.props;
+    const { auth, context } = this.props;
     return (
       <HomeWrapper id="home">
         <ContentHeader icon="asterisk">
@@ -60,17 +56,17 @@ class Home extends Component {
         </div>
         <ButtonGroup className="main-actions">
           <Button
-            primary={!auth.user || !auth.user.anonymous}
+            primary={auth.isSignedIn}
             href="https://github.com/miguelpeixe/foi"
             target="_blank"
             rel="external">
             <span className="fa fa-github"></span>
             Learn more
           </Button>
-          {(auth.isSignedIn && auth.user.anonymous) &&
+          {(!auth.isSignedIn && context.key !== undefined) &&
             <Button
               primary
-              href={`https://telegram.me/${foi.botName}?start=${auth.token}`}
+              href={`https://telegram.me/${foi.botName}?start=${context.key}`}
               target="_blank"
               rel="external">
               <span className="fa fa-telegram"></span>
@@ -106,7 +102,8 @@ class Home extends Component {
 
 function mapStateToProps (state) {
   return {
-    auth: state.auth
+    auth: state.auth,
+    context: state.context
   }
 }
 

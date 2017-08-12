@@ -62,7 +62,6 @@
     "mongodb": "^2.2.29",
     "node-telegram-bot-api": "^0.27.1",
     "normalize.css": "^7.0.0",
-    "passport-anonymous": "^1.0.1",
     "passport-strategy": "^1.0.0",
     "preact": "^8.2.1",
     "preact-compat": "^3.16.0",
