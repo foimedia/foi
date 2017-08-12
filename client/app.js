@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import { connect } from 'react-redux';
 import { withRouter, Route, Link, Switch } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
 
 import { auth } from 'services/feathers';
 import { hasUser, hasRole } from 'services/auth';
@@ -16,6 +15,7 @@ import Footer from 'components/footer';
 import Auth from 'components/auth';
 import { ButtonLink } from 'components/button';
 
+import Headers from 'containers/headers';
 import Authenticate from 'containers/authenticate';
 import UserChats from 'containers/user-chats';
 
@@ -54,9 +54,7 @@ class Application extends Component {
     const { auth } = this.props;
     return (
       <AppContainer>
-        {/* <Helmet>
-          <title>FOI - Publishing Bot</title>
-        </Helmet> */}
+        <Headers />
         <Authenticate />
         <Sidebar>
           <div className={`brand`}>
