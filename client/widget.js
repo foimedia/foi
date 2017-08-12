@@ -32,29 +32,38 @@ document.addEventListener('DOMContentLoaded', function() {
         const chatId = node.dataset.chat;
         init();
         window.foiStore.dispatch(loadChat(chatId));
-        const props = {
-          hideGallery: !node.dataset.gallery || chat.hideGallery,
-          more: node.dataset.more || 'button'
-        };
-        ReactDom.render(
-          <Provider store={window.foiStore}>
-            <div>
-              {props.displayGallery &&
-                <Bundle load={loadChatGallery}>
-                  {ChatGallery => (
-                    <ChatGallery {...props} />
-                  )}
-                </Bundle>
-              }
-              <Bundle load={loadChatStories}>
-                {ChatStories => (
-                  <ChatStories {...props} />
-                )}
-              </Bundle>
-            </div>
-          </Provider>,
-          node
-        );
+        const initChat = () => {
+          const { chats } = window.foiStore.getState();
+          if(chats[chatId]) {
+            const chat = chats[chatId];
+            unsubscribe();
+            const props = {
+              chat: chat,
+              hideGallery: !node.dataset.gallery || chat.hideGallery,
+              more: node.dataset.more || 'button'
+            };
+            ReactDom.render(
+              <Provider store={window.foiStore}>
+                <div>
+                  {props.displayGallery &&
+                    <Bundle load={loadChatGallery}>
+                      {ChatGallery => (
+                        <ChatGallery {...props} />
+                      )}
+                    </Bundle>
+                  }
+                  <Bundle load={loadChatStories}>
+                    {ChatStories => (
+                      <ChatStories {...props} />
+                    )}
+                  </Bundle>
+                </div>
+              </Provider>,
+              node
+            );
+          }
+        }
+        let unsubscribe = window.foiStore.subscribe(initChat);
       })(i);
     }
   }
