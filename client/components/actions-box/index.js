@@ -21,7 +21,7 @@ const Wrapper = styled.nav`
 const ActionsBox = styled.div`
   position: absolute;
   right: 0;
-  bottom: 2rem;
+  bottom: 2.3rem;
   background: #333;
   border-radius: ${styleUtils.radius/3}px;
   padding-top: .3rem;
@@ -85,7 +85,7 @@ const ActionsBox = styled.div`
     }
   }
   ${styleUtils.media.phablet`
-    bottom: 2.5rem;
+    bottom: 3rem;
   `}
 `
 
