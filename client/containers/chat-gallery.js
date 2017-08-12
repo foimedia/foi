@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Route } from 'react-router-dom';
+import { loadChatGallery, expandChatGallery } from 'actions/chats';
 import client from 'services/feathers';
 import Bundle from 'components/bundle';
 import Loader from 'components/loader';
@@ -20,121 +21,27 @@ class ChatGallery extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {
-      posts: undefined,
-      hasMore: true
-    }
-    this.service = client.service('posts');
-    this.newPost = this.newPost.bind(this);
     this.fetchMore = this.fetchMore.bind(this);
-    this.removedPost = this.removedPost.bind(this);
     this.goBack = this.goBack.bind(this);
   }
 
-  getChat () {
-    return this.props.chat.data || this.props.widgetChat;
-  }
-
-  getQuery () {
-    const chat = this.getChat();
-    const { types } = this.props;
-    return {
-      chatId: chat.id,
-      type: {
-        $in: types
-      },
-      $limit: 10,
-      $sort: {
-        sentAt: -1
-      }
-    };
-  }
-
-  fetch () {
-    // Clear posts before continuing
-    this.setState({
-      posts: undefined
-    });
-    this.service.find({
-      query: this.getQuery()
-    }).then(res => {
-      this.setState({
-        posts: res.data,
-        hasMore: res.total > res.limit
-      });
-    });
-  }
-
   fetchMore () {
-    const { hasMore, posts } = this.state;
-    if(hasMore) {
-      return new Promise((resolve, reject) => {
-        const chat = this.getChat();
-        this.service.find({
-          query: Object.assign(
-            this.getQuery(),
-            {
-              '$skip': posts.length
-            }
-          )
-        }).then(res => {
-          if(res.data.length) {
-            const newPosts = posts.concat(res.data)
-            this.setState({
-              posts: newPosts,
-              hasMore: res.total > newPosts.length
-            });
-            resolve(newPosts[0]);
-          } else {
-            this.setState({hasMore: false});
-            resolve();
-          }
-        });
-      });
-    }
-  }
-
-  newPost (newPost) {
-    const { types } = this.props;
-    const chat = this.props.chat.data || this.props.widgetChat;
-    if(newPost.chatId == chat.id && types.indexOf(newPost.type) !== -1) {
-      const { posts } = this.state;
-      const newPosts = posts.slice();
-      newPosts.unshift(newPost);
-      this.setState({posts: newPosts});
-    }
-  }
-
-  removedPost (removedPost) {
-    const chat = this.props.chat.data || this.props.widgetChat;
-    if(removedPost.chatId == chat.id) {
-      const { posts } = this.state;
-      const newPosts = posts.filter(story => story.id !== removedPost.id);
-      return this.setState({ posts: newPosts });
-    }
+    const { chat } = this.props;
+    this.props.expandChatGallery(chat.id);
   }
 
   componentDidMount () {
-    const chat = this.props.chat.data || this.props.widgetChat;
-    this.fetch(chat.id);
-    this.service.on('created', this.newPost);
-    this.service.on('removed', this.removedPost);
+    const { chat } = this.props;
+    this.props.loadChatGallery(chat.id);
   }
 
-  componentWillUnmount () {
-    this.service.off('created', this.newPost);
-    this.service.off('removed', this.removedPost);
-  }
-
-  componentDidUpdate (prevProps, prevState) {
-    const chat = this.props.chat.data || this.props.widgetChat;
-    const prevChat = prevProps.chat.data || prevProps.widgetChat;
-    if(chat) {
-      if(chat !== prevChat) {
-        this.fetch(chat.id);
+  componentWillReceiveProps (nextProps) {
+    const { chat } = this.props;
+    const nextChat = nextProps.chat;
+    if(nextChat !== undefined) {
+      if(chat !== undefined && chat.id !== nextChat.id) {
+        this.props.loadChatGallery(chat.id);
       }
-    } else {
-      this.setState({posts: undefined});
     }
   }
 
@@ -147,15 +54,14 @@ class ChatGallery extends Component {
 
   render () {
     var self = this;
-    const chat = this.getChat();
-    const { posts, hasMore } = this.state;
-    const { location, ...props } = this.props;
+    const { chat, posts, location, context } = this.props;
+    const hasMore = !!(context.limit + context.skip < context.total);
     const isModal = !!(
       location !== undefined &&
       location.state &&
       location.state.modal
-    )
-    if(chat !== null && chat !== undefined && posts !== undefined) {
+    );
+    if(chat !== undefined && posts !== undefined) {
       if(posts.length) {
         if(!isModal) {
           return (
@@ -172,12 +78,13 @@ class ChatGallery extends Component {
             </Bundle>
           )
         } else {
+          const post = posts.find(post => post.id == location.state.post);
           return (
             <Gallery
               loadMore={this.fetchMore}
               hasMore={hasMore}
               posts={posts}
-              post={location.state.post}
+              post={post}
               back={this.goBack} />
           )
         }
@@ -187,10 +94,27 @@ class ChatGallery extends Component {
   }
 }
 
-function mapStateToProps (state, ownProps) {
-  return {
-    chat: state.chats
-  };
+const getChatGallery = (chat, posts) => {
+  if(chat !== undefined && chat.gallery !== undefined) {
+    return chat.gallery.reduce((res, id) => {
+      if(posts[id])
+        res.push(posts[id]);
+      return res;
+    }, []);
+  }
 }
 
-export default connect(mapStateToProps)(ChatGallery);
+const mapStateToProps = (state, ownProps) => {
+  const { id } = ownProps.chat;
+  return {
+    posts: getChatGallery(state.chats[id], state.posts),
+    context: state.context.chats[id].gallery
+  };
+};
+
+const mapDispatchToProps = {
+  loadChatGallery,
+  expandChatGallery
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatGallery);

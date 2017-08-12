@@ -1,18 +1,18 @@
 import client from 'services/feathers';
-import { created, patched, removed } from 'actions/stories';
+import { created, patched, removed } from 'actions/posts';
 
 import { hasUser } from './auth';
 
-const service = client.service('stories');
+const service = client.service('posts');
 
 export default function init (store) {
-  const _created = data => {
+  const _created = (data) => {
     store.dispatch(created(data));
   };
-  const _patched = data => {
+  const _patched = (data) => {
     store.dispatch(patched(data));
   };
-  const _removed = data => {
+  const _removed = (data) => {
     store.dispatch(removed(data));
   };
   const subscribe = () => {
@@ -31,9 +31,3 @@ export default function init (store) {
     unsubscribe
   }
 };
-
-// Utils
-
-export function canRemove (story, auth) {
-  return hasUser(auth) && story.userId == auth.user.id;
-}

@@ -135,7 +135,7 @@ module.exports = {
       }
     ],
     create: [
-      disallow(['rest', 'socketio']),
+      disallow('rest', 'socketio'),
       restrictToAuthenticated(),
       ...restrictChatContent,
       when(isTelegram(), createMessageMedia()),
@@ -145,7 +145,7 @@ module.exports = {
       disallow('external')
     ],
     patch: [
-      disallow(['rest', 'socketio'])
+      disallow('rest', 'socketio')
     ],
     remove: [
       disallow('external'),

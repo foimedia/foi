@@ -2,13 +2,26 @@ import React from 'react';
 import ReactDom from 'react-dom';
 
 import { Provider } from 'react-redux';
-import { store } from 'services/feathers';
+
+import configureStore from 'store';
+import { loadChat } from 'actions/chats';
+import client from 'services/feathers';
+import initServices from 'services';
 
 import 'styles';
 
 import Bundle from 'components/bundle';
 import loadChatGallery from 'bundle-loader?lazy!containers/chat-gallery';
 import loadChatStories from 'bundle-loader?lazy!containers/chat-stories';
+
+window.foiInitialized = false;
+const init = function () {
+  if(!window.foiInitialized || window.foiInitialized == undefined) {
+    window.foiStore = configureStore();
+    initServices(foiStore);
+    window.foiInitialized = true;
+  }
+}
 
 document.addEventListener('DOMContentLoaded', function() {
   const nodes = document.getElementsByClassName('foi-widget');
@@ -17,38 +30,31 @@ document.addEventListener('DOMContentLoaded', function() {
       (function(i) {
         const node = nodes[i];
         const chatId = node.dataset.chat;
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', `${foi.url}/chats/${chatId}`, true);
-        xhr.send();
-        xhr.addEventListener('load', function(res) {
-          const chat = JSON.parse(res.target.response);
-          if(this.status == 200) {
-            const props = {
-              widgetChat: chat,
-              hideGallery: !node.dataset.gallery || chat.hideGallery,
-              more: node.dataset.more || 'button'
-            };
-            ReactDom.render(
-              <Provider store={store}>
-                <div>
-                  {props.displayGallery &&
-                    <Bundle load={loadChatGallery}>
-                      {ChatGallery => (
-                        <ChatGallery {...props} />
-                      )}
-                    </Bundle>
-                  }
-                  <Bundle load={loadChatStories}>
-                    {ChatStories => (
-                      <ChatStories {...props} />
-                    )}
-                  </Bundle>
-                </div>
-              </Provider>,
-              node
-            );
-          }
-        });
+        init();
+        window.foiStore.dispatch(loadChat(chatId));
+        const props = {
+          hideGallery: !node.dataset.gallery || chat.hideGallery,
+          more: node.dataset.more || 'button'
+        };
+        ReactDom.render(
+          <Provider store={window.foiStore}>
+            <div>
+              {props.displayGallery &&
+                <Bundle load={loadChatGallery}>
+                  {ChatGallery => (
+                    <ChatGallery {...props} />
+                  )}
+                </Bundle>
+              }
+              <Bundle load={loadChatStories}>
+                {ChatStories => (
+                  <ChatStories {...props} />
+                )}
+              </Bundle>
+            </div>
+          </Provider>,
+          node
+        );
       })(i);
     }
   }

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Route, Link, Switch, Redirect } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
-import { services } from 'services/feathers';
+import { loadChat } from 'actions/chats';
 import { getTitle } from 'services/chats';
 
 import ContentHeader from 'components/content/header';
@@ -19,48 +19,27 @@ class Chat extends Component {
 
   previousLocation = this.props.location
 
-  constructor (props) {
-    super(props);
-    this.state = {
-      chatId: parseInt(props.match.params.chatId)
-    }
-  }
-
   componentDidMount () {
-    const { chatId } = this.state;
+    const { chatId } = this.props.match.params;
     const { chat } = this.props;
-    if(chat.data === null || chat.data.id !== chatId) {
-      this.props.fetch(chatId);
-    }
+    this.props.loadChat(chatId);
   }
 
-  componentDidUpdate (prevProps, prevState) {
-    const { chatId } = this.state;
-    if(chatId !== prevState.chatId) {
-      this.props.fetch(chatId);
+  componentWillReceiveProps (nextProps) {
+    const { chatId } = this.props.match.params;
+    const nextId = nextProps.match.params.chatId;
+    if(chatId !== nextId) {
+      this.props.loadChat(nextId);
     }
   }
 
   componentWillUpdate (nextProps) {
-    const { location } = this.props
-    // set previousLocation if props.location is not modal
+    const { location } = this.props;
     if (
       nextProps.history.action !== 'POP' &&
       (!location.state || !location.state.modal)
     ) {
-      this.previousLocation = this.props.location
-    }
-  }
-
-  componentWillReceiveProps (nextProps) {
-    if(nextProps.match) {
-      const { params } = nextProps.match;
-      const { chatId } = this.state;
-      if(params.chatId != chatId) {
-        this.setState({
-          chatId: params.chatId
-        });
-      }
+      this.previousLocation = this.props.location;
     }
   }
 
@@ -78,32 +57,28 @@ class Chat extends Component {
       location.state.modal &&
       this.previousLocation !== location // not initial render
     )
-    if(chat.isError) {
-      return (
-        <ContentHeader icon="frown-o">
-          <p>ERROR: {chat.isError.message}</p>
-        </ContentHeader>
-      )
-    } else if(chat.data !== null) {
-      const { id } = chat.data;
+    if(chat !== undefined) {
+      const { id } = chat;
       return (
         <section id={`chat-${id}`}>
           <ContentHeader icon={this.isSettings() ? 'cog' : 'bullhorn'}>
             <h2>
               <Link to={`/c/${id}`}>
-                {getTitle(chat.data)}
+                {getTitle(chat)}
               </Link>
             </h2>
-            {chat.data.description &&
-              <p className="description">{chat.data.description}</p>
+            {chat.description &&
+              <p className="description">{chat.description}</p>
             }
           </ContentHeader>
           <Switch location={isModal ? this.previousLocation : location}>
-            <Route path={`${match.url}/settings`} component={Settings} />
-            <Route path={`${match.url}/s/:storyId`} component={Story} />
+            <Route path={`${match.path}/settings`} component={Settings} />
+            <Route path={`${match.path}/s/:storyId`} component={Story} />
             <Route component={Home} />
           </Switch>
-          {isModal ? <Route path={`${match.url}/s/:storyId`} component={Gallery} /> : null}
+          {isModal ? <Route path={`${match.path}/s/:storyId`} render={props => (
+            <Gallery chat={chat} {...props} />
+          )} /> : null}
         </section>
       )
     } else {
@@ -114,12 +89,12 @@ class Chat extends Component {
 
 function mapStateToProps (state, ownProps) {
   return {
-    chat: state.chats
+    chat: state.chats[ownProps.match.params.chatId]
   };
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  fetch: (chatId) => dispatch(services.chats.get(chatId))
-});
+const mapDispatchToProps = {
+  loadChat
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);

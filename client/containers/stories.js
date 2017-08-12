@@ -5,14 +5,10 @@ import Story from 'containers/story';
 
 class Stories extends Component {
 
-  constructor (props) {
-    super(props);
-  }
-
   render () {
     const { stories } = this.props;
-    if(stories === undefined) {
-      return <Loader size={20} />;
+    if(stories === undefined || !stories) {
+      return null;
     } else if(!stories.length) {
       return <p>No posts were found.</p>;
     } else {

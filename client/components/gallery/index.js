@@ -118,13 +118,11 @@ const ListWrapper = styled.section`
   .gallery-item.fade-entering, .gallery-item.fade-exiting {
     opacity: 0.01;
   }
-  .gallery-item.fade-entering, .gallery-item.fade-exiting {
+  .gallery-item.fade-exiting {
     transform: translate(0, -2rem);
   }
-  .gallery-item:first-child {
-    &.fade-entering {
-      transform: translate(-2rem, 0);
-    }
+  .gallery-item.fade-entering {
+    transform: translate(0, -2rem);
   }
   .gallery-item.fade-entered {
     transform: translate(0, 0);
@@ -151,21 +149,21 @@ export class GalleryList extends Component {
     return (
       <ListWrapper>
         <TransitionGroup>
-          {childrenArray.slice(0,5).map(child =>
-            <Transition key={child.key} timeout={200}>
+          {childrenArray.slice(0,5).map(child => (
+            <Transition key={child.key} timeout={100}>
               {(status) => (
                 <Link to={{
                   pathname: `/c/${child.props.post.chatId}/s/${child.props.post.storyId}`,
                   state: {
                     modal: true,
-                    post: child.props.post
+                    post: child.props.post.id
                   }
                 }} className={`gallery-item fade-${status} type-${child.props.post.type}`}>
                   {child}
                 </Link>
               )}
             </Transition>
-          )}
+          ))}
         </TransitionGroup>
         <div className="clear" />
       </ListWrapper>
@@ -175,14 +173,14 @@ export class GalleryList extends Component {
 
 class GalleryNavLink extends Component {
   render () {
-    const { post, index, nextIndex, ...props } = this.props;
+    const { post, ...props } = this.props;
     if(post !== undefined) {
       return (
         <Link to={{
           pathname: `/c/${post.chatId}/s/${post.storyId}`,
           state: {
             modal: true,
-            post: post
+            post: post.id
           }
         }} replace>
           {props.children}
@@ -211,6 +209,10 @@ export class Gallery extends Component {
     this.state = {
       open: true,
       post: undefined,
+      nav: {
+        next: undefined,
+        prev: undefined
+      },
       go: false
     };
     this.open = this.open.bind(this);
@@ -221,9 +223,10 @@ export class Gallery extends Component {
   }
 
   componentDidMount () {
-    const { post, index } = this.props;
+    const { post } = this.props;
     if(post !== undefined) {
-      this.open(post, index);
+      this.open(post);
+      this.setSiblings();
     }
   }
 
@@ -243,7 +246,8 @@ export class Gallery extends Component {
       this.setState({
         go: false
       });
-      this.open(nextProps.post, nextProps.index);
+      this.open(nextProps.post);
+      this.setSiblings();
     }
   }
 
@@ -276,12 +280,6 @@ export class Gallery extends Component {
       open: true,
       post: post
     });
-    this.findNext().then(post => {
-      this.setState({
-        prev: this.findPrev(),
-        next: post
-      });
-    });
   }
 
   close (redirect = false) {
@@ -297,7 +295,7 @@ export class Gallery extends Component {
   }
 
   next () {
-    if(this.state.next !== undefined) {
+    if(this.state.nav.next !== undefined) {
       this.setState({
         go: 'next'
       });
@@ -305,7 +303,7 @@ export class Gallery extends Component {
   }
 
   prev () {
-    if(this.state.prev !== undefined) {
+    if(this.state.nav.prev !== undefined) {
       this.setState({
         go: 'prev'
       });
@@ -326,38 +324,38 @@ export class Gallery extends Component {
     return found;
   }
 
-  findNext () {
-    const { loadMore, hasMore } = this.props;
-    return new Promise((resolve, reject) => {
-      let next = this._find(1);
-      if(next !== undefined) {
-        resolve(next);
-      } else if(hasMore) {
-        loadMore().then(() => {
-          resolve(this._find(1));
-        });
-      } else {
-        reject();
+  setSiblings () {
+    const { post } = this.state;
+    const { hasMore, posts, loadMore } = this.props;
+    const index = this.findIndex(post);
+    if(index+2 >= posts.length && hasMore) {
+      loadMore();
+    }
+    this.setState({
+      nav: {
+        prev: this._find(-1),
+        next: this._find(1)
       }
-    }).catch(() => undefined);
+    });
   }
 
-  findPrev () {
-    return this._find(-1);
+  findIndex (post) {
+    const { posts } = this.props;
+    return posts.findIndex(p => p.id == post.id);
   }
 
   render () {
-    const { posts, hasMore, back, ...props } = this.props;
-    const { open, post, index, next, prev, go } = this.state;
+    const { posts, back } = this.props;
+    const { open, post, nav, go } = this.state;
     if(go) {
-      const target = this.state[go];
+      const target = nav[go];
       if(target !== undefined) {
         return (
           <Redirect to={{
             pathname: `/c/${target.chatId}/s/${target.storyId}`,
             state: {
               modal: true,
-              post: target
+              post: target.id
             }
           }} replace />
         )
@@ -375,11 +373,11 @@ export class Gallery extends Component {
                   Close
                   <span className="fa fa-close"></span>
                 </Link>
-                <GalleryNavLink post={next}>
+                <GalleryNavLink post={nav.next}>
                   Next
                   <span className="fa fa-chevron-right"></span>
                 </GalleryNavLink>
-                <GalleryNavLink post={prev}>
+                <GalleryNavLink post={nav.prev}>
                   <span className="fa fa-chevron-left"></span>
                   Previous
                 </GalleryNavLink>

@@ -59,9 +59,8 @@ module.exports = function () {
     return app.passport.verifyJWT(accessToken, config).then(payload => {
       if(payload.key == connection.payload.key) {
         return { accessToken };
-      } else {
-        return false;
       }
+      return false;
     });
   });
 

@@ -12,7 +12,6 @@ class InfiniteScroll extends Component {
     this.handleScroll = this.handleScroll.bind(this);
   }
   componentDidMount () {
-    this.loadCount = 0;
     this.attachListener();
   }
   componentDidUpdate() {
@@ -45,7 +44,7 @@ class InfiniteScroll extends Component {
     if(offset < Number(this.props.threshold)) {
       this.detachListener();
       if(typeof this.props.loadMore === 'function') {
-        this.props.loadMore(this.loadCount += 1);
+        this.props.loadMore();
       }
     }
   }

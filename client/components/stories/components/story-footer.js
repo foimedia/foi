@@ -42,9 +42,9 @@ const StoryFooterBox = styled.footer`
     position: absolute;
     bottom: 0;
     right: 0;
+    line-height: 1;
     ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
-      padding-top: ${styleUtils.margins[i]/2}rem;
-      padding-bottom: ${styleUtils.margins[i]/2}rem;
+      padding-bottom: ${styleUtils.margins[i]}rem;
       padding-right: ${styleUtils.margins[i]}rem;
       padding-left: ${styleUtils.margins[i]}rem;
     `)}

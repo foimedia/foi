@@ -18,7 +18,15 @@ module.exports = (options = {}) => hook => {
         if(chat[options.userAs]) {
           chat[options.userAs] = _.union(data[0][options.userAs] || [], chat[options.userAs]);
         }
-        return service.patch(data[0][service.id], _.omit(chat, ['id']));
+        const props = Object.keys(chat);
+        const changed = props.some(prop => (
+          JSON.stringify(data[0][prop]) != JSON.stringify(chat[prop])
+        ));
+        if(changed) {
+          return service.patch(data[0][service.id], _.omit(chat, ['id']));
+        } else {
+          return Promise.resolve(data[0]);
+        }
       } else {
         return service.create(Object.assign({
           [service.id]: chat.id

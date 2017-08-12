@@ -11,7 +11,7 @@ const restrict = [
   })
 ];
 
-const firstUser = () => hook => {
+const setFirstUser = () => hook => {
   return hook.service.find({$limit: 1}).then(users => {
     if(users.total === 0) {
       hook.firstUser = true;
@@ -21,7 +21,7 @@ const firstUser = () => hook => {
   });
 };
 
-const defaultRoles = () => hook => {
+const setDefaultRoles = () => hook => {
   if(!hook.data.role) {
     hook.data.roles = hook.app.get('defaultUserRoles') || [];
   }
@@ -48,8 +48,8 @@ module.exports = {
     ],
     create: [
       disallow('external'),
-      defaultRoles(),
-      firstUser(),
+      setDefaultRoles(),
+      setFirstUser(),
       setCreatedAt()
     ],
     update: [

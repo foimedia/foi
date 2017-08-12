@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import styleUtils from 'services/style-utils';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { services } from 'services/feathers';
+import { loadStory } from 'actions/stories';
+import styleUtils from 'services/style-utils';
 import { getTitle } from 'services/chats';
 import StoryContainer from 'containers/story';
 import ContentHeader from 'components/content/header';
@@ -31,42 +31,28 @@ class Story extends Component {
     };
   }
   componentDidMount () {
-    const { storyId } = this.state;
-    this.props.fetch(storyId);
-  }
-  componentDidUpdate (prevProps, prevState) {
-    const { storyId } = this.state;
-    if(storyId !== prevState.storyId) {
-      this.props.fetch(storyId);
-    }
+    const { storyId } = this.props.match.params;
+    this.props.loadStory(storyId);
   }
   componentWillReceiveProps (nextProps, nextState) {
+    const { storyId } = this.props.match.params;
     if(nextProps.match) {
       const { params } = nextProps.match;
-      const { storyId } = this.state;
-      if(params.storyId != storyId) {
-        this.setState({
-          storyId: params.storyId
-        });
+      if(params.storyId !== storyId) {
+        this.props.loadStory();
       }
     }
   }
   render () {
     const { story } = this.props;
-    if(story.isError) {
-      return (
-        <ContentHeader icon="frown-o" inner={true}>
-          <p>ERROR: {story.isError.message}</p>
-        </ContentHeader>
-      )
-    } else if(story.data !== null) {
+    if(story !== undefined) {
       return (
         <div>
           <Wrapper className="single-story">
-            <StoryContainer story={story.data} />
+            <StoryContainer story={story} />
             <Footer>
               <p>
-                <Link to={`/c/${story.data.chatId}`}>View all stories from this chat</Link>
+                <Link to={`/c/${story.chatId}`}>View all stories from this chat</Link>
               </p>
             </Footer>
           </Wrapper>
@@ -79,15 +65,14 @@ class Story extends Component {
 }
 
 function mapStateToProps (state, ownProps) {
+  const { storyId } = ownProps.match.params;
   return {
-    story: state.stories
+    story: state.stories[storyId]
   };
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  fetch: (storyId) => {
-    dispatch(services.stories.get(storyId))
-  }
-});
+const mapDispatchToProps = {
+  loadStory
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Story);

@@ -16,11 +16,16 @@ module.exports = (options = {}) => hook => {
       },
       paginate: false
     }).then(data => {
-      const user = data[0];
-      const currentChats = user[options.as] || {};
-      return service.patch(user[service.id], {
-        [`${options.as}.${chat.id}`]: Object.assign(currentChats[chat.id] || {}, {})
-      }).then(() => hook);
+      if(data.length) {
+        const user = data[0];
+        const currentChats = user[options.as] || {};
+        if(!user[options.as] || !user[options.as][chat.id]) {
+          return service.patch(user[service.id], {
+            [`${options.as}.${chat.id}`]: Object.assign(currentChats[chat.id] || {}, {})
+          }).then(() => hook);
+        }
+      }
+      return hook;
     });
 
   }

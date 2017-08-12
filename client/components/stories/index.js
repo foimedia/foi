@@ -6,7 +6,7 @@ import Transition from 'react-transition-group/Transition';
 
 const StoriesWrapper = styled.section`
   .story-fade {
-    transition: all 200ms ${styleUtils.transition};
+    transition: all 100ms ${styleUtils.transition};
   }
   .story-fade.fade-entering, .story-fade.fade-exiting {
     transform: translate(0, -1.5rem);
@@ -34,7 +34,7 @@ class Stories extends Component {
       <StoriesWrapper className="stories">
         <TransitionGroup>
           {childrenArray.map((child, i) =>
-            <Transition key={child.key} timeout={200}>
+            <Transition key={child.key} timeout={100}>
               {(status) => (
                 <div className={`story-fade fade-${status}`}>
                   {child}
