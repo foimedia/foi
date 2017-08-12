@@ -32,23 +32,24 @@ class Auth extends Component {
 
   constructor (props) {
     super(props);
-    this.logout = this.props.logout;
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  handleLogout (event) {
+    event.preventDefault();
+    this.props.logout();
   }
 
   render () {
     const { auth } = this.props;
-    if(auth.isSignedIn && !auth.user.anonymous) {
-      return (
-        <AuthWrapper>
-          <nav id="auth" className="inner">
-            <Button primary small href="javascript:void(0);" onClick={this.logout.bind(this)}>Logout</Button>
-          </nav>
-          <h3>Hello, {auth.user.first_name}.</h3>
-        </AuthWrapper>
-      )
-    } else {
-      return null;
-    }
+    return (
+      <AuthWrapper>
+        <nav id="auth" className="inner">
+          <Button primary small href="javascript:void(0);" onClick={this.handleLogout}>Logout</Button>
+        </nav>
+        <h3>Hello, {auth.user.first_name}.</h3>
+      </AuthWrapper>
+    );
   }
 
 }

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { withRouter, Route, Link, Switch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
+import { auth } from 'services/feathers';
 import { hasUser, hasRole } from 'services/auth';
 import styleUtils from 'services/style-utils';
 
@@ -56,19 +57,19 @@ class Application extends Component {
         {/* <Helmet>
           <title>FOI - Publishing Bot</title>
         </Helmet> */}
-        <Authenticate onRef={ref => (self.logout = ref.logout)} />
+        <Authenticate />
         <Sidebar>
           <div className={`brand`}>
             <Link to="/">
               <img src={require('images/logo_white.svg')} alt="FOI" />
             </Link>
           </div>
-          <Auth
-            {...this.state}
-            logout={logout => {
-              self.logout()
-            }}
-          />
+          {auth.isSignedIn &&
+            <Auth
+              {...this.state}
+              logout={self.props.logout}
+            />
+          }
           <div className="inner clear"></div>
           {hasUser(auth) &&
             <div className="inner">
@@ -108,4 +109,8 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps)(Application));
+const mapDispatchToProps = (dispatch) => ({
+  logout: () => dispatch(auth.logout())
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Application));

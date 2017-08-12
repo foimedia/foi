@@ -100,7 +100,7 @@ class Home extends Component {
   }
 }
 
-function mapStateToProps (state) {
+const mapStateToProps = state => {
   return {
     auth: state.auth,
     context: state.context

@@ -10,7 +10,6 @@ class Authenticate extends Component {
     this.authorization = client.service('authorize');
     this.setKey = this.setKey.bind(this);
     this.doAuth = this.doAuth.bind(this);
-    this.logout = this.logout.bind(this);
   }
 
   setKey (key) {
@@ -35,19 +34,18 @@ class Authenticate extends Component {
   }
 
   doAuth (token = false) {
-    const { authenticate, logout } = this.props;
     if(!token) {
       if(window.localStorage['feathers-jwt']) {
         // User not found auth error is not returning client error
-        return authenticate();
+        this.props.authenticate();
       }
     // With token, logout from previous session and start new one with token
     } else {
       token = token.accessToken || token;
       if(window.localStorage['feathers-jwt']) {
-        logout();
+        this.props.logout();
       }
-      return authenticate({
+      this.props.authenticate({
         strategy: 'jwt',
         accessToken: token
       }).then(data => {
@@ -61,19 +59,13 @@ class Authenticate extends Component {
 
   componentDidMount () {
     this.doAuth();
-    this.authorization.on('created', this.doAuth);
-    this.props.onRef(this);
     client.io.on('key', this.setKey);
+    this.authorization.on('created', this.doAuth);
   }
 
   componentWillUnmount () {
-    this.authorization.off('created', this.doAuth);
-    this.props.onRef(undefined);
     client.io.off('key', this.setKey);
-  }
-
-  logout () {
-    this.props.logout();
+    this.authorization.off('created', this.doAuth);
   }
 
   render () {
