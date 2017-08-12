@@ -7,7 +7,7 @@ import authentication from 'feathers-authentication-client';
 import reduxifyServices from 'feathers-redux';
 import reduxifyAuthentication from 'feathers-reduxify-authentication';
 
-const url = foi.url;
+const url = foi.server;
 
 const socket = io(url);
 

@@ -2,26 +2,27 @@ version: '2'
 services:
   app:
     image: miguelpeixe/foi:latest
+    # Comment-out below to pull image from docker hub
     build: .
-    # Uncomment below to watch for code changes
-    # command: nodemon src/
+    # Comment-out below for production
+    command: nodemon src/
     links:
       - mongo
     ports:
     - 3030:3030
     volumes:
-    # Uncomment below for development
-    # - /src/node_modules
-    # - .:/src
-    # Uncomment below to persist app data
+    # Development volumes. Comment-out for production
+    - /src/node_modules
+    - .:/src
+    # Uncomment below for production (persist app data)
     # - ./.data/files:/src/files
     # - ./.data/public:/src/public
     environment:
       NODE_ENV: development
   mongo:
     image: mongo
-    volumes:
-    # Uncomment below to persist database
+    # Uncomment below for production (persist database)
+    # volumes:
     # - ./.data/database:/data/db
     ports:
     - 27018:27017

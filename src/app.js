@@ -75,11 +75,15 @@ if(env !== 'production') {
     heartbeat: 2000
   }));
 } else {
-  app.use(feathers.static(webpackConfig.output.path));
-  // Allow pushState
-  app.get('/*', function(req, res) {
-    res.sendFile(path.join(webpackConfig.output.path, 'index.html'));
-  });
+  // Assume that different public and server urls means the public files are being served from somewhere else.
+  const url = app.get('url');
+  if(typeof url === 'string' || url.public === url.server) {
+    app.use(feathers.static(webpackConfig.output.path));
+    // Allow pushState
+    app.get('/*', function(req, res) {
+      res.sendFile(path.join(webpackConfig.output.path, 'index.html'));
+    });
+  }
 }
 
 app.hooks(appHooks);

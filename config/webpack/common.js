@@ -7,6 +7,18 @@ const GitRevisionPlugin = require('git-revision-webpack-plugin');
 
 const gitRevisionPlugin = new GitRevisionPlugin();
 
+const url = config.get('url');
+let public, server, cdn;
+if(typeof url == 'string') {
+  public = server = cdn = url;
+} else {
+  public = url.public;
+  server = url.server || public;
+  cdn = url.cdn || public;
+}
+
+console.log(public, server, cdn);
+
 module.exports = {
   entry: {
     main: ['./client/index']
@@ -23,7 +35,7 @@ module.exports = {
   },
   output: {
     path: path.resolve('public'),
-    publicPath: config.get('url') + '/'
+    publicPath: public + '/'
   },
   plugins: [
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|pt-br/),
@@ -32,7 +44,9 @@ module.exports = {
         'NODE_ENV': JSON.stringify(env)
       },
       'foi': {
-        'url': JSON.stringify(config.get('url')),
+        'public': JSON.stringify(public),
+        'server': JSON.stringify(server),
+        'cdn': JSON.stringify(cdn),
         'botName': JSON.stringify(config.get('telegram').username),
         'defaultUserRoles': JSON.stringify(config.get('defaultUserRoles')),
         'VERSION': JSON.stringify(gitRevisionPlugin.version())

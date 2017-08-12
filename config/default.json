@@ -1,6 +1,5 @@
 {
   "url": "http://localhost:3030",
-  "host": "localhost",
   "public": "../client/",
   "filesDir": "../files/",
   "paginate": {

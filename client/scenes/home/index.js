@@ -88,7 +88,7 @@ class Home extends Component {
           <h3>Share your feed</h3>
           <p>To publish your live feed on your website you can use our widget! Paste the code below right before the <Code>{`</body>`}</Code> closing tag:</p>
           <SelectableCode>
-            {`<script type="text/javascript" src="${foi.url}/widget.js" async></script>`}
+            {`<script type="text/javascript" src="${foi.public}/widget.js" async></script>`}
           </SelectableCode>
           <p>Use the <Code>{`<div />`}</Code> below where you'd like to display your feed, changing the <Code>data-chat</Code> property to your chat id:</p>
           <SelectableCode>

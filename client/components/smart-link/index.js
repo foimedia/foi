@@ -31,12 +31,12 @@ export default class SmartLink extends Component {
           redirect: true
         });
       } else if(router === undefined) {
-        window.open(event.target.href || foi.url + (to.pathname || to), this.isLocal() ? '_self' : '_blank');
+        window.open(event.target.href || foi.public + (to.pathname || to), this.isLocal() ? '_self' : '_blank');
       }
     }
   }
   isLocal () {
-    return foi.url.indexOf(location.hostname) !== -1;
+    return foi.public.indexOf(location.hostname) !== -1;
   }
   render () {
     const { router } = this.context;
@@ -56,7 +56,7 @@ export default class SmartLink extends Component {
       } else {
         const rel = this.isLocal() ? '' : 'external';
         const target = this.isLocal() ? '_self' : '_blank';
-        return <a href={`${foi.url}${to.pathname || to}`} rel={rel} target={target} {...props}>{children}</a>
+        return <a href={`${foi.public}${to.pathname || to}`} rel={rel} target={target} {...props}>{children}</a>
       }
     }
 

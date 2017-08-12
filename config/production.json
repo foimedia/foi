@@ -1,4 +1,8 @@
 {
-  "host": "foi-app.feathersjs.com",
+  "url": {
+    "public": "https://foi.example.com",
+    "server": "https://api.foi.example.com",
+    "cdn": "https://cdn.foi.example.com"
+  },
   "port": "PORT"
 }

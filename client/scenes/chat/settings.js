@@ -178,7 +178,7 @@ class ChatSettings extends Component {
                   <label>
                     URL
                     <SelectableCode>
-                      {`${foi.url}/c/${chat.id}`}
+                      {`${foi.public}/c/${chat.id}`}
                     </SelectableCode>
                   </label>
                 </p>
@@ -192,7 +192,7 @@ class ChatSettings extends Component {
                 </p>
                 <p>Make sure to add the widget javascript to your page:</p>
                 <SelectableCode>
-                  {`<script type="text/javascript" src="${foi.url}/widget.js" async></script>`}
+                  {`<script type="text/javascript" src="${foi.public}/widget.js" async></script>`}
                 </SelectableCode>
               </Form>
             </div>

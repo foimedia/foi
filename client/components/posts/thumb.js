@@ -32,7 +32,7 @@ const Wrapper = styled.div`
 
 export default class PostThumb extends Component {
   getUrl (file) {
-    return foi.url + '/files/' + file.file_id + '/' + file.file_name;
+    return foi.cdn + '/files/' + file.file_id + '/' + file.file_name;
   }
   getThumb (index) {
     const { post } = this.props;

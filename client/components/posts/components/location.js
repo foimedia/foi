@@ -5,11 +5,11 @@ import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import styleUtils from 'services/style-utils';
 
 import L from 'leaflet';
-L.Icon.Default.imagePath = foi.url;
+L.Icon.Default.imagePath = foi.public;
 L.Icon.Default.mergeOptions({
-    iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png').split(foi.url)[1],
-    iconUrl: require('leaflet/dist/images/marker-icon.png').split(foi.url)[1],
-    shadowUrl: require('leaflet/dist/images/marker-shadow.png').split(foi.url)[1],
+    iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png').split(foi.public)[1],
+    iconUrl: require('leaflet/dist/images/marker-icon.png').split(foi.public)[1],
+    shadowUrl: require('leaflet/dist/images/marker-shadow.png').split(foi.public)[1],
 });
 
 const MapContainer = styled.div`

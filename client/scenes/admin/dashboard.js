@@ -14,7 +14,7 @@ class Dashboard extends Component {
             <tbody>
               <tr>
                 <th>Site url</th>
-                <td>{foi.url}</td>
+                <td>{foi.public}</td>
               </tr>
               <tr>
                 <th>Bot name</th>
