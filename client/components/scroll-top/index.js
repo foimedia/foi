@@ -2,13 +2,16 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
 class ScrollToTop extends Component {
-  componentDidUpdate(prevProps) {
+  isModal (prevLocation) {
     const { location } = this.props;
-    if (
-      location !== prevProps.location &&
+    return !(
+      location !== prevLocation &&
       (!location.state || !location.state.modal) &&
-      (!prevProps.location.state || !prevProps.location.state.modal)
-    ) {
+      (!prevLocation.state || !prevProps.location.state.modal)
+    )
+  }
+  componentDidUpdate(prevProps) {
+    if (!this.isModal(prevProps.location)) {
       window.scrollTo(0, 0)
     }
   }

@@ -2,7 +2,7 @@ import { createStore, applyMiddleware } from 'redux';
 import rootReducer from 'reducers';
 import middlewares from 'middleware';
 
-export default function configureStore(services, initialState) {
+export default function configureStore(initialState) {
   // Engage the Chrome extension "Redux DevTools" if it is installed on the browser.
   // This extension watches reducers and logs their invocations, actions and changing state.
   // It caches activity so you can 'time travel' through state changes.
@@ -15,5 +15,5 @@ export default function configureStore(services, initialState) {
 
   const createStoreWithMiddlewares = applyMiddleware(...middlewares)(createStoreWithDevTools);
 
-  return createStoreWithMiddlewares(rootReducer(services), initialState);
+  return createStoreWithMiddlewares(rootReducer(), initialState);
 }

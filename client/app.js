@@ -13,7 +13,7 @@ import Content from 'components/content';
 import ContentHeader from 'components/content/header';
 import Footer from 'components/footer';
 import Auth from 'components/auth';
-import Button, { ButtonLink } from 'components/button';
+import { ButtonLink } from 'components/button';
 
 import Authenticate from 'containers/authenticate';
 import UserChats from 'containers/user-chats';
@@ -48,7 +48,6 @@ const AppContainer = styled.div`
 `;
 
 class Application extends Component {
-
   render () {
     const self = this;
     const { auth } = this.props;
@@ -101,11 +100,12 @@ class Application extends Component {
       </AppContainer>
     );
   }
-
 }
 
 const mapStateToProps = (state, ownProps) => {
-  return { auth: state.auth }
+  return {
+    auth: state.auth
+  }
 }
 
 export default withRouter(connect(mapStateToProps)(Application));

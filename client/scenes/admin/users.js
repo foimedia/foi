@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { services } from 'services/feathers';
+import { findUsers } from 'actions/users';
 import ContentHeader from 'components/content/header';
 import Table from 'components/table';
 import Loader from 'components/loader';
@@ -10,17 +10,11 @@ class Users extends Component {
     super(props);
   }
   componentDidMount () {
-    this.props.fetch();
+    this.props.findUsers();
   }
   render () {
     const { users } = this.props;
-    if(users.isError) {
-      return (
-        <ContentHeader icon="frown-o" inner={true}>
-          <p>ERROR: {users.isError.message}</p>
-        </ContentHeader>
-      )
-    } else if(users.queryResult !== null) {
+    if(users !== undefined) {
       return (
         <div className="sections">
           <div className="users content-section">
@@ -37,7 +31,7 @@ class Users extends Component {
                 </tr>
               </thead>
               <tbody>
-                {users.queryResult.data.map(user => (
+                {users.map(user => (
                   <tr>
                     <td>{`${user.first_name} ${user.last_name}`}</td>
                     <td>{user.roles.join(', ')}</td>
@@ -57,12 +51,12 @@ class Users extends Component {
 
 const mapStateToProps = state => {
   return {
-    users: state.users
+    users: Object.values(state.users)
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  fetch: () => dispatch(services.users.find())
-})
+const mapDispatchToProps = {
+  findUsers
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Users);

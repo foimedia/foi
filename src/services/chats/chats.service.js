@@ -3,6 +3,7 @@ const createService = require('feathers-mongodb');
 const hooks = require('./chats.hooks');
 const filters = require('./chats.filters');
 const telegram = require('./chats.telegram');
+const subscription = require('./chats.subscription');
 
 module.exports = function () {
   const app = this;
@@ -15,6 +16,10 @@ module.exports = function () {
     setup (app, path) {
       let result = this._super ? this._super.apply(this, arguments) : undefined;
       telegram(app, path);
+      // Socket chat subscription
+      if(app.io) {
+        subscription(app, this);
+      }
       return result;
     }
   }));

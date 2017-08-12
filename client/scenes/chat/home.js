@@ -1,33 +1,39 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import { updateContext } from 'actions/context';
 import Stories from 'containers/chat-stories';
 import Gallery from 'containers/chat-gallery';
 
 import Loader from 'components/loader';
 
 class ChatHome extends Component {
+  componentDidMount () {
+    const { chat } = this.props;
+  }
   render () {
     const { chat } = this.props;
-    if(chat.data !== null && chat.data !== undefined) {
+    if(chat !== undefined) {
       return (
         <section id="chat-home">
-          {!chat.data.hideGallery &&
-            <Gallery />
+          {!chat.hideGallery &&
+            <Gallery chat={chat} />
           }
-          <Stories />
+          <Stories chat={chat} />
         </section>
       )
-    } else {
-      return <Loader size={20} />
     }
+    return null;
   }
 }
 
-const mapStateToProps = state => {
+
+const mapStateToProps = (state, ownProps) => {
+  const { chatId } = ownProps.match.params;
   return {
-    chat: state.chats
+    chat: state.chats[chatId]
   }
 };
 
-export default connect(mapStateToProps)(ChatHome);
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatHome);

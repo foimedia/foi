@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import client from 'services/feathers';
+import { loadChatStories, expandChatStories } from 'actions/chats';
 import Loader from 'components/loader';
 import Button from 'components/button';
 import InfiniteScroll from 'components/infinite-scroll';
@@ -15,136 +15,51 @@ class ChatStories extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {
-      stories: undefined,
-      hasMore: true
-    }
-    this.service = client.service('stories');
-    this.newStory = this.newStory.bind(this);
     this.fetchMore = this.fetchMore.bind(this);
-    this.removedStory = this.removedStory.bind(this);
     this.renderStories = this.renderStories.bind(this);
   }
 
-  getChat () {
-    return this.props.chat.data || this.props.widgetChat;
-  }
-
-  getQuery () {
-    const chat = this.getChat();
-    return {
-      chatId: chat.id,
-      $sort: {
-        createdAt: chat.archived ? 1 : -1
-      }
-    };
-  }
-
-  fetch () {
-    // Clear stories before continuing
-    this.setState({
-      stories: undefined
-    });
-    this.service.find({
-      query: this.getQuery()
-    }).then(res => {
-      this.setState({
-        stories: res.data,
-        hasMore: res.total > res.limit
-      });
-    });
-  }
-
-  fetchMore (count) {
-    const { hasMore, stories } = this.state;
-    if(hasMore) {
-      const chat = this.getChat();
-      this.service.find({
-        query: Object.assign(
-          this.getQuery(),
-          {
-            '$skip': stories.length
-          }
-        )
-      }).then(res => {
-        if(res.data.length) {
-          const newStories = stories.concat(res.data)
-          this.setState({
-            stories: newStories,
-            hasMore: res.total > newStories.length
-          });
-        } else {
-          this.setState({hasMore: false});
-        }
-      });
-    }
-  }
-
-  newStory (newStory) {
-    const chat = this.props.chat.data || this.props.widgetChat;
-    if(newStory.chatId == chat.id) {
-      const { stories } = this.state;
-      const newStories = stories.slice();
-      newStories.unshift(newStory);
-      this.setState({stories: newStories});
-    }
-  }
-
-  removedStory (removedStory) {
-    const chat = this.props.chat.data || this.props.widgetChat;
-    if(removedStory.chatId == chat.id) {
-      const { stories } = this.state;
-      const newStories = stories.filter(story => story.id !== removedStory.id);
-      return this.setState({ stories: newStories });
-    }
+  fetchMore () {
+    this.props.expandChatStories(this.props.chat.id);
   }
 
   componentDidMount () {
-    const chat = this.props.chat.data || this.props.widgetChat;
-    this.fetch(chat.id);
-    this.service.on('created', this.newStory);
-    this.service.on('removed', this.removedStory);
-  }
-
-  componentWillUnmount () {
-    this.service.off('created', this.newStory);
-    this.service.off('removed', this.removedStory);
+    const { chat } = this.props;
+    this.props.loadChatStories(chat.id);
   }
 
   componentDidUpdate (prevProps, prevState) {
-    const chat = this.props.chat.data || this.props.widgetChat;
-    const prevChat = prevProps.chat.data || prevProps.widgetChat;
-    if(chat) {
-      if(chat !== prevChat) {
-        this.fetch(chat.id);
+    const { chat } = this.props;
+    if(chat !== undefined) {
+      if(prevProps.chat !== undefined && chat.id !== prevProps.chat.id) {
+        this.props.loadChatStories(chat.id);
       }
-    } else {
-      this.setState({stories: undefined});
     }
   }
 
   renderStories () {
-    const { stories, hasMore } = this.state;
-    const { more } = this.props;
-    const renders = {
-      'scroll': Stories => (
-        <InfiniteScroll loadMore={this.fetchMore} hasMore={hasMore}>
-          <Stories stories={stories} />
-        </InfiniteScroll>
-      ),
-      'button': Stories => (
-        <div>
-          <Stories stories={stories} />
-          {hasMore &&
-            <Button className="button" href="javascript:void(0);" onClick={this.fetchMore}>Load more</Button>
-          }
-        </div>
-      )
-    }
-    if(stories !== undefined) {
+    const { stories, more, context } = this.props;
+    if(stories !== undefined && stories) {
+      const hasMore = !!(context.limit + context.skip < context.total);
+      const display = stories.slice(0, (context.limit + context.skip));
+      const renders = {
+        'scroll': (Component) => (
+          <InfiniteScroll loadMore={this.fetchMore} hasMore={hasMore}>
+            <Component stories={display} />
+          </InfiniteScroll>
+        ),
+        'button': (Component) => (
+          <div>
+            <Component stories={display} />
+            {hasMore &&
+              <Button className="button" href="javascript:void(0);" onClick={this.fetchMore}>Load more</Button>
+            }
+          </div>
+        )
+      }
       return (
         <Bundle load={loadStories}>
-          {Stories => renders[more](Stories)}
+          {(Stories) => renders[more](Stories)}
         </Bundle>
       )
     } else {
@@ -153,25 +68,39 @@ class ChatStories extends Component {
   }
 
   render () {
-    const chat = this.getChat();
-    const { stories } = this.state;
+    const { chat } = this.props;
     if(chat !== null && chat !== undefined) {
       return (
         <section id={`chat-${chat.id}-stories`}>
           {this.renderStories()}
         </section>
       )
-    } else {
-      return <Loader size={20} />
     }
   }
 
 }
 
-function mapStateToProps (state, ownProps) {
-  return {
-    chat: state.chats
-  };
+const getChatStories = (chat, stories) => {
+  if(chat !== undefined && chat.stories !== undefined) {
+    return chat.stories.reduce((res, id) => {
+      if(stories[id])
+        res.push(stories[id]);
+      return res;
+    }, []);
+  }
 }
 
-export default connect(mapStateToProps)(ChatStories);
+const mapStateToProps = (state, ownProps) => {
+  const { id } = ownProps.chat;
+  return {
+    stories: getChatStories(state.chats[id], state.stories),
+    context: state.context.chats[id].stories
+  };
+};
+
+const mapDispatchToProps = {
+  loadChatStories,
+  expandChatStories
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatStories);

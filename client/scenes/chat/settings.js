@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { patchChat, removeChat } from 'actions/chats';
+import { hasRole } from 'services/auth';
 import { canManage, isActive } from 'services/chats';
-import { services } from 'services/feathers';
-import { hasUser, hasRole } from 'services/auth';
 import Loader from 'components/loader';
 import Table from 'components/table';
 import Form from 'components/form';
@@ -26,17 +26,14 @@ class ChatSettings extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  componentDidMount () {
-  }
-
   remove () {
-    const { chat, remove } = this.props;
+    const { chat, removeChat } = this.props;
     if(confirm('Are you sure? This will remove all chat data, including posts, stories and media!')) {
       // This setState is not firing
       this.setState({
         removing: true
       });
-      remove(chat.data.id);
+      removeChat(chat.id);
     }
   }
 
@@ -50,18 +47,18 @@ class ChatSettings extends Component {
   }
 
   archive () {
-    const { chat, patch } = this.props;
-    patch(chat.data.id, { archived: true });
+    const { chat, patchChat } = this.props;
+    patchChat(chat.id, { archived: true });
   }
 
   unarchive () {
-    const { chat, patch } = this.props;
-    patch(chat.data.id, { archived: false });
+    const { chat, patchChat } = this.props;
+    patchChat(chat.id, { archived: false });
   }
 
   activate () {
-    const { chat, patch } = this.props;
-    patch(chat.data.id, { active: true });
+    const { chat, patchChat } = this.props;
+    patchChat(chat.id, { active: true });
   }
 
   handleChange (event) {
@@ -79,27 +76,27 @@ class ChatSettings extends Component {
     if(formData[name] !== undefined) {
       return !!formData[name];
     } else {
-      return !!chat.data[name];
+      return !!chat[name];
     }
   }
 
   handleSubmit (event) {
-    const { chat, patch } = this.props;
-    patch(chat.data.id, this.state.formData);
+    const { chat, patchChat } = this.props;
+    patchChat(chat.id, this.state.formData);
     event.preventDefault();
   }
 
   render () {
     const { chat, auth } = this.props;
     const { formData, removing } = this.state;
-    if(chat.data !== null && auth.user !== null) {
+    if(chat !== undefined && auth.user !== null) {
       return (
         <section id="chat-settings">
-          {(!canManage(chat.data, auth) || this.removed()) &&
+          {(!canManage(chat, auth) || this.removed()) &&
             <Redirect to="/" />
           }
           <div className="sections">
-            {(!isActive(chat.data) && hasRole(auth, 'publisher')) &&
+            {(!isActive(chat) && hasRole(auth, 'publisher')) &&
               <div className="chat-activation content-section">
                 <h3>
                   <span className="fa fa-warning"></span>
@@ -149,13 +146,13 @@ class ChatSettings extends Component {
                 <p>
                   <label>
                     Description
-                    <textarea name="description" value={formData.description || chat.data.description} onChange={this.handleChange}></textarea>
+                    <textarea name="description" value={formData.description || chat.description} onChange={this.handleChange}></textarea>
                   </label>
                 </p>
                 <p>
                   <label>
                     Live video URL
-                    <input name="liveURL" type="text" value={formData.liveURL || chat.data.liveURL} onChange={this.handleChange} />
+                    <input name="liveURL" type="text" value={formData.liveURL || chat.liveURL} onChange={this.handleChange} />
                   </label>
                 </p>
                 <p>
@@ -181,7 +178,7 @@ class ChatSettings extends Component {
                   <label>
                     URL
                     <SelectableCode>
-                      {`${foi.url}/c/${chat.data.id}`}
+                      {`${foi.url}/c/${chat.id}`}
                     </SelectableCode>
                   </label>
                 </p>
@@ -189,7 +186,7 @@ class ChatSettings extends Component {
                   <label>
                     Widget code
                     <SelectableCode>
-                      {`<div class="foi-widget" data-chat="${chat.data.id}"></div>`}
+                      {`<div class="foi-widget" data-chat="${chat.id}"></div>`}
                     </SelectableCode>
                   </label>
                 </p>
@@ -199,17 +196,17 @@ class ChatSettings extends Component {
                 </SelectableCode>
               </Form>
             </div>
-            {chat.data.type !== 'private' &&
+            {chat.type !== 'private' &&
               <div>
                 <hr />
                 <ButtonGroup alignright>
-                  {!chat.data.archived &&
+                  {!chat.archived &&
                     <Button onClick={this.archive}>
                       <span className="fa fa-archive"></span>
                       Archive chat
                     </Button>
                   }
-                  {chat.data.archived &&
+                  {chat.archived &&
                     <Button onClick={this.unarchive}>
                       <span className="fa fa-archive"></span>
                       Unarchive chat
@@ -232,16 +229,17 @@ class ChatSettings extends Component {
 
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
+  const { chatId } = ownProps.match.params;
   return {
-    auth: state.auth,
-    chat: state.chats
+    chat: state.chats[chatId],
+    auth: state.auth
   }
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  patch: (chatId, data = {}) => dispatch(services.chats.patch(chatId, data)),
-  remove: (chatId) => dispatch(services.chats.remove(chatId))
-});
+const mapDispatchToProps = {
+  patchChat,
+  removeChat
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatSettings);

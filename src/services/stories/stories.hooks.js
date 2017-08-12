@@ -58,17 +58,17 @@ module.exports = {
       }
     ],
     create: [
-      disallow(['rest', 'socketio']),
+      disallow('rest', 'socketio'),
       ...restrictChatContent,
       restrictToOneRunningStory(),
       setCreatedAt()
     ],
     update: [
-      disallow(['rest', 'socketio']),
+      disallow('rest', 'socketio'),
       setUpdatedAt()
     ],
     patch: [
-      disallow(['rest', 'socketio']),
+      disallow('rest', 'socketio'),
       setUpdatedAt()
     ],
     remove: [

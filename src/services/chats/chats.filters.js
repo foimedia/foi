@@ -1,7 +1,7 @@
 module.exports = function (data, connection, hook) {
-  if(data.users.indexOf(connection.user.id) !== -1) {
+  if(connection.user && data.users.some(id => id == connection.user.id))
     return data;
-  } else {
-    return false;
-  }
+  if(connection.chats && connection.chats.indexOf(data.id) !== -1)
+    return data;
+  return false;
 };

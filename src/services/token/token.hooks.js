@@ -13,7 +13,7 @@ const validateIntent = () => hook => {
 module.exports = {
   before: {
     create: [
-      disallow(['rest', 'socketio']),
+      disallow('rest', 'socketio'),
       // Check token
       hook => {
         if(!hook.data.userKey)
@@ -47,7 +47,7 @@ module.exports = {
       ])
     ],
     remove: [
-      disallow(['rest', 'socketio']),
+      disallow('rest', 'socketio'),
       hook => {
         const telegram = hook.app.telegram;
         if(!hook.params.validated) {

@@ -1,15 +1,20 @@
 import { combineReducers } from 'redux';
-import { serviceMap } from 'services/feathers';
-// import { routerReducer } from 'react-router-redux';
+import { auth } from 'services/feathers';
+import context from './context';
+import users from './users';
+import posts from './posts';
+import stories from './stories';
+import chats from './chats';
+import { routerReducer } from 'react-router-redux';
 
-export default function (services) {
-  const reducers = {};
-  for(var key in serviceMap) {
-    reducers[key] = services[serviceMap[key]].reducer
-  }
+export default function () {
   return combineReducers({
-    ...reducers,
-    auth: services.auth.reducer,
-    // router: routerReducer
+    context,
+    users,
+    posts,
+    stories,
+    chats,
+    auth: auth.reducer,
+    router: routerReducer
   });
 }

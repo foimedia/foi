@@ -54,22 +54,25 @@ export default class PostThumb extends Component {
     const { post } = this.props;
     const src = this.getThumb();
     const preview = this.getThumb(0);
-    return (
-      <Wrapper>
-        <ProgressiveImage
-          src={src}
-          preview={preview}
-          transitionTime={200}
-          render={(src, style) =>
-            <div className="img" style={Object.assign(style, {
-              backgroundImage: `url(${src})`,
-            })}
-          />}
-        />
-        {this.isVideo() &&
-          <span className="fa fa-play"></span>
-        }
-      </Wrapper>
-    );
+    if(post !== undefined) {
+      return (
+        <Wrapper>
+          <ProgressiveImage
+            src={src}
+            preview={preview}
+            transitionTime={200}
+            render={(src, style) =>
+              <div className="img" style={Object.assign(style, {
+                backgroundImage: `url(${src})`,
+              })}
+            />}
+          />
+          {this.isVideo() &&
+            <span className="fa fa-play"></span>
+          }
+        </Wrapper>
+      );
+    }
+    return null;
   }
 }

@@ -36,6 +36,9 @@ class Chat extends Component {
               {data.archived &&
                 <span className="attr-icon fa fa-archive" title="This chat is archived"></span>
               }
+              {(data.type !== 'private' && !data.active) &&
+                <span className="attr-icon fa fa-warning" title="This chat is not active"></span>
+              }
             </Link>
             <span className="actions">
               {canManage(data, auth) &&

@@ -13,7 +13,7 @@ const styles = css`
   display: block;
   font-family: 'Inconsolata', monospace;
   border-radius: ${radius};
-  font-size: .8em;
+  font-size: .9em;
   overflow: auto;
   white-space: normal;
   background: #f7f7f7;

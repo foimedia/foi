@@ -20,6 +20,20 @@ class Authenticate extends Component {
     });
   }
 
+  reconnect () {
+    const _recon = function () {
+      setTimeout(function() {
+        client.io.connect();
+        _detachRecon();
+      }, 500);
+    }
+    const _detachRecon = function () {
+      client.io.off('disconnect', _recon);
+    }
+    client.io.on('disconnect', _recon);
+    client.io.disconnect();
+  }
+
   doAuth (token = false) {
     const { authenticate, logout } = this.props;
     // No token, attempt stored token and catch with anon auth
@@ -31,8 +45,7 @@ class Authenticate extends Component {
         });
       } else {
         return this.doAnonAuth().then(() => {
-          client.io.disconnect();
-          return client.io.connect();
+          this.reconnect();
         });
       }
     // With token, logout from previous session (mostly anon) and start new one with token
