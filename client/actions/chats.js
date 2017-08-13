@@ -32,10 +32,11 @@ export const CHAT_GALLERY_SUCCESS = 'CHAT_GALLERY_SUCCESS';
 export const CHAT_GALLERY_EXPAND = 'CHAT_GALLERY_EXPAND';
 export const CHAT_GALLERY_FAILURE = 'CHAT_GALLERY_FAILURE';
 
-const _load = id => {
+const _load = (id, quiet) => {
   return {
     type: CHAT_LOAD,
-    id
+    id,
+    quiet
   }
 };
 
@@ -192,10 +193,10 @@ const get = id => (dispatch) => {
   });
 };
 
-export const loadChat = (id, reload = false) => (dispatch, getState) => {
-  dispatch(_load(id));
+export const loadChat = (id, quiet = false) => (dispatch, getState) => {
+  dispatch(_load(id, quiet));
   const chats = getState().chats;
-  if(!reload && chats[id]) {
+  if(chats[id]) {
     return null;
   }
   dispatch(get(id));

@@ -14,8 +14,16 @@ import {
   STORY_NEW
 } from 'actions/stories';
 
+import {
+  LOCATION_CHANGE
+} from 'react-router-redux';
+
 const initialState = {
-  chats: {}
+  chats: {},
+  key: undefined,
+  scrollHistory: {
+    lastKey: undefined
+  }
 };
 
 const initialChat = {
@@ -31,12 +39,27 @@ export default function reducer (state = initialState, action) {
       });
       return state;
     }
-    case CHAT_LOAD : {
+    case LOCATION_CHANGE : {
       state = Object.assign({}, initialState, state);
-      let chat = Object.assign({}, initialChat, state.chats[action.id]);
-      chat.stories = Object.assign({}, chat.stories, initialChat.stories);
-      chat.gallery = Object.assign({}, chat.gallery, initialChat.gallery);
-      state.chats[action.id] = chat;
+      const { lastKey } = state.scrollHistory;
+      const scroll = (
+        window.pageYOffset || document.documentElement.scrollTop
+      );
+      if(lastKey !== undefined && scroll > 0) {
+        state.scrollHistory[lastKey] = scroll;
+      }
+      state.scrollHistory.lastKey = action.payload.key;
+      return state;
+    }
+    case CHAT_LOAD : {
+      console.log(action);
+      if(!action.quiet) {
+        state = Object.assign({}, initialState, state);
+        let chat = Object.assign({}, initialChat, state.chats[action.id]);
+        chat.stories = Object.assign({}, chat.stories, initialChat.stories);
+        chat.gallery = Object.assign({}, chat.gallery, initialChat.gallery);
+        state.chats[action.id] = chat;
+      }
       return state;
     }
     case CHAT_STORIES_SUCCESS :

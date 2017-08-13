@@ -8,6 +8,7 @@ import { auth } from 'services/feathers';
 import { hasUser, hasRole } from 'services/auth';
 import styleUtils from 'services/style-utils';
 
+import ScrollToTop from 'components/scroll-top';
 import Sidebar from 'components/sidebar';
 import Content from 'components/content';
 import ContentHeader from 'components/content/header';
@@ -54,6 +55,7 @@ class Application extends Component {
     const { auth } = this.props;
     return (
       <AppContainer>
+        <ScrollToTop />
         <Headers />
         <Authenticate />
         <Sidebar>

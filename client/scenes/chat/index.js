@@ -21,15 +21,15 @@ class Chat extends Component {
 
   componentDidMount () {
     const { chatId } = this.props.match.params;
-    const { chat } = this.props;
-    this.props.loadChat(chatId);
+    const { chat, fromHistory } = this.props;
+    this.props.loadChat(chatId, fromHistory);
   }
 
   componentWillReceiveProps (nextProps) {
     const { chatId } = this.props.match.params;
     const nextId = nextProps.match.params.chatId;
     if(chatId !== nextId) {
-      this.props.loadChat(nextId);
+      this.props.loadChat(nextId, nextProps.fromHistory);
     }
   }
 
@@ -87,9 +87,15 @@ class Chat extends Component {
   }
 }
 
+function getFromHistory (scrollHistory, key) {
+  return !!scrollHistory[key];
+}
+
 function mapStateToProps (state, ownProps) {
+  const { scrollHistory } = state.context;
   return {
-    chat: state.chats[ownProps.match.params.chatId]
+    chat: state.chats[ownProps.match.params.chatId],
+    fromHistory: getFromHistory(scrollHistory, ownProps.location.key)
   };
 }
 
