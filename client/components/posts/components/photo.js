@@ -43,8 +43,14 @@ class PostPhoto extends PostMedia {
     return ar;
   }
 
+  getWindowAspectRatio () {
+    return window.innerHeight / window.innerWidth;
+  }
+
   getWidthRatio (ar) {
-    if(ar > 1) {
+    // Detect window aspect ratio for better view of vertical photos
+    const windowAr = this.getWindowAspectRatio();
+    if(ar > 1 && windowAr < 1.4) {
       return 1/ar;
     }
     return 1;

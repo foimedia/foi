@@ -86,7 +86,7 @@ const PostWrapper = styled.div`
   width: 100%;
   max-height: 90%;
   max-width: 1000px;
-  margin: 15vh auto 0;
+  margin: 5rem auto 0;
   z-index: 2;
   color: #fff;
   .post .caption {
