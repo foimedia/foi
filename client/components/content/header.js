@@ -6,7 +6,7 @@ const Wrapper = styled.header`
   font-family: "Inconsolata", monospace;
   color: #000;
   background: #fff;
-  border-bottom: 1px solid #e4e4e4;
+  border-bottom: 1px solid #eee;
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
     margin: -${styleUtils.margins[i]}rem;
     padding-left: ${styleUtils.margins[i]*2}rem;
@@ -73,15 +73,18 @@ const Wrapper = styled.header`
     color: #666;
   }
   nav {
-    font-size: .7em;
+    font-size: .8em;
+    border-top: 1px solid #eee;
+    background: #fff;
     a {
       background: #fff;
       padding-top: .25rem;
       padding-bottom: .25rem;
-      border-radius: ${styleUtils.radius/3}px;
       text-transform: uppercase;
       display: inline-block;
-      border: 1px solid #e4e4e4;
+      margin: -1px 0 0;
+      border-top: 1px solid #eee;
+      border-right: 1px solid #eee;
       color: #999;
       &:hover,
       &:active,
@@ -90,20 +93,36 @@ const Wrapper = styled.header`
       }
       &.active {
         background: ${styleUtils.color};
+        border-color: ${styleUtils.color};
         color: #fff;
-        border-color: transparent;
       }
     }
     ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+      margin-left: -${styleUtils.margins[i]*2}rem;
+      margin-right: -${styleUtils.margins[i]*2}rem;
+      margin-bottom: -${styleUtils.margins[i]}rem;
+      margin-top: ${styleUtils.margins[i]}rem;
+      padding: 0;
       a {
-        margin-right: ${styleUtils.margins[i]/3}rem;
-        padding-left: ${styleUtils.margins[i]/2}rem;
-        padding-right: ${styleUtils.margins[i]/2}rem;
+        padding: ${styleUtils.margins[i]}rem ${styleUtils.margins[i]*2}rem;
         .fa {
           margin-right: ${styleUtils.margins[i]/2}rem;
         }
       }
     `)}
+    ${styleUtils.media.tablet`
+      font-size: .7em;
+      border-top: 0;
+      background: transparent;
+      margin: .5rem 0 0;
+      padding: 0;
+      a {
+        border: 0;
+        margin: 0 1rem 0 0;
+        padding: .5rem 1.5rem;
+        border-radius: ${styleUtils.radius/3}px;
+      }
+    `}
   }
   ${props => props.icon && css`
     ${styleUtils.media.desktop`

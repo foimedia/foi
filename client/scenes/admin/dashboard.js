@@ -17,6 +17,14 @@ class Dashboard extends Component {
                 <td>{foi.public}</td>
               </tr>
               <tr>
+                <th>Server url</th>
+                <td>{foi.server}</td>
+              </tr>
+              <tr>
+                <th>Files url (cdn)</th>
+                <td>{foi.cdn}</td>
+              </tr>
+              <tr>
                 <th>Bot name</th>
                 <td>{foi.botName}</td>
               </tr>
