@@ -52,7 +52,6 @@ export default function reducer (state = initialState, action) {
       return state;
     }
     case CHAT_LOAD : {
-      console.log(action);
       if(!action.quiet) {
         state = Object.assign({}, initialState, state);
         let chat = Object.assign({}, initialChat, state.chats[action.id]);
