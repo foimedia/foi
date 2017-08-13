@@ -38,19 +38,17 @@ class ChatStories extends Component {
   }
 
   renderStories () {
-    const { stories, more, context } = this.props;
+    const { stories, more, hasMore } = this.props;
     if(stories !== undefined && stories) {
-      const hasMore = !!(context.limit + context.skip < context.total);
-      const display = stories.slice(0, (context.limit + context.skip));
       const renders = {
         'scroll': (Component) => (
           <InfiniteScroll loadMore={this.fetchMore} hasMore={hasMore}>
-            <Component stories={display} />
+            <Component stories={stories} />
           </InfiniteScroll>
         ),
         'button': (Component) => (
           <div>
-            <Component stories={display} />
+            <Component stories={stories} />
             {hasMore &&
               <Button className="button" href="javascript:void(0);" onClick={this.fetchMore}>Load more</Button>
             }
@@ -80,9 +78,10 @@ class ChatStories extends Component {
 
 }
 
-const getChatStories = (chat, stories) => {
+const getChatStories = (chat, stories, context) => {
   if(chat !== undefined && chat.stories !== undefined) {
-    return chat.stories.reduce((res, id) => {
+    const amount = context.limit + context.skip;
+    return chat.stories.slice(0, amount).reduce((res, id) => {
       if(stories[id])
         res.push(stories[id]);
       return res;
@@ -92,9 +91,11 @@ const getChatStories = (chat, stories) => {
 
 const mapStateToProps = (state, ownProps) => {
   const { id } = ownProps.chat;
+  const context = state.context.chats[id].stories;
+  const hasMore = !!(context.limit + context.skip < context.total);
   return {
-    stories: getChatStories(state.chats[id], state.stories),
-    context: state.context.chats[id].stories
+    stories: getChatStories(state.chats[id], state.stories, context),
+    hasMore
   };
 };
 

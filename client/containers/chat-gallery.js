@@ -54,8 +54,7 @@ class ChatGallery extends Component {
 
   render () {
     var self = this;
-    const { chat, posts, location, context } = this.props;
-    const hasMore = !!(context.limit + context.skip < context.total);
+    const { chat, posts, location, hasMore } = this.props;
     const isModal = !!(
       location !== undefined &&
       location.state &&
@@ -69,7 +68,7 @@ class ChatGallery extends Component {
               {Thumb => (
                 <section id={`chat-${chat.id}-gallery`}>
                   <GalleryList>
-                    {posts.slice(0,5).map(post => (
+                    {posts.map(post => (
                       <Thumb key={`gallery-post-${post.id}`} post={post} />
                     ))}
                   </GalleryList>
@@ -94,9 +93,10 @@ class ChatGallery extends Component {
   }
 }
 
-const getChatGallery = (chat, posts) => {
+const getChatGallery = (chat, posts, context) => {
   if(chat !== undefined && chat.gallery !== undefined) {
-    return chat.gallery.reduce((res, id) => {
+    const amount = context.limit + context.skip;
+    return chat.gallery.slice(0, amount).reduce((res, id) => {
       if(posts[id])
         res.push(posts[id]);
       return res;
@@ -106,9 +106,11 @@ const getChatGallery = (chat, posts) => {
 
 const mapStateToProps = (state, ownProps) => {
   const { id } = ownProps.chat;
+  const context = state.context.chats[id].gallery;
+  const hasMore = !!(context.limit + context.skip < context.total);
   return {
-    posts: getChatGallery(state.chats[id], state.posts),
-    context: state.context.chats[id].gallery
+    posts: getChatGallery(state.chats[id], state.posts, context),
+    hasMore
   };
 };
 
