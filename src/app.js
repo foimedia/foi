@@ -44,7 +44,11 @@ app.use('/files', feathers.static(app.get('filesDir')));
 app.configure(hooks());
 app.configure(mongodb);
 app.configure(rest());
-app.configure(socketio());
+app.configure(socketio({
+  wsEngine: 'uws',
+  pingInterval: 2000,
+  pingTimeout: 5000
+}));
 
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);

@@ -82,6 +82,7 @@
     "redux-thunk": "^2.2.0",
     "serve-favicon": "^2.4.3",
     "styled-components": "^2.1.0",
+    "uws": "^8.14.1",
     "video.js": "^6.2.0",
     "winston": "^2.3.1"
   },
