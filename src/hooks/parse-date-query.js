@@ -4,7 +4,7 @@ module.exports = (property) => {
       if(typeof query[property] == 'string') {
         query[property] = new Date(query[property]);
       } else {
-        for(var key in query[property]) {
+        for(let key in query[property]) {
           query[property][key] = new Date(query[property][key]);
         }
       }
