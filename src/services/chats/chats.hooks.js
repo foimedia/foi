@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const errors = require('feathers-errors');
+const parseDateQuery = require('../../hooks/parse-date-query');
 const { when, iff, iffElse, discard, disallow, setCreatedAt, setUpdatedAt } = require('feathers-hooks-common');
 const { restrictToAuthenticated, restrictToOwner, restrictToRoles } = require('feathers-authentication-hooks');
 const telegram = require('../../telegram').hooks;
@@ -112,7 +113,10 @@ module.exports = {
         return hook;
       }
     ],
-    find: [],
+    find: [
+      parseDateQuery('createdAt'),
+      parseDateQuery('updatedAt')
+    ],
     get: [],
     create: [
       disallow('rest', 'socketio'),

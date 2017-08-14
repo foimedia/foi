@@ -1,4 +1,5 @@
 const errors = require('feathers-errors');
+const parseDateQuery = require('../../hooks/parse-date-query');
 const { restrictToAuthenticated } = require('feathers-authentication-hooks');
 const { when, populate, discard, disallow, setCreatedAt, setUpdatedAt } = require('feathers-hooks-common');
 const { restrictChatContent, restrictChatContentErrors } = require('../../hooks/chat-restrictions');
@@ -126,7 +127,11 @@ module.exports = {
         return hook;
       }
     ],
-    find: [],
+    find: [
+      parseDateQuery('sentAt'),
+      parseDateQuery('editedAt'),
+      parseDateQuery('creatorSentAt')
+    ],
     get: [
       // Fix integer ID
       hook => {
