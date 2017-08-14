@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Loader from 'components/loader';
-import StoriesComponent from 'components/stories';
+// import StoriesComponent from 'components/stories';
 import Story from 'containers/story';
 
 class Stories extends Component {
@@ -13,11 +13,11 @@ class Stories extends Component {
       return <p>No posts were found.</p>;
     } else {
       return (
-        <StoriesComponent>
+        <div>
           {stories.map(story =>
             <Story key={`story-${story.id}`} story={story} />
           )}
-        </StoriesComponent>
+        </div>
       )
     }
   }
