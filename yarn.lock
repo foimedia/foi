@@ -2305,20 +2305,6 @@ feathers-query-filters@^2.0.0:
   dependencies:
     feathers-commons "^0.8.0"
 
-feathers-redux@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/feathers-redux/-/feathers-redux-0.0.3.tgz#b492e86850cd185ced9895f1383136e67a0dcf61"
-  dependencies:
-    debug "^2.6.8"
-    redux-actions "^2.0.3"
-
-feathers-reduxify-authentication@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/feathers-reduxify-authentication/-/feathers-reduxify-authentication-0.1.1.tgz#1979fc6ae640f85af1c1503e81fa74617fe70681"
-  dependencies:
-    debug "^2.2.0"
-    object.assign "^4.0.4"
-
 feathers-rest@^1.7.3:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/feathers-rest/-/feathers-rest-1.8.0.tgz#3c03f1ea56adec940a8f9823d87a3aafeb9742a9"
@@ -3363,7 +3349,7 @@ locate-path@^2.0.0:
     p-locate "^2.0.0"
     path-exists "^3.0.0"
 
-lodash-es@^4.17.4, lodash-es@^4.2.0, lodash-es@^4.2.1:
+lodash-es@^4.2.0, lodash-es@^4.2.1:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.4.tgz#dcc1d7552e150a0640073ba9cb31d70f032950e7"
 
@@ -3831,17 +3817,9 @@ object-component@0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/object-component/-/object-component-0.0.3.tgz#f0c69aa50efc95b866c186f400a33769cb2f1291"
 
-object-keys@^1.0.10, object-keys@^1.0.8:
+object-keys@^1.0.8:
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/object-keys/-/object-keys-1.0.11.tgz#c54601778ad560f1142ce0e01bcca8b56d13426d"
-
-object.assign@^4.0.4:
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/object.assign/-/object.assign-4.0.4.tgz#b1c9cc044ef1b9fe63606fc141abbb32e14730cc"
-  dependencies:
-    define-properties "^1.1.2"
-    function-bind "^1.1.0"
-    object-keys "^1.0.10"
 
 object.omit@^2.0.0:
   version "2.0.1"
@@ -4737,19 +4715,6 @@ reduce-function-call@^1.0.1:
   resolved "https://registry.yarnpkg.com/reduce-function-call/-/reduce-function-call-1.0.2.tgz#5a200bf92e0e37751752fe45b0ab330fd4b6be99"
   dependencies:
     balanced-match "^0.4.2"
-
-reduce-reducers@^0.1.0:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/reduce-reducers/-/reduce-reducers-0.1.2.tgz#fa1b4718bc5292a71ddd1e5d839c9bea9770f14b"
-
-redux-actions@^2.0.3:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/redux-actions/-/redux-actions-2.2.1.tgz#d64186b25649a13c05478547d7cd7537b892410d"
-  dependencies:
-    invariant "^2.2.1"
-    lodash "^4.13.1"
-    lodash-es "^4.17.4"
-    reduce-reducers "^0.1.0"
 
 redux-promise-middleware@^4.3.0:
   version "4.3.0"

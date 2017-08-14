@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import { auth } from 'services/feathers';
 import context from './context';
+import auth from './auth';
 import users from './users';
 import posts from './posts';
 import stories from './stories';
@@ -14,7 +14,7 @@ export default function () {
     posts,
     stories,
     chats,
-    auth: auth.reducer,
+    auth,
     router: routerReducer
   });
 }

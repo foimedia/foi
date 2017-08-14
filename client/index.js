@@ -14,9 +14,11 @@ import ScrollToTop from 'components/scroll-top'
 
 const store = configureStore();
 import initServices from 'services';
+import authService from 'services/auth';
 
 const history = createHistory();
 
+authService(store);
 initServices(store);
 
 ReactDom.render(

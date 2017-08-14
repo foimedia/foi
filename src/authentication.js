@@ -20,16 +20,6 @@ module.exports = function () {
       remove: [
         authentication.hooks.authenticate('jwt')
       ]
-    },
-    after: {
-      create: [
-        hook => {
-          if(hook.params.user) {
-            hook.result.data = hook.params.user;
-          }
-          return hook;
-        }
-      ]
     }
   });
 

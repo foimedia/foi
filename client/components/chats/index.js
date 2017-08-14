@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import client from 'services/feathers';
 import styleUtils from 'services/style-utils';
+import { hasRole } from 'services/auth';
 
 import ButtonedList from 'components/buttoned-list'
 import Chat from './components/chat';
@@ -39,7 +40,6 @@ class Chats extends Component {
 
   componentDidMount () {
     this.setState(Object.assign({}, this.props));
-
     this.service.on('created', this.newChat);
   }
 
@@ -88,11 +88,6 @@ class Chats extends Component {
     this.service.off('created', this.newChat);
   }
 
-  isPublisher() {
-    const { auth } = this.props;
-    return auth.isSignedIn && auth.user.roles.indexOf('publisher') !== -1;
-  }
-
   hasChats() {
     const { chats } = this.props;
     return chats.length;
@@ -115,7 +110,7 @@ class Chats extends Component {
             )}
           </ButtonedList>
           <footer>
-            {this.isPublisher() &&
+            {hasRole(auth, 'publisher') &&
               <p>Invite <strong>@{foi.botName}</strong> to a group for more chats!</p>
             }
           </footer>

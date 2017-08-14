@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { withRouter, Route, Link, Switch } from 'react-router-dom';
 
-import { auth } from 'services/feathers';
+import { logout } from 'actions/auth';
+
 import { hasUser, hasRole } from 'services/auth';
 import styleUtils from 'services/style-utils';
 
@@ -17,7 +18,6 @@ import Auth from 'components/auth';
 import { ButtonLink } from 'components/button';
 
 import Headers from 'containers/headers';
-import Authenticate from 'containers/authenticate';
 import UserChats from 'containers/user-chats';
 
 import Home from 'scenes/home';
@@ -57,14 +57,13 @@ class Application extends Component {
       <AppContainer>
         <ScrollToTop />
         <Headers />
-        <Authenticate />
         <Sidebar>
           <div className={`brand`}>
             <Link to="/">
               <img src={require('images/logo_white.svg')} alt="FOI" />
             </Link>
           </div>
-          {auth.isSignedIn &&
+          {auth.signedIn &&
             <Auth
               {...this.state}
               logout={self.props.logout}
@@ -109,8 +108,8 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  logout: () => dispatch(auth.logout())
-});
+const mapDispatchToProps = {
+  logout
+};
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Application));

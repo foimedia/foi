@@ -21,7 +21,6 @@ export default function (store) {
   });
 };
 
-
 // Utils
 
 export function getTitle (chat) {

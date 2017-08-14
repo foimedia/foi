@@ -56,14 +56,14 @@ class Home extends Component {
         </div>
         <ButtonGroup className="main-actions">
           <Button
-            primary={auth.isSignedIn}
+            primary={auth.signedIn}
             href="https://github.com/miguelpeixe/foi"
             target="_blank"
             rel="external">
             <span className="fa fa-github"></span>
             Learn more
           </Button>
-          {(!auth.isSignedIn && connectionKey !== undefined) &&
+          {(!auth.signedIn && connectionKey !== undefined) &&
             <Button
               primary
               href={`https://telegram.me/${foi.botName}?start=${connectionKey}`}
