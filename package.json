@@ -45,7 +45,6 @@
     "feathers-hooks": "^2.0.1",
     "feathers-hooks-common": "^3.5.5",
     "feathers-mongodb": "^2.9.0",
-    "feathers-offline-realtime": "^0.1.2",
     "feathers-redux": "^0.0.3",
     "feathers-reduxify-authentication": "^0.1.1",
     "feathers-rest": "^1.7.3",

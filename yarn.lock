@@ -1111,10 +1111,6 @@ chalk@^2.0.0, chalk@^2.0.1:
     escape-string-regexp "^1.0.5"
     supports-color "^4.0.0"
 
-charenc@~0.0.1:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/charenc/-/charenc-0.0.2.tgz#c0a1d2f3a7092e03774bfa83f14c0fc5790a8667"
-
 chokidar@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-1.7.0.tgz#798e689778151c8076b4b360e5edd28cda2bb468"
@@ -1431,10 +1427,6 @@ cross-spawn@^5.1.0:
     lru-cache "^4.0.1"
     shebang-command "^1.2.0"
     which "^1.2.9"
-
-crypt@~0.0.1:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/crypt/-/crypt-0.0.2.tgz#88d7ff7ec0dfb86f713dc87bbb42d044d3e6c41b"
 
 cryptiles@2.x.x:
   version "2.0.5"
@@ -2262,7 +2254,7 @@ feathers-authentication@^1.2.6:
     ms "^2.0.0"
     passport "^0.3.2"
 
-feathers-commons@0.8.7, feathers-commons@^0.8.0, feathers-commons@^0.8.4, feathers-commons@^0.8.6, feathers-commons@^0.8.7:
+feathers-commons@^0.8.0, feathers-commons@^0.8.4, feathers-commons@^0.8.6, feathers-commons@^0.8.7:
   version "0.8.7"
   resolved "https://registry.yarnpkg.com/feathers-commons/-/feathers-commons-0.8.7.tgz#11c6f25b537745a983e8d61552d7db8932d53782"
 
@@ -2271,12 +2263,6 @@ feathers-configuration@^0.4.1:
   resolved "https://registry.yarnpkg.com/feathers-configuration/-/feathers-configuration-0.4.1.tgz#8384e792fa44edf8954f02dfc57199e010029803"
   dependencies:
     config "^1.21.0"
-    debug "^2.2.0"
-
-feathers-errors@2.8.1:
-  version "2.8.1"
-  resolved "https://registry.yarnpkg.com/feathers-errors/-/feathers-errors-2.8.1.tgz#98fc85ad4f48c12d25eca3c2556beea2c0394b8b"
-  dependencies:
     debug "^2.2.0"
 
 feathers-errors@^2.0.1, feathers-errors@^2.2.0, feathers-errors@^2.4.0, feathers-errors@^2.5.0, feathers-errors@^2.8.1:
@@ -2313,29 +2299,7 @@ feathers-mongodb@^2.9.0:
     lodash.omit "^4.3.0"
     uberproto "^1.2.0"
 
-feathers-offline-realtime@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/feathers-offline-realtime/-/feathers-offline-realtime-0.1.2.tgz#050bd8f87b894d9f1fff7a468612e03ba6895d9b"
-  dependencies:
-    component-emitter "1.2.1"
-    debug "^2.6.8"
-    feathers-commons "0.8.7"
-    feathers-errors "2.8.1"
-    feathers-offline-snapshot "^0.0.1"
-    feathers-query-filters "2.1.2"
-    md5 "2.2.1"
-    shortid "2.2.8"
-    uberproto "1.2.0"
-    uuid "3.1.0"
-
-feathers-offline-snapshot@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/feathers-offline-snapshot/-/feathers-offline-snapshot-0.0.1.tgz#1442256ae1d33735c44570a4a6f02bcf88b915f1"
-  dependencies:
-    debug "2.6.8"
-    feathers-errors "2.8.1"
-
-feathers-query-filters@2.1.2, feathers-query-filters@^2.0.0:
+feathers-query-filters@^2.0.0:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/feathers-query-filters/-/feathers-query-filters-2.1.2.tgz#cdb18224db5e19cc0140d528108e0908d5eb0654"
   dependencies:
@@ -2998,7 +2962,7 @@ is-binary-path@^1.0.0:
   dependencies:
     binary-extensions "^1.0.0"
 
-is-buffer@^1.1.5, is-buffer@~1.1.1:
+is-buffer@^1.1.5:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/is-buffer/-/is-buffer-1.1.5.tgz#1f3b26ef613b214b88cbca23cc6c01d87961eecc"
 
@@ -3548,14 +3512,6 @@ make-dir@^1.0.0:
 math-expression-evaluator@^1.2.14:
   version "1.2.17"
   resolved "https://registry.yarnpkg.com/math-expression-evaluator/-/math-expression-evaluator-1.2.17.tgz#de819fdbcd84dccd8fae59c6aeb79615b9d266ac"
-
-md5@2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/md5/-/md5-2.2.1.tgz#53ab38d5fe3c8891ba465329ea23fac0540126f9"
-  dependencies:
-    charenc "~0.0.1"
-    crypt "~0.0.1"
-    is-buffer "~1.1.1"
 
 media-typer@0.3.0:
   version "0.3.0"
@@ -5126,10 +5082,6 @@ shebang-regex@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-1.0.0.tgz#da42f49740c0b42db2ca9728571cb190c98efea3"
 
-shortid@2.2.8:
-  version "2.2.8"
-  resolved "https://registry.yarnpkg.com/shortid/-/shortid-2.2.8.tgz#033b117d6a2e975804f6f0969dbe7d3d0b355131"
-
 signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
@@ -5560,7 +5512,7 @@ ua-parser-js@^0.7.9:
   version "0.7.13"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.13.tgz#cd9dd2f86493b3f44dbeeef3780fda74c5ee14be"
 
-uberproto@1.2.0, uberproto@^1.2.0:
+uberproto@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/uberproto/-/uberproto-1.2.0.tgz#61d4eab024f909c4e6ea52be867c4894a4beeb76"
 
@@ -5655,7 +5607,7 @@ utils-merge@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.0.tgz#0294fb922bb9375153541c4f7096231f287c8af8"
 
-uuid@3.1.0, uuid@^3.0.0:
+uuid@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.1.0.tgz#3dd3d3e790abc24d7b0d3a034ffababe28ebbc04"
 
