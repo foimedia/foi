@@ -45,7 +45,7 @@ const HomeWrapper = styled.section`
 
 class Home extends Component {
   render () {
-    const { auth, context } = this.props;
+    const { auth, connectionKey } = this.props;
     return (
       <HomeWrapper id="home">
         <ContentHeader icon="asterisk">
@@ -63,10 +63,10 @@ class Home extends Component {
             <span className="fa fa-github"></span>
             Learn more
           </Button>
-          {(!auth.isSignedIn && context.key !== undefined) &&
+          {(!auth.isSignedIn && connectionKey !== undefined) &&
             <Button
               primary
-              href={`https://telegram.me/${foi.botName}?start=${context.key}`}
+              href={`https://telegram.me/${foi.botName}?start=${connectionKey}`}
               target="_blank"
               rel="external">
               <span className="fa fa-telegram"></span>
@@ -103,7 +103,7 @@ class Home extends Component {
 const mapStateToProps = state => {
   return {
     auth: state.auth,
-    context: state.context
+    connectionKey: state.context.key
   }
 }
 
