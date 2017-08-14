@@ -19,18 +19,22 @@ class ScrollToTop extends Component {
     );
   }
   componentDidUpdate(prevProps) {
-    const { scrollHistory } = this.props;
-    const { key } = this.props.location;
+    const { scrollHistory, location } = this.props;
+    const scrollTop = scrollHistory[location.key];
+    const body = document.getElementsByTagName('BODY')[0];
     if(
       !this.isModal(prevProps.location) &&
       !this.cameFromModal(prevProps.location)
     ) {
-      if(scrollHistory[key]) {
+      if(scrollTop !== undefined && scrollTop > 0) {
+        // Set min-height to prevent scroll restoration mispositioning from async load of inner content
+        body.style['min-height'] = (scrollTop + window.innerHeight) + 'px';
         // Run scroll after next UI thread is available (time to render children components and have the scroll available)
         setTimeout(function() {
-          window.scrollTo(0, scrollHistory[key]);
+          window.scrollTo(0, scrollTop);
         });
       } else {
+        body.style['min-height'] = null;
         window.scrollTo(0, 0);
       }
     }
