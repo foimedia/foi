@@ -1,6 +1,6 @@
 {
-  "name": "foi",
-  "description": "Telegram Publisher Bot",
+  "name": "FOI",
+  "description": "Real-time coverage of events for journalists and activists.",
   "version": "0.0.0",
   "homepage": "",
   "main": "src",
@@ -59,6 +59,7 @@
     "mongodb": "^2.2.29",
     "node-telegram-bot-api": "^0.27.1",
     "normalize.css": "^7.0.0",
+    "offline-plugin": "^4.8.3",
     "passport-strategy": "^1.0.0",
     "preact": "^8.2.1",
     "preact-compat": "^3.16.0",
@@ -110,6 +111,7 @@
     "webpack": "^3.0.0",
     "webpack-bundle-analyzer": "^2.8.3",
     "webpack-dev-middleware": "^1.11.0",
-    "webpack-hot-middleware": "^2.18.0"
+    "webpack-hot-middleware": "^2.18.0",
+    "webpack-pwa-manifest": "^3.1.7"
   }
 }

@@ -1,11 +1,9 @@
 const path = require('path');
 const webpack = require('webpack');
 const config = require('config');
-const env = process.env.NODE_ENV || 'development';
-
 const GitRevisionPlugin = require('git-revision-webpack-plugin');
 
-const gitRevisionPlugin = new GitRevisionPlugin();
+const env = process.env.NODE_ENV || 'development';
 
 const url = config.get('url');
 let public, server, cdn;
@@ -16,8 +14,6 @@ if(typeof url == 'string') {
   server = url.server || public;
   cdn = url.cdn || public;
 }
-
-console.log(public, server, cdn);
 
 module.exports = {
   entry: {
@@ -49,7 +45,7 @@ module.exports = {
         'cdn': JSON.stringify(cdn),
         'botName': JSON.stringify(config.get('telegram').username),
         'defaultUserRoles': JSON.stringify(config.get('defaultUserRoles')),
-        'VERSION': JSON.stringify(gitRevisionPlugin.version())
+        'VERSION': JSON.stringify(new GitRevisionPlugin().version())
       }
     })
   ],
