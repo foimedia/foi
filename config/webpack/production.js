@@ -8,7 +8,10 @@ config.devtool = 'source-map';
 config.output.filename = '[name]-[chunkhash].js';
 config.output.chunkFilename = '[name]-[chunkhash].js';
 
-config.plugins.unshift(require('./html'), require('./manifest'));
+config.plugins.unshift(
+  require('./plugins/html'),
+  require('./plugins/manifest')
+);
 
 config.plugins = config.plugins.concat([
   new webpack.NoEmitOnErrorsPlugin(),
@@ -18,7 +21,7 @@ config.plugins = config.plugins.concat([
     },
     sourceMap: false
   }),
-  new OfflinePlugin()
+  require('./plugins/offline')
 ]);
 
 module.exports = config;

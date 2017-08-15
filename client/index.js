@@ -1,5 +1,9 @@
-import * as OfflinePluginRuntime from 'offline-plugin/runtime';
-OfflinePluginRuntime.install();
+import * as runtime from 'offline-plugin/runtime';
+runtime.install({
+  onUpdateReady: () => {
+    runtime.applyUpdate();
+  }
+});
 
 import React from 'react';
 import ReactDom from 'react-dom';

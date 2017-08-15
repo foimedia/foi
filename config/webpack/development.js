@@ -12,7 +12,10 @@ config.devtool = 'cheap-eval-source-map';
 config.output.filename = '[name].js';
 config.output.chunkFilename = '[name].js';
 
-config.plugins.unshift(require('./html'), require('./manifest'));
+config.plugins.unshift(
+  require('./plugins/html'),
+  require('./plugins/manifest')
+);
 
 config.plugins = config.plugins.concat([
   new webpack.HotModuleReplacementPlugin(),
@@ -21,7 +24,7 @@ config.plugins = config.plugins.concat([
     analyzerMode: 'server',
     analyzerHost: '0.0.0.0'
   }),
-  new OfflinePlugin()
+  require('./plugins/offline')
 ]);
 
 module.exports = config;
