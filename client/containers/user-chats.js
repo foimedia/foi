@@ -9,16 +9,16 @@ import loadChats from 'bundle-loader?lazy!components/chats';
 class UserChats extends Component {
   componentDidMount () {
     const { auth } = this.props;
-    if(hasUser(auth)) {
+    if(auth.signedIn) {
       this.props.loadUserChats(auth.user.id);
     }
   }
 
   componentWillUpdate (nextProps) {
-    if(nextProps.auth !== this.props.auth) {
-      if(nextProps.auth.user) {
-        this.props.loadUserChats(nextProps.auth.user.id);
-      }
+    const { auth } = this.props;
+    const nextAuth = nextProps.auth;
+    if(nextAuth.signedIn && (!auth.signedIn || auth.user.id !== nextAuth.user.id)) {
+      this.props.loadUserChats(nextAuth.user.id);
     }
   }
 
