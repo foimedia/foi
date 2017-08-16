@@ -195,10 +195,9 @@ const get = id => (dispatch) => {
 
 export const loadChat = (id, quiet = false) => (dispatch, getState) => {
   dispatch(_load(id, quiet));
-  const chats = getState().chats;
-  if(chats[id]) {
+  if(quiet)
     return null;
-  }
+  const chats = getState().chats;
   dispatch(get(id));
 };
 
@@ -220,9 +219,9 @@ export const removeChat = id => (dispatch) => {
   });
 };
 
-export const loadChatStories = (id, reload = false) => (dispatch, getState) => {
+export const loadChatStories = (id, quiet = false) => (dispatch, getState) => {
   const chat = getState().chats[id];
-  if(chat === undefined || (!reload && chat.stories))
+  if(chat === undefined || quiet)
     return null;
   dispatch(storiesRequest(id));
   stories.find({
@@ -238,11 +237,34 @@ export const loadChatStories = (id, reload = false) => (dispatch, getState) => {
     dispatch(storiesFailure(id, err));
   });
 };
-export const expandChatStories = (id) => (dispatch, getState) => {
+export const expandChatStories = id => (dispatch, getState) => {
   const chat = getState().chats[id];
   const context = getState().context.chats[id].stories;
   const skip = context.limit + context.skip;
-  if(skip > (context.loaded || 0)) {
+  // Look for next in line through stories index
+  const firstInLine = chat.stories[skip+context.new];
+  if(firstInLine !== undefined) {
+    // Do not use the context limit since it won't look on the database, instead calculate the subsequent limit
+    const subsequentAmount = chat.stories.length - (skip+context.new);
+    const subsequentLimit = subsequentAmount > context.limit ?
+      context.limit : subsequentAmount;
+    dispatch(storiesExpand(id, {
+      skip: subsequentLimit + context.skip + context.new
+    }));
+    // Lazy expand for data update
+    stories.find({
+      query: {
+        chatId: id,
+        $sort: {
+          createdAt: chat.archived ? 1 : -1
+        },
+        $skip: subsequentLimit + context.skip + context.new
+      }
+    }).then(res => {
+      dispatch(storiesExpand(id, res));
+    });
+  // Requesting new data if skip is more than whats loaded
+  } else if(skip > (context.loaded || 0)) {
     stories.find({
       query: {
         chatId: id,
@@ -254,6 +276,7 @@ export const expandChatStories = (id) => (dispatch, getState) => {
     }).then(res => {
       dispatch(storiesExpand(id, res));
     });
+  // Dispatch expand if context tells its loaded
   } else {
     dispatch(storiesExpand(id, {
       skip
@@ -267,9 +290,9 @@ export const galleryMediaTypes = [
   'photo'
 ];
 
-export const loadChatGallery = (id, reload = false) => (dispatch, getState) => {
+export const loadChatGallery = id => (dispatch, getState) => {
   const chat = getState().chats[id];
-  if(chat === undefined || (!reload && chat.gallery))
+  if(chat === undefined)
     return null;
   dispatch(galleryRequest(id));
   posts.find({

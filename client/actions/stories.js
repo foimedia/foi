@@ -93,9 +93,6 @@ const get = id => (dispatch) => {
 
 export const loadStory = id => (dispatch, getState) => {
   const stories = getState().stories;
-  if(stories[id]) {
-    return null;
-  }
   return dispatch(get(id));
 };
 

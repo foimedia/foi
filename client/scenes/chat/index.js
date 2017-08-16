@@ -49,7 +49,7 @@ class Chat extends Component {
   }
 
   render () {
-    const { match, chat } = this.props;
+    const { match, chat, fromHistory } = this.props;
     const { stories } = this.state;
     const { location } = this.props;
     const isModal = !!(
@@ -74,7 +74,9 @@ class Chat extends Component {
           <Switch location={isModal ? this.previousLocation : location}>
             <Route path={`${match.path}/settings`} component={Settings} />
             <Route path={`${match.path}/s/:storyId`} component={Story} />
-            <Route component={Home} />
+            <Route render={props => (
+              <Home {...props} fromHistory={fromHistory} />
+            )} />
           </Switch>
           {isModal ? <Route path={`${match.path}/s/:storyId`} render={props => (
             <Gallery chat={chat} {...props} />

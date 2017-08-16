@@ -133,6 +133,27 @@ const removeFailure = (id, err) => {
   }
 };
 
+const chatsRequest = (id) => {
+  return {
+    type: USER_CHATS_REQUEST,
+    id
+  }
+};
+const chatsSuccess = (id, res) => {
+  return {
+    type: USER_CHATS_SUCCESS,
+    id,
+    res
+  }
+};
+const chatsFailure = (id, err) => {
+  return {
+    type: USER_CHATS_FAILURE,
+    id,
+    err
+  }
+};
+
 const get = id => (dispatch) => {
   dispatch(getRequest(id));
   service.get(id).then(res => {
@@ -144,9 +165,6 @@ const get = id => (dispatch) => {
 
 export const loadUser = (id, reload = false) => (dispatch, getState) => {
   const users = getState().users;
-  if(!reload && users[id]) {
-    return null;
-  }
   dispatch(get(id));
 };
 
@@ -176,6 +194,32 @@ export const removeUser = id => (dispatch) => {
     dispatch(removeSuccess(id, data));
   }).catch(err => {
     dispatch(removeFailure(id, err));
+  });
+};
+
+export const loadUserChats = id => (dispatch, getState) => {
+  const user = getState().users[id];
+  dispatch(chatsRequest(id));
+  chats.find({
+    query: {
+      $or: [
+        {
+          users: {
+            $in: [id]
+          }
+        },
+        {
+          id: id
+        }
+      ],
+      $sort: {
+        id: -1
+      }
+    }
+  }).then(res => {
+    dispatch(chatsSuccess(id, res));
+  }).catch(err => {
+    dispatch(chatsFailure(id, err));
   });
 };
 

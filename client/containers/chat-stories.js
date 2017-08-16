@@ -24,15 +24,15 @@ class ChatStories extends Component {
   }
 
   componentDidMount () {
-    const { chat } = this.props;
-    this.props.loadChatStories(chat.id);
+    const { chat, fromHistory } = this.props;
+    this.props.loadChatStories(chat.id, fromHistory);
   }
 
   componentDidUpdate (prevProps, prevState) {
-    const { chat } = this.props;
+    const { chat, fromHistory } = this.props;
     if(chat !== undefined) {
       if(prevProps.chat !== undefined && chat.id !== prevProps.chat.id) {
-        this.props.loadChatStories(chat.id);
+        this.props.loadChatStories(chat.id, fromHistory);
       }
     }
   }
@@ -87,11 +87,12 @@ const getChatStories = (chat, stories, context) => {
       return res;
     }, []);
   }
-}
+};
 
 const mapStateToProps = (state, ownProps) => {
   const { id } = ownProps.chat;
   const context = state.context.chats[id].stories;
+  const { scrollHistory } = state.context;
   const hasMore = !!(context.limit + context.skip < context.total);
   return {
     stories: getChatStories(state.chats[id], state.stories, context),

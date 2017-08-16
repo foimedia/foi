@@ -40,7 +40,7 @@ class ChatGallery extends Component {
     const nextChat = nextProps.chat;
     if(nextChat !== undefined) {
       if(chat !== undefined && chat.id !== nextChat.id) {
-        this.props.loadChatGallery(chat.id);
+        this.props.loadChatGallery(nextChat.id);
       }
     }
   }
@@ -95,14 +95,13 @@ class ChatGallery extends Component {
 
 const getChatGallery = (chat, posts, context) => {
   if(chat !== undefined && chat.gallery !== undefined) {
-    const amount = context.limit + context.skip;
-    return chat.gallery.slice(0, amount).reduce((res, id) => {
+    return chat.gallery.reduce((res, id) => {
       if(posts[id])
         res.push(posts[id]);
       return res;
     }, []);
   }
-}
+};
 
 const mapStateToProps = (state, ownProps) => {
   const { id } = ownProps.chat;

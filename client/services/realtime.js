@@ -18,10 +18,28 @@ export default class Realtime {
 
     this.bindings = this.options.bindings;
 
-    client.io.on('connect', this.connect.bind(this));
-    client.io.on('disconnect', this.disconnect.bind(this));
-    client.io.on('reconnect', this.reconnect.bind(this));
+    this.connect = this.connect.bind(this);
+    this.disconnect = this.disconnect.bind(this);
+    this.reconnect = this.reconnect.bind(this);
 
+    this.setup();
+
+    // PWA connection listeners
+    window.addEventListener('online', this.setup.bind(this));
+    window.addEventListener('offline', this.detachSetup.bind(this));
+
+  }
+
+  setup () {
+    client.io.on('connect', this.connect);
+    client.io.on('disconnect', this.disconnect);
+    client.io.on('reconnect', this.reconnect);
+  }
+
+  detachSetup () {
+    client.io.off('connect', this.connect);
+    client.io.off('disconnect', this.disconnect);
+    client.io.off('reconnect', this.reconnect);
   }
 
   restoreItems () {

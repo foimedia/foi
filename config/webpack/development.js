@@ -1,6 +1,7 @@
 const config = require('./common');
 const webpack = require('webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const OfflinePlugin = require('offline-plugin');
 
 config.entry.main.unshift('webpack-hot-middleware/client?path=/__webpack_hmr&timeout=2000&overlay=false&reload=true');
 
@@ -11,7 +12,11 @@ config.devtool = 'cheap-eval-source-map';
 config.output.filename = '[name].js';
 config.output.chunkFilename = '[name].js';
 
-config.plugins.unshift(require('./html'));
+config.plugins.unshift(
+  require('./plugins/html'),
+  require('./plugins/favicons'),
+  require('./plugins/manifest')
+);
 
 config.plugins = config.plugins.concat([
   new webpack.HotModuleReplacementPlugin(),
@@ -20,6 +25,7 @@ config.plugins = config.plugins.concat([
     analyzerMode: 'server',
     analyzerHost: '0.0.0.0'
   })
+  // require('./plugins/offline')
 ]);
 
 module.exports = config;

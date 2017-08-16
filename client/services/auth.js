@@ -1,5 +1,6 @@
 import client from 'services/feathers';
 import { updateContext } from 'actions/context';
+import { loadUser } from 'actions/users';
 import { authenticate } from 'actions/auth';
 
 const authorization = client.service('authorize');

@@ -5,8 +5,13 @@ import actions, {
   USER_GET_SUCCESS,
   USER_FIND_SUCCESS,
   USER_PATCH_SUCCESS,
-  USER_REMOVE_SUCCESS
+  USER_REMOVE_SUCCESS,
+  USER_CHATS_SUCCESS
 } from 'actions/users';
+
+import {
+  AUTH_SUCCESS
+} from 'actions/auth';
 
 const initialState = {};
 
@@ -26,6 +31,15 @@ export default function reducer (state = initialState, action) {
         action.data
       );
       return state;
+    }
+    case AUTH_SUCCESS : {
+      return {
+        ...state,
+        [action.user.id]: {
+          ...state[action.user.id],
+          ...action.user
+        }
+      };
     }
     case USER_FIND_SUCCESS : {
       state = Object.assign({}, initialState, state);
@@ -47,7 +61,18 @@ export default function reducer (state = initialState, action) {
       }
       return state;
     }
+    case USER_CHATS_SUCCESS : {
+      return {
+        ...state,
+        [action.id]: {
+          ...state[action.id],
+          chats: getItemsIds(action.res.data)
+        }
+      };
+    }
     default :
       return state;
   }
 }
+
+const getItemsIds = (items = []) => items.map(item => typeof item == 'string' ? item : item.id);
