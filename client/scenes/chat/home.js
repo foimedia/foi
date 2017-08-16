@@ -11,14 +11,14 @@ class ChatHome extends Component {
     const { chat } = this.props;
   }
   render () {
-    const { chat } = this.props;
+    const { chat, fromHistory } = this.props;
     if(chat !== undefined) {
       return (
         <section id="chat-home">
           {!chat.hideGallery &&
             <Gallery chat={chat} />
           }
-          <Stories chat={chat} />
+          <Stories chat={chat} fromHistory={fromHistory} />
         </section>
       )
     }

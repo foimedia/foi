@@ -143,28 +143,40 @@ const ListWrapper = styled.section`
 `;
 
 export class GalleryList extends Component {
+
+  Thumb (item, status) {
+    return (
+      <Link
+        to={{
+          pathname: `/c/${item.props.post.chatId}/s/${item.props.post.storyId}`,
+          state: {
+            modal: true,
+            post: item.props.post.id
+          }
+        }}
+        className={`gallery-item fade-${status} type-${item.props.post.type}`}>
+        {item}
+      </Link>
+    )
+  }
+
   render () {
     const { children } = this.props;
     const childrenArray = Array.isArray(children) ? children : [children];
     return (
       <ListWrapper>
-        <TransitionGroup>
+        {/* <TransitionGroup>
           {childrenArray.slice(0,5).map(child => (
             <Transition key={child.key} timeout={100}>
-              {(status) => (
-                <Link to={{
-                  pathname: `/c/${child.props.post.chatId}/s/${child.props.post.storyId}`,
-                  state: {
-                    modal: true,
-                    post: child.props.post.id
-                  }
-                }} className={`gallery-item fade-${status} type-${child.props.post.type}`}>
-                  {child}
-                </Link>
-              )}
+              {(status) => this.Thumb(child, status)}
             </Transition>
           ))}
-        </TransitionGroup>
+        </TransitionGroup> */}
+        {childrenArray.slice(0,5).map(child => (
+          <div key={child.key}>
+            {this.Thumb(child, '')}
+          </div>
+        ))}
         <div className="clear" />
       </ListWrapper>
     )

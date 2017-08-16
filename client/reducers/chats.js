@@ -1,3 +1,5 @@
+import union from 'lodash/union';
+
 import {
   galleryMediaTypes,
   CHAT_NEW,
@@ -67,7 +69,10 @@ export default function reducer (state = initialState, action) {
         ...state,
         [action.id]: {
           ...state[action.id],
-          stories: getItemsIds(action.res.data)
+          stories: union(
+            getItemsIds(action.res.data),
+            state[action.id].stories || []
+          )
         }
       }
     }
@@ -78,7 +83,7 @@ export default function reducer (state = initialState, action) {
           [action.id]: {
             ...state[action.id],
             stories: [
-              ...state[action.id].gallery,
+              ...state[action.id].stories,
               ...getItemsIds(action.res.data)
             ]
           }
@@ -91,7 +96,10 @@ export default function reducer (state = initialState, action) {
         ...state,
         [action.id]: {
           ...state[action.id],
-          gallery: getItemsIds(action.res.data)
+          gallery: union(
+            getItemsIds(action.res.data),
+            state[action.id].gallery || []
+          )
         }
       }
     }

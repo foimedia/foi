@@ -23,8 +23,8 @@ config.plugins = config.plugins.concat([
   new BundleAnalyzerPlugin({
     analyzerMode: 'server',
     analyzerHost: '0.0.0.0'
-  }),
-  require('./plugins/offline')
+  })
+  // require('./plugins/offline')
 ]);
 
 module.exports = config;

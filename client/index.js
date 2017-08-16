@@ -1,9 +1,11 @@
 import * as runtime from 'offline-plugin/runtime';
-runtime.install({
-  onUpdateReady: () => {
-    runtime.applyUpdate();
-  }
-});
+if(process.env.NODE_ENV == 'production') {
+  runtime.install({
+    onUpdateReady: () => {
+      runtime.applyUpdate();
+    }
+  });
+}
 
 import React from 'react';
 import ReactDom from 'react-dom';

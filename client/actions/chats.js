@@ -32,10 +32,11 @@ export const CHAT_GALLERY_SUCCESS = 'CHAT_GALLERY_SUCCESS';
 export const CHAT_GALLERY_EXPAND = 'CHAT_GALLERY_EXPAND';
 export const CHAT_GALLERY_FAILURE = 'CHAT_GALLERY_FAILURE';
 
-const _load = id => {
+const _load = (id, quiet) => {
   return {
     type: CHAT_LOAD,
-    id
+    id,
+    quiet
   }
 };
 
@@ -192,8 +193,10 @@ const get = id => (dispatch) => {
   });
 };
 
-export const loadChat = id => (dispatch, getState) => {
-  dispatch(_load(id));
+export const loadChat = (id, quiet = false) => (dispatch, getState) => {
+  dispatch(_load(id, quiet));
+  if(quiet)
+    return null;
   const chats = getState().chats;
   dispatch(get(id));
 };
@@ -216,9 +219,9 @@ export const removeChat = id => (dispatch) => {
   });
 };
 
-export const loadChatStories = id => (dispatch, getState) => {
+export const loadChatStories = (id, quiet = false) => (dispatch, getState) => {
   const chat = getState().chats[id];
-  if(chat === undefined)
+  if(chat === undefined || quiet)
     return null;
   dispatch(storiesRequest(id));
   stories.find({

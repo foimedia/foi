@@ -32,15 +32,17 @@ class ChatGallery extends Component {
 
   componentDidMount () {
     const { chat } = this.props;
+    console.log(chat.id);
     this.props.loadChatGallery(chat.id);
   }
 
   componentWillReceiveProps (nextProps) {
     const { chat } = this.props;
     const nextChat = nextProps.chat;
+    console.log(nextChat);
     if(nextChat !== undefined) {
       if(chat !== undefined && chat.id !== nextChat.id) {
-        this.props.loadChatGallery(chat.id);
+        this.props.loadChatGallery(nextChat.id);
       }
     }
   }
@@ -95,8 +97,7 @@ class ChatGallery extends Component {
 
 const getChatGallery = (chat, posts, context) => {
   if(chat !== undefined && chat.gallery !== undefined) {
-    const amount = context.limit + context.skip;
-    return chat.gallery.slice(0, amount).reduce((res, id) => {
+    return chat.gallery.reduce((res, id) => {
       if(posts[id])
         res.push(posts[id]);
       return res;

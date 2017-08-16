@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import client from 'services/feathers';
 import { loadUserChats } from 'actions/users';
 import { connect } from 'react-redux';
 import { hasUser } from 'services/auth';
