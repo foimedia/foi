@@ -124,6 +124,7 @@ export default function reducer (state = initialState, action) {
         return {
           ...state,
           [chat.id]: {
+            ...state[chat.id],
             stories: [
               action.id,
               ...chat.stories
