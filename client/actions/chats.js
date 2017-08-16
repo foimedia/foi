@@ -241,7 +241,30 @@ export const expandChatStories = id => (dispatch, getState) => {
   const chat = getState().chats[id];
   const context = getState().context.chats[id].stories;
   const skip = context.limit + context.skip;
-  if(skip > (context.loaded || 0)) {
+  // Look for next in line through stories index
+  const firstInLine = chat.stories[skip+context.new];
+  if(firstInLine !== undefined) {
+    // Do not use the context limit since it won't look on the database, instead calculate the subsequent limit
+    const subsequentAmount = chat.stories.length - (skip+context.new);
+    const subsequentLimit = subsequentAmount > context.limit ?
+      context.limit : subsequentAmount;
+    dispatch(storiesExpand(id, {
+      skip: subsequentLimit + context.skip + context.new
+    }));
+    // Lazy expand for data update
+    stories.find({
+      query: {
+        chatId: id,
+        $sort: {
+          createdAt: chat.archived ? 1 : -1
+        },
+        $skip: subsequentLimit + context.skip + context.new
+      }
+    }).then(res => {
+      dispatch(storiesExpand(id, res));
+    });
+  // Requesting new data if skip is more than whats loaded
+  } else if(skip > (context.loaded || 0)) {
     stories.find({
       query: {
         chatId: id,
@@ -253,6 +276,7 @@ export const expandChatStories = id => (dispatch, getState) => {
     }).then(res => {
       dispatch(storiesExpand(id, res));
     });
+  // Dispatch expand if context tells its loaded
   } else {
     dispatch(storiesExpand(id, {
       skip

@@ -123,8 +123,8 @@ export default function reducer (state = initialState, action) {
                 state.chats[action.id].stories : {}),
               skip: action.quiet ?
                 chat.stories.skip : skip,
-              total,
-              limit,
+              total: total !== undefined ? total : chat.stories.total,
+              limit: limit !== undefined ? limit : chat.stories.limit,
               loaded: skip > (loaded || 0) ? skip : loaded
             }
           }

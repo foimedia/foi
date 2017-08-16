@@ -9,17 +9,31 @@ const initialState = {};
 export default function reducer (state = initialState, action) {
   switch(action.type) {
     case AUTH_SUCCESS : {
-      state = Object.assign({}, initialState, state);
-      state.signedIn = true;
-      state.user = Object.assign({}, action.user);
-      return state;
+      return {
+        ...state,
+        signedIn: true,
+        user: {
+          ...action.user
+        }
+      };
     }
-    case AUTH_FAILURE :
+    case AUTH_FAILURE : {
+      // Keep auth data when server is unreachable
+      if(action.err.message && action.err.message.indexOf('timed out') !== -1) {
+        return state;
+      }
+      return {
+        ...state,
+        signedIn: false,
+        user: undefined
+      };
+    }
     case AUTH_LOGOUT_SUCCESS : {
-      state = Object.assign({}, initialState, state);
-      state.signedIn = false;
-      state.user = undefined;
-      return state;
+      return {
+        ...state,
+        signedIn: false,
+        user: undefined
+      };
     }
     default :
       return state;
