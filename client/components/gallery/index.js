@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom';
 import styleUtils from 'services/style-utils';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import Transition from 'react-transition-group/Transition';
+import Swipeable from 'react-swipeable';
 import Post from 'components/posts';
 import Button from 'components/button';
 import Link from 'components/smart-link';
@@ -375,33 +376,38 @@ export class Gallery extends Component {
     } else if(open && post) {
       return (
         <div className="media-gallery">
-          <GalleryWrapper>
-            <div tabindex="0">
-              <Leave>
-                <Link to={`/c/${post.chatId}`}></Link>
-              </Leave>
-              <Actions>
-                <Link to={`/c/${post.chatId}`}>
-                  Close
-                  <span className="fa fa-close"></span>
-                </Link>
-                <GalleryNavLink post={nav.next}>
-                  Next
-                  <span className="fa fa-chevron-right"></span>
-                </GalleryNavLink>
-                <GalleryNavLink post={nav.prev}>
-                  <span className="fa fa-chevron-left"></span>
-                  Previous
-                </GalleryNavLink>
-                <Link to={`/c/${post.chatId}/s/${post.storyId}`}>
-                  Go to story
-                </Link>
-              </Actions>
-              <PostWrapper>
-                <Post post={post} />
-              </PostWrapper>
-            </div>
-          </GalleryWrapper>
+          <Swipeable
+            onSwipedLeft={this.next}
+            onSwipedRight={this.prev}
+            >
+            <GalleryWrapper>
+              <div tabindex="0">
+                <Leave>
+                  <Link to={`/c/${post.chatId}`}></Link>
+                </Leave>
+                <Actions>
+                  <Link to={`/c/${post.chatId}`}>
+                    Close
+                    <span className="fa fa-close"></span>
+                  </Link>
+                  <GalleryNavLink post={nav.next}>
+                    Next
+                    <span className="fa fa-chevron-right"></span>
+                  </GalleryNavLink>
+                  <GalleryNavLink post={nav.prev}>
+                    <span className="fa fa-chevron-left"></span>
+                    Previous
+                  </GalleryNavLink>
+                  <Link to={`/c/${post.chatId}/s/${post.storyId}`}>
+                    Go to story
+                  </Link>
+                </Actions>
+                <PostWrapper>
+                  <Post post={post} />
+                </PostWrapper>
+              </div>
+            </GalleryWrapper>
+          </Swipeable>
         </div>
       );
     }
