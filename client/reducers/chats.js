@@ -82,10 +82,10 @@ export default function reducer (state = initialState, action) {
           ...state,
           [action.id]: {
             ...state[action.id],
-            stories: [
-              ...state[action.id].stories,
-              ...getItemsIds(action.res.data)
-            ]
+            stories: union(
+              state[action.id].stories,
+              getItemsIds(action.res.data)
+            )
           }
         }
       }
@@ -109,10 +109,10 @@ export default function reducer (state = initialState, action) {
           ...state,
           [action.id]: {
             ...state[action.id],
-            gallery: [
-              ...state[action.id].gallery,
-              ...getItemsIds(action.res.data)
-            ]
+            gallery: union(
+              state[action.id].gallery,
+              getItemsIds(action.res.data)
+            )
           }
         }
       }
