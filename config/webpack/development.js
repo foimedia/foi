@@ -13,9 +13,7 @@ config.output.filename = '[name].js';
 config.output.chunkFilename = '[name].js';
 
 config.plugins.unshift(
-  require('./plugins/html'),
-  require('./plugins/favicons'),
-  require('./plugins/manifest')
+  require('./plugins/html')
 );
 
 config.plugins = config.plugins.concat([
