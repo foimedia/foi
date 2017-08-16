@@ -168,6 +168,7 @@ export default function reducer (state = initialState, action) {
       const incoming = {...action.payload.context};
       delete incoming.scrollHistory;
       delete incoming.key;
+      delete incoming.online;
       // Clean up chats context for skip and loaded data
       Object.keys(incoming.chats).map(id => {
         let chat = incoming.chats[id];
