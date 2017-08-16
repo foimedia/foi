@@ -32,14 +32,12 @@ class ChatGallery extends Component {
 
   componentDidMount () {
     const { chat } = this.props;
-    console.log(chat.id);
     this.props.loadChatGallery(chat.id);
   }
 
   componentWillReceiveProps (nextProps) {
     const { chat } = this.props;
     const nextChat = nextProps.chat;
-    console.log(nextChat);
     if(nextChat !== undefined) {
       if(chat !== undefined && chat.id !== nextChat.id) {
         this.props.loadChatGallery(nextChat.id);
