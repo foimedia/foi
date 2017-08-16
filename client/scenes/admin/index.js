@@ -16,7 +16,7 @@ class Admin extends Component {
 
   render () {
     const { match, auth } = this.props;
-    if(auth.user !== null) {
+    if(auth.user) {
       return (
         <section id="admin-area">
           {!hasRole(auth, 'admin') &&
