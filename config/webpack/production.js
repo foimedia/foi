@@ -10,6 +10,7 @@ config.output.chunkFilename = '[name]-[chunkhash].js';
 
 config.plugins.unshift(
   require('./plugins/html'),
+  require('./plugins/favicons'),
   require('./plugins/manifest')
 );
 

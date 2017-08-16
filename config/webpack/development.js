@@ -14,6 +14,7 @@ config.output.chunkFilename = '[name].js';
 
 config.plugins.unshift(
   require('./plugins/html'),
+  require('./plugins/favicons'),
   require('./plugins/manifest')
 );
 
