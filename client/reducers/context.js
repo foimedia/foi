@@ -170,11 +170,13 @@ export default function reducer (state = initialState, action) {
       delete incoming.key;
       delete incoming.online;
       // Clean up chats context for skip and loaded data
-      Object.keys(incoming.chats).map(id => {
-        let chat = incoming.chats[id];
-        chat.stories.skip = chat.stories.loaded = 0;
-        chat.gallery.skip = chat.gallery.loaded = 0;
-      });
+      if(incoming.chats) {
+        Object.keys(incoming.chats).map(id => {
+          let chat = incoming.chats[id];
+          chat.stories.skip = chat.stories.loaded = 0;
+          chat.gallery.skip = chat.gallery.loaded = 0;
+        });
+      }
       return {
         ...state,
         ...incoming

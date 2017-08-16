@@ -1,7 +1,13 @@
 import { compose, applyMiddleware, createStore } from 'redux';
 import { persistStore, autoRehydrate } from 'redux-persist';
+import localForage from 'localforage';
 import rootReducer from 'reducers';
 import middlewares from 'middleware';
+
+const localStore = localForage.createInstance({
+  name: 'foi',
+  description: 'Persistant application state'
+});
 
 export default function configureStore(initialState, callback) {
   // Engage the Chrome extension "Redux DevTools" if it is installed on the browser.
@@ -18,7 +24,9 @@ export default function configureStore(initialState, callback) {
 
   const store = createStoreWithMiddlewares(rootReducer(), initialState);
 
-  persistStore(store, {}, callback);
+  persistStore(store, {
+    storage: localStore
+  }, callback);
 
   return store;
 }
