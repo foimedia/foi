@@ -53,7 +53,7 @@ export default function reducer (state = initialState, action) {
       const scroll = (
         window.pageYOffset || document.documentElement.scrollTop
       );
-      if(lastKey !== undefined && scroll > 0) {
+      if(lastKey !== undefined && (state.scrollHistory[lastKey] || scroll > 0)) {
         state.scrollHistory[lastKey] = scroll;
       }
       state.scrollHistory.lastKey = action.payload.key;
