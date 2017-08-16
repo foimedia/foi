@@ -76,6 +76,7 @@
     "react-router-redux": "next",
     "react-transition-group": "^2.0.2",
     "redux": "^3.7.2",
+    "redux-persist": "^4.8.3",
     "redux-promise-middleware": "^4.3.0",
     "redux-thunk": "^2.2.0",
     "serve-favicon": "^2.4.3",

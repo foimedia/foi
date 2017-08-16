@@ -32,11 +32,10 @@ export const CHAT_GALLERY_SUCCESS = 'CHAT_GALLERY_SUCCESS';
 export const CHAT_GALLERY_EXPAND = 'CHAT_GALLERY_EXPAND';
 export const CHAT_GALLERY_FAILURE = 'CHAT_GALLERY_FAILURE';
 
-const _load = (id, quiet) => {
+const _load = id => {
   return {
     type: CHAT_LOAD,
-    id,
-    quiet
+    id
   }
 };
 
@@ -193,12 +192,9 @@ const get = id => (dispatch) => {
   });
 };
 
-export const loadChat = (id, quiet = false) => (dispatch, getState) => {
-  dispatch(_load(id, quiet));
+export const loadChat = id => (dispatch, getState) => {
+  dispatch(_load(id));
   const chats = getState().chats;
-  if(chats[id]) {
-    return null;
-  }
   dispatch(get(id));
 };
 
@@ -220,9 +216,9 @@ export const removeChat = id => (dispatch) => {
   });
 };
 
-export const loadChatStories = (id, reload = false) => (dispatch, getState) => {
+export const loadChatStories = id => (dispatch, getState) => {
   const chat = getState().chats[id];
-  if(chat === undefined || (!reload && chat.stories))
+  if(chat === undefined)
     return null;
   dispatch(storiesRequest(id));
   stories.find({
@@ -238,7 +234,7 @@ export const loadChatStories = (id, reload = false) => (dispatch, getState) => {
     dispatch(storiesFailure(id, err));
   });
 };
-export const expandChatStories = (id) => (dispatch, getState) => {
+export const expandChatStories = id => (dispatch, getState) => {
   const chat = getState().chats[id];
   const context = getState().context.chats[id].stories;
   const skip = context.limit + context.skip;
@@ -267,9 +263,9 @@ export const galleryMediaTypes = [
   'photo'
 ];
 
-export const loadChatGallery = (id, reload = false) => (dispatch, getState) => {
+export const loadChatGallery = id => (dispatch, getState) => {
   const chat = getState().chats[id];
-  if(chat === undefined || (!reload && chat.gallery))
+  if(chat === undefined)
     return null;
   dispatch(galleryRequest(id));
   posts.find({

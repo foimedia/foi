@@ -87,7 +87,7 @@ const getChatStories = (chat, stories, context) => {
       return res;
     }, []);
   }
-}
+};
 
 const mapStateToProps = (state, ownProps) => {
   const { id } = ownProps.chat;

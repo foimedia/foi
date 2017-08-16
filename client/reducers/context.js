@@ -11,12 +11,20 @@ import {
 } from 'actions/chats';
 
 import {
+  USER_CHATS_SUCCESS
+} from 'actions/users';
+
+import {
   STORY_NEW
 } from 'actions/stories';
 
 import {
   LOCATION_CHANGE
 } from 'react-router-redux';
+
+import {
+  REHYDRATE
+} from 'redux-persist/constants';
 
 const initialState = {
   chats: {},
@@ -52,48 +60,114 @@ export default function reducer (state = initialState, action) {
       return state;
     }
     case CHAT_LOAD : {
-      if(!action.quiet) {
-        state = Object.assign({}, initialState, state);
-        let chat = Object.assign({}, initialChat, state.chats[action.id]);
-        chat.stories = Object.assign({}, chat.stories, initialChat.stories);
-        chat.gallery = Object.assign({}, chat.gallery, initialChat.gallery);
-        state.chats[action.id] = chat;
+      return {
+        ...state,
+        chats: {
+          ...state.chats,
+          [action.id]: {
+            ...state.chats[action.id],
+            stories: {
+              ...(state.chats[action.id] ?
+                state.chats[action.id].stories : {}),
+              ...initialChat.stories
+            },
+            gallery: {
+              ...(state.chats[action.id] ?
+                state.chats[action.id].gallery : {}),
+              ...initialChat.gallery
+            }
+          }
+        }
+      };
+    }
+    case USER_CHATS_SUCCESS : {
+      const chats = Object.assign(...action.res.data.map(c => ({[c.id]: {
+        stories: {
+          ...(state.chats[c.id] ? state.chats[c.id].stories : {}),
+          ...initialChat.stories
+        },
+        gallery: {
+          ...(state.chats[c.id] ? state.chats[c.id].gallery : {}),
+          ...initialChat.gallery
+        }
+      }})));
+      return {
+        ...state,
+        chats: {
+          ...state.chats,
+          ...chats
+        }
       }
-      return state;
     }
     case CHAT_STORIES_SUCCESS :
     case CHAT_STORIES_EXPAND : {
       const { limit, skip, total } = action.res;
-      state = Object.assign({}, initialState, state);
       let chat = state.chats[action.id];
-      let { loaded } = chat.stories;
-      chat.stories = Object.assign({}, initialChat.stories, {
-        skip,
-        total: total !== undefined ? total : chat.stories.total,
-        limit: limit !== undefined ? limit : chat.stories.limit,
-        loaded: skip > (loaded || 0) ? skip : loaded
-      });
-      return state;
+      let loaded = 0;
+      if(chat !== undefined) {
+        loaded = chat.stories.loaded;
+      }
+      return {
+        ...state,
+        chats: {
+          ...state.chats,
+          [action.id]: {
+            ...state.chats[action.id],
+            stories: {
+              ...initialChat.stories,
+              ...(state.chats[action.id] ?
+                state.chats[action.id].stories : {}),
+              skip,
+              total,
+              limit,
+              loaded: skip > (loaded || 0) ? skip : loaded
+            }
+          }
+        }
+      };
     }
     case CHAT_GALLERY_SUCCESS :
     case CHAT_GALLERY_EXPAND : {
       const { limit, skip, total } = action.res;
-      state = Object.assign({}, initialState, state);
       let chat = state.chats[action.id];
-      const { loaded } = chat.gallery;
-      chat.gallery = Object.assign({}, initialChat.gallery, {
-        total,
-        limit,
-        skip,
-        loaded: skip > (loaded || 0) ? skip : loaded
-      });
-      return state;
+      let loaded = 0;
+      if(chat !== undefined) {
+        loaded = chat.gallery.loaded;
+      }
+      return {
+        ...state,
+        chats: {
+          ...state.chats,
+          [action.id]: {
+            ...state.chats[action.id],
+            gallery: {
+              ...initialChat.gallery,
+              ...(state.chats[action.id] ?
+                state.chats[action.id].gallery : {}),
+              skip,
+              total,
+              limit,
+              loaded: skip > (loaded || 0) ? skip : loaded
+            }
+          }
+        }
+      };
     }
     case STORY_NEW : {
-      state = Object.assign({}, initialState, state);
+      state = {...state};
       let chat = state.chats[action.data.chatId];
       chat.stories.new++;
       return state;
+    }
+    case REHYDRATE : {
+      const incoming = {...action.payload.context};
+      delete incoming.scrollHistory;
+      delete incoming.key;
+      delete incoming.chats;
+      return {
+        ...state,
+        ...incoming
+      }
     }
     default :
       return state;

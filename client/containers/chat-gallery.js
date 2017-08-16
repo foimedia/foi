@@ -102,7 +102,7 @@ const getChatGallery = (chat, posts, context) => {
       return res;
     }, []);
   }
-}
+};
 
 const mapStateToProps = (state, ownProps) => {
   const { id } = ownProps.chat;

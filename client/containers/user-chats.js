@@ -1,107 +1,34 @@
 import React, { Component } from 'react';
 import client from 'services/feathers';
+import { loadUserChats } from 'actions/users';
 import { connect } from 'react-redux';
 import { hasUser } from 'services/auth';
 import Bundle from 'components/bundle';
 import loadChats from 'bundle-loader?lazy!components/chats';
 
 class UserChats extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      userChats: undefined
-    };
-    this.service = client.service('chats');
-    this.newUserChat = this.newUserChat.bind(this);
-    this.patchedUserChat = this.patchedUserChat.bind(this);
-    this.removedUserChat = this.removedUserChat.bind(this);
-  }
-
-  fetchUserChats (userId = false) {
-    return this.service.find({
-      query: {
-        $or: [
-          {
-            users: {
-              $in: [userId]
-            }
-          },
-          {
-            id: userId
-          }
-        ],
-        $sort: {
-          id: -1
-        }
-      }
-    });
-  }
-
-  newUserChat (newChat) {
-    const { userChats } = this.state;
-    const newUserChats = userChats.slice();
-    newUserChats.push(newChat);
-    return this.setState({ userChats: newUserChats });
-  }
-
-  patchedUserChat (patchedChat) {
-    const { userChats } = this.state;
-    const newUserChats = userChats.map(chat => {
-      if(chat.id == patchedChat.id)
-        return patchedChat;
-      else
-        return chat;
-    });
-    return this.setState({ userChats: newUserChats });
-  }
-
-  removedUserChat (removedChat) {
-    const { userChats } = this.state;
-    const newUserChats = userChats.filter(chat => chat.id !== removedChat.id);
-    return this.setState({ userChats: newUserChats });
-  }
-
   componentDidMount () {
     const { auth } = this.props;
     if(hasUser(auth)) {
-      this.fetchUserChats(auth.user.id).then(res => {
-        this.setState({
-          userChats: res.data
-        })
-      });
+      this.props.loadUserChats(auth.user.id);
     }
-    this.service.on('created', this.newUserChat);
-    this.service.on('patched', this.patchedUserChat);
-    this.service.on('removed', this.removedUserChat);
   }
 
   componentWillUpdate (nextProps) {
     if(nextProps.auth !== this.props.auth) {
-      this.setState({userChats: undefined});
       if(nextProps.auth.user) {
-        this.fetchUserChats(nextProps.auth.user.id).then(res => {
-          this.setState({
-            userChats: res.data
-          })
-        });
+        this.props.loadUserChats(nextProps.auth.user.id);
       }
     }
   }
 
-  componentWillUnmount () {
-    this.service.off('created', this.newUserChat);
-    this.service.off('patched', this.patchedUserChat);
-    this.service.off('removed', this.deleteUserChat);
-  }
-
   render () {
-    const { auth } = this.props;
-    const { userChats } = this.state;
-    if(userChats !== undefined) {
+    const { auth, chats } = this.props;
+    if(chats !== undefined) {
       return (
         <Bundle load={loadChats}>
           {Chats => (
-            <Chats chats={userChats} />
+            <Chats chats={chats} />
           )}
         </Bundle>
       )
@@ -111,8 +38,26 @@ class UserChats extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return { auth: state.auth }
-}
+const getUserChats = (user, chats) => {
+  if(user !== undefined && user.chats !== undefined) {
+    return user.chats.reduce((res, id) => {
+      if(chats[id])
+        res.push(chats[id]);
+      return res;
+    }, []);
+  }
+};
 
-export default connect(mapStateToProps)(UserChats);
+const mapStateToProps = state => {
+  return {
+    auth: state.auth,
+    chats: state.auth.signedIn ?
+      getUserChats(state.users[state.auth.user.id], state.chats) : undefined
+  }
+};
+
+const mapDispatchToProps = {
+  loadUserChats
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserChats);

@@ -46,8 +46,8 @@ app.configure(mongodb);
 app.configure(rest());
 app.configure(socketio({
   wsEngine: 'uws',
-  pingInterval: 2000,
-  pingTimeout: 5000
+  pingInterval: 10000,
+  pingTimeout: 21000
 }));
 
 // Configure other middleware (see `middleware/index.js`)

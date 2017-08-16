@@ -89,9 +89,6 @@ const get = id => (dispatch) => {
 
 export const loadPost = id => (dispatch, getState) => {
   const posts = getState().posts;
-  if(posts[id]) {
-    return null;
-  }
   return dispatch(get(id));
 };
 

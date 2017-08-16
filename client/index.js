@@ -18,10 +18,10 @@ import configureStore from 'store';
 import Application from 'app';
 import ScrollToTop from 'components/scroll-top';
 
-const store = configureStore();
 import initServices from 'services';
 import authService from 'services/auth';
 
+const store = configureStore();
 const history = createHistory();
 
 authService(store);
