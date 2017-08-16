@@ -25,8 +25,14 @@ export default class Realtime {
     this.setup();
 
     // PWA connection listeners
-    window.addEventListener('online', this.setup.bind(this));
-    window.addEventListener('offline', this.detachSetup.bind(this));
+    window.addEventListener('online', () => {
+      this.setup();
+      this.reconnect();
+    });
+    window.addEventListener('offline', () => {
+      this.disconnect();
+      this.detachSetup();
+    });
 
   }
 
