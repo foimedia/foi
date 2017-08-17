@@ -5,14 +5,6 @@ const { when, iff, iffElse, discard, disallow, setCreatedAt, setUpdatedAt } = re
 const { restrictToAuthenticated, restrictToOwner, restrictToRoles } = require('feathers-authentication-hooks');
 const telegram = require('../../telegram').hooks;
 
-const subscribe = () => hook => {
-  if(hook.id && hook.params.provider == 'socketio') {
-    // console.log(hook.params);
-    // hook.app.service.emit('join', hook.id);
-    // hook.app.service.join(hook.id, hook.params);
-  }
-}
-
 const isPrivate = () => hook => {
   return hook.service.get(hook.id)
     .then(data => data.type == 'private');
@@ -105,7 +97,6 @@ const restrictProperties = [
 module.exports = {
   before: {
     all: [
-      subscribe(),
       // Fix integer ID
       hook => {
         if(hook.id)

@@ -1,10 +1,10 @@
-import { created, patched, removed } from 'actions/stories';
+import { created, patched, removed } from 'actions/users';
 import Realtime from './realtime';
 import { hasUser } from './auth';
 
 export default function init (store) {
 
-  const realtime = new Realtime('stories', {
+  const realtime = new Realtime('users', {
     bindings: {
       created: data => {
         store.dispatch(created(data));
@@ -29,9 +29,3 @@ export default function init (store) {
     batchRemove
   }
 };
-
-// Utils
-
-export function canRemove (story, auth) {
-  return hasUser(auth) && story.userId == auth.user.id;
-}

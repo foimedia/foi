@@ -1,12 +1,10 @@
-import client from 'services/feathers';
 import { created, patched, removed } from 'actions/chats';
 import Realtime from './realtime';
 import { hasRole } from 'services/auth';
 
-const service = client.service('chats');
-
 export default function (store) {
-  return new Realtime('chats', {
+
+  const realtime = new Realtime('chats', {
     bindings: {
       created: data => {
         store.dispatch(created(data));
@@ -19,6 +17,17 @@ export default function (store) {
       }
     }
   });
+
+  const batchRemove = (ids) => {
+    ids.forEach(id => {
+      store.dispatch(removed({id: id}));
+    });
+  };
+
+  return {
+    realtime,
+    batchRemove
+  }
 };
 
 // Utils

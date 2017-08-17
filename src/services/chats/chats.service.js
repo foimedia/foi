@@ -4,12 +4,17 @@ const hooks = require('./chats.hooks');
 const filters = require('./chats.filters');
 const telegram = require('./chats.telegram');
 const subscription = require('./chats.subscription');
+const validateStore = require('../../middleware/validate-store');
 
 module.exports = function () {
   const app = this;
   const paginate = app.get('paginate');
   const mongoClient = app.get('mongoClient');
   const options = { paginate, id: 'id' };
+
+  app.use('/chats/validate_store', validateStore(app, {
+    path: 'chats'
+  }));
 
   // Initialize our service with any options it requires
   app.use('/chats', createService(options).extend({
@@ -36,4 +41,5 @@ module.exports = function () {
   if (service.filter) {
     service.filter(filters);
   }
+
 };

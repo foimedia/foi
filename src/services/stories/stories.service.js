@@ -3,12 +3,17 @@ const createService = require('feathers-mongodb');
 const hooks = require('./stories.hooks');
 const filters = require('./stories.filters');
 const telegram = require('./stories.telegram');
+const validateStore = require('../../middleware/validate-store');
 
 module.exports = function () {
   const app = this;
   const paginate = app.get('paginate');
   const mongoClient = app.get('mongoClient');
   const options = { paginate, id: 'id' };
+
+  app.use('/stories/validate_store', validateStore(app, {
+    path: 'stories'
+  }));
 
   // Initialize our service with any options it requires
   app.use('/stories', createService(options).extend({

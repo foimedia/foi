@@ -165,22 +165,26 @@ export default function reducer (state = initialState, action) {
       return state;
     }
     case REHYDRATE : {
-      const incoming = {...action.payload.context};
-      delete incoming.scrollHistory;
-      delete incoming.key;
-      delete incoming.online;
-      // Clean up chats context for skip and loaded data
-      if(incoming.chats) {
-        Object.keys(incoming.chats).map(id => {
-          let chat = incoming.chats[id];
-          chat.stories.skip = chat.stories.loaded = 0;
-          chat.gallery.skip = chat.gallery.loaded = 0;
-        });
+      if(Object.keys(action.payload || {}).length) {
+        const incoming = {...action.payload.context};
+        delete incoming.scrollHistory;
+        delete incoming.key;
+        delete incoming.online;
+        // Clean up chats context for skip and loaded data
+        if(incoming.chats) {
+          Object.keys(incoming.chats).map(id => {
+            let chat = incoming.chats[id];
+            chat.stories.skip = chat.stories.loaded = 0;
+            chat.gallery.skip = chat.gallery.loaded = 0;
+          });
+        }
+        return {
+          ...state,
+          ...incoming,
+          rehydrated: true
+        }
       }
-      return {
-        ...state,
-        ...incoming
-      }
+      return state;
     }
     default :
       return state;

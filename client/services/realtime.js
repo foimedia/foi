@@ -6,6 +6,8 @@ export default class Realtime {
 
   constructor (path, options) {
 
+    this.path = path;
+
     if(path !== undefined) {
       this.service = client.service(path);
     }
@@ -18,6 +20,8 @@ export default class Realtime {
 
     this.bindings = this.options.bindings;
 
+    this.setup = this.setup.bind(this);
+    this.detachSetup = this.detachSetup.bind(this);
     this.connect = this.connect.bind(this);
     this.disconnect = this.disconnect.bind(this);
     this.reconnect = this.reconnect.bind(this);
@@ -37,6 +41,8 @@ export default class Realtime {
   }
 
   setup () {
+    // Call connection for async initialization support
+    this.connect();
     client.io.on('connect', this.connect);
     client.io.on('disconnect', this.disconnect);
     client.io.on('reconnect', this.reconnect);
