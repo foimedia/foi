@@ -13,9 +13,9 @@ module.exports = (app, options) => {
     throw new Error('You must provide a service path');
   }
   return (req, res) => {
-    const ids = req.body.ids.map(id => parseInt(id));
     const service = app.service(options.path);
-    if(Array.isArray(ids)) {
+    if(Array.isArray(req.body.ids)) {
+      const ids = req.body.ids.map(id => parseInt(id));
       service.find({
         query: {
           id: {
