@@ -26,6 +26,8 @@ module.exports = (app, options) => {
         paginate: false
       }).then(data => {
         res.send(_.difference(ids, data.map(item => item.id)));
+      }).catch(err => {
+        throw new errors.GeneralError(err);
       });
     } else {
       throw new errors.BadRequest();
