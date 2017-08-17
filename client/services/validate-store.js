@@ -1,4 +1,3 @@
-import difference from 'lodash/difference';
 import axios from 'axios';
 
 export default function validateStore (store, path, reducer) {
