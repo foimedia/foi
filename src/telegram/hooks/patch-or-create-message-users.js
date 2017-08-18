@@ -13,8 +13,8 @@ module.exports = (options = {}) => hook => {
       },
       paginate: false
     }).then(data => {
+      const userData = options.as ? { [options.as]: user } : user;
       if(data.length) {
-        const userData = options.as ? { [options.as]: user } : user;
         const props = Object.keys(user);
         const changed = props.some(prop => (
           JSON.stringify(data[0][prop]) != JSON.stringify(user[prop])
