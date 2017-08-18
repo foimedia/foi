@@ -7,6 +7,8 @@ import styleUtils from 'services/style-utils';
 
 const SidebarWrapper = styled.div`
   position: relative;
+  display: flex;
+  flex: 0 0 auto;
   h3 {
     color: #fff;
   }
@@ -24,11 +26,8 @@ const SidebarWrapper = styled.div`
       line-height: 1.5rem;
     }
     ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
-      padding-top: ${styleUtils.margins[i]}rem;
-      padding-right: ${styleUtils.margins[i]*2}rem;
       a {
         padding: ${styleUtils.margins[i]}rem;
-        margin -${styleUtils.margins[i]}rem;
       }
     `)}
   }
@@ -42,6 +41,7 @@ const SidebarWrapper = styled.div`
   }
   .sidebar-content {
     position: relative;
+    width: 100%;
     z-index: 5;
     background: #222;
     color: #999;
@@ -85,14 +85,13 @@ const SidebarWrapper = styled.div`
     }
   }
   ${styleUtils.media.desktop`
+    width: 25%;
     margin: 0;
     nav.sidebar-nav {
       display: none;
     }
     &.active .sidebar-content,
     .sidebar-content {
-      width: 25%;
-      position: fixed;
       bottom: 0;
       padding: 0;
       overflow: auto;

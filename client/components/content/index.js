@@ -3,14 +3,14 @@ import styled from 'styled-components';
 import styleUtils from 'services/style-utils';
 
 const ContentWrapper = styled.section`
-  max-width: 720px;
-  margin: 2rem auto 0;
   transition: width 200ms ${styleUtils.transition};
   color: #444;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow-y: scroll;
+  overflow-x: hidden;
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
-    margin-top: ${styleUtils.margins[i]}rem;
-    padding-left: ${styleUtils.margins[i]}rem;
-    padding-right: ${styleUtils.margins[i]}rem;
     h3 {
       padding: ${styleUtils.margins[i]*2}rem 0 0;
       margin: ${styleUtils.margins[i]*2}rem 0;
@@ -61,15 +61,12 @@ const ContentWrapper = styled.section`
     `}
   }
   ${styleUtils.media.tablet`
-    margin-top: 2rem;
     font-size: 1.2em;
+    padding: 4% 8%;
   `}
   ${styleUtils.media.desktop`
-    max-width: 700px;
-    margin-top: 4rem;
-    margin-left: 35%;
     margin-right: 0;
-    width: 55%;
+    padding: 0 20% 0 10rem;
   `}
   h3 {
     border-top: 1px solid #ccc;
@@ -82,11 +79,6 @@ const ContentWrapper = styled.section`
   ol {
     max-width: 500px;
   }
-  ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
-    hr {
-      margin: ${styleUtils.margins[i]*2}rem 0;
-    }
-  `)}
 `;
 
 class Content extends Component {
@@ -95,7 +87,7 @@ class Content extends Component {
     const { children } = this.props;
     if(children !== undefined) {
       return (
-        <ContentWrapper id="content">
+        <ContentWrapper id="content" className="scrollable">
           {children}
         </ContentWrapper>
       );

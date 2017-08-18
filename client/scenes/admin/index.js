@@ -3,6 +3,7 @@ import { Route, Link, NavLink, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { hasUser, hasRole } from 'services/auth';
 import ContentHeader from 'components/content/header';
+import ContentBody from 'components/content/body';
 import Loader from 'components/loader';
 
 import Dashboard from './dashboard';
@@ -37,10 +38,12 @@ class Admin extends Component {
               </NavLink>
             </nav>
           </ContentHeader>
-          <Switch>
-            <Route path={`${match.url}/users`} component={Users} />
-            <Route component={Dashboard} />
-          </Switch>
+          <ContentBody>
+            <Switch>
+              <Route path={`${match.url}/users`} component={Users} />
+              <Route component={Dashboard} />
+            </Switch>
+          </ContentBody>
         </section>
       )
     } else {

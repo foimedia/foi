@@ -5,7 +5,8 @@ class InfiniteScroll extends Component {
   static defaultProps = {
     loadMore: null,
     hasMore: false,
-    threshold: 250
+    threshold: 200,
+    useWindow: true
   }
   constructor (props) {
     super(props);
@@ -20,27 +21,55 @@ class InfiniteScroll extends Component {
   componentWillUnmount () {
     this.detachListener();
   }
+  findScrollableAncestor (el) {
+    while ((el = el.parentElement) && !el.classList.contains('scrollable'));
+    return el;
+  }
   attachListener () {
     if(!this.props.hasMore) {
       return;
     }
-    const elParent = window;
+    let elParent = window;
+    if (this.props.useWindow === false) {
+      elParent = this.findScrollableAncestor(this.scrollComponent) || this.scrollComponent.parentElement;
+    }
     elParent.addEventListener('scroll', this.handleScroll);
     elParent.addEventListener('resize', this.handleScroll);
   }
   detachListener () {
-    const elParent = window;
+    let elParent = window;
+    if (this.props.useWindow === false) {
+      elParent = this.findScrollableAncestor(this.scrollComponent) || this.scrollComponent.parentElement;
+    }
     elParent.removeEventListener('scroll', this.handleScroll);
     elParent.removeEventListener('resize', this.handleScroll);
   }
   handleScroll () {
     const el = this.scrollComponent;
-    const elParent = window;
+    let elParent = window;
+    if (this.props.useWindow === false) {
+      elParent = this.findScrollableAncestor(this.scrollComponent) || this.scrollComponent.parentElement;
+    }
     let offset;
-    const scrollTop = (elParent.pageYOffset !== undefined) ?
-      elParent.pageYOffset :
-      (document.documentElement || document.body.parentNode || document.body).scrollTop
-    offset = this.calculateTopPosition(el) + (el.offsetHeight - scrollTop - window.innerHeight);
+
+    if (this.props.useWindow) {
+      const scrollTop = (scrollEl.pageYOffset !== undefined) ?
+       scrollEl.pageYOffset :
+       (document.documentElement || document.body.parentNode || document.body).scrollTop;
+      if (this.props.isReverse) {
+        offset = scrollTop;
+      } else {
+        offset = this.calculateTopPosition(el) +
+                     (el.offsetHeight -
+                     scrollTop -
+                     window.innerHeight);
+      }
+    } else if (this.props.isReverse) {
+      offset = elParent.scrollTop;
+    } else {
+      offset = elParent.scrollHeight - elParent.scrollTop - elParent.clientHeight;
+    }
+
     if(offset < Number(this.props.threshold)) {
       this.detachListener();
       if(typeof this.props.loadMore === 'function') {
