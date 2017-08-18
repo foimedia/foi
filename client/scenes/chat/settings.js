@@ -197,27 +197,24 @@ class ChatSettings extends Component {
               </Form>
             </div>
             {chat.type !== 'private' &&
-              <div>
-                <hr />
-                <ButtonGroup alignright>
-                  {!chat.archived &&
-                    <Button onClick={this.archive}>
-                      <span className="fa fa-archive"></span>
-                      Archive chat
-                    </Button>
-                  }
-                  {chat.archived &&
-                    <Button onClick={this.unarchive}>
-                      <span className="fa fa-archive"></span>
-                      Unarchive chat
-                    </Button>
-                  }
-                  <Button danger onClick={this.remove}>
-                    <span className="fa fa-remove"></span>
-                    Delete chat
+              <ButtonGroup alignright>
+                {!chat.archived &&
+                  <Button onClick={this.archive}>
+                    <span className="fa fa-archive"></span>
+                    Archive chat
                   </Button>
-                </ButtonGroup>
-              </div>
+                }
+                {chat.archived &&
+                  <Button onClick={this.unarchive}>
+                    <span className="fa fa-archive"></span>
+                    Unarchive chat
+                  </Button>
+                }
+                <Button danger onClick={this.remove}>
+                  <span className="fa fa-remove"></span>
+                  Delete chat
+                </Button>
+              </ButtonGroup>
             }
           </div>
         </section>

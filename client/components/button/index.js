@@ -79,7 +79,7 @@ const Button = styled.a`
 
 export const ButtonGroup = styled.nav`
   display: block;
-  margin: 0 auto;
+  margin: 0 auto 2rem;
   a {
     display: block;
     margin: 0 0 1rem;
