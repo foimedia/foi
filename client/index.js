@@ -13,6 +13,7 @@ import createHistory from 'history/createBrowserHistory'
 import { Provider } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { ConnectedRouter as Router } from 'react-router-redux';
+import 'styles/fonts.css';
 import 'normalize.css';
 import 'font-awesome/css/font-awesome.css';
 
