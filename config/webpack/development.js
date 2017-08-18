@@ -23,7 +23,6 @@ config.plugins = config.plugins.concat([
     analyzerMode: 'server',
     analyzerHost: '0.0.0.0'
   })
-  // require('./plugins/offline')
 ]);
 
 module.exports = config;

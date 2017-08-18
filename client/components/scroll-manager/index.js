@@ -59,7 +59,6 @@ class ScrollManager extends Component {
     ) {
       if(scrollTop !== undefined && scrollTop > 0) {
         // Set min-height to prevent scroll restoration mispositioning from async load of inner content
-        console.log(nodes.scroll.scrollHeight);
         nodes.height.style['min-height'] = (
             scrollTop + nodes.scroll.scrollHeight
           ) + 'px';

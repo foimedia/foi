@@ -22,7 +22,8 @@ class InfiniteScroll extends Component {
     this.detachListener();
   }
   findScrollableAncestor (el) {
-    while ((el = el.parentElement) && !el.classList.contains('scrollable'));
+    if(el !== undefined && el !== null)
+      while ((el = el.parentElement) && !el.classList.contains('scrollable'));
     return el;
   }
   attachListener () {
@@ -30,7 +31,7 @@ class InfiniteScroll extends Component {
       return;
     }
     let elParent = window;
-    if (this.props.useWindow === false) {
+    if (this.props.useWindow === false && this.scrollComponent !== null) {
       elParent = this.findScrollableAncestor(this.scrollComponent) || this.scrollComponent.parentElement;
     }
     elParent.addEventListener('scroll', this.handleScroll);
@@ -38,7 +39,7 @@ class InfiniteScroll extends Component {
   }
   detachListener () {
     let elParent = window;
-    if (this.props.useWindow === false) {
+    if (this.props.useWindow === false && this.scrollComponent !== null) {
       elParent = this.findScrollableAncestor(this.scrollComponent) || this.scrollComponent.parentElement;
     }
     elParent.removeEventListener('scroll', this.handleScroll);
@@ -47,7 +48,7 @@ class InfiniteScroll extends Component {
   handleScroll () {
     const el = this.scrollComponent;
     let elParent = window;
-    if (this.props.useWindow === false) {
+    if (this.props.useWindow === false && this.scrollComponent !== null) {
       elParent = this.findScrollableAncestor(this.scrollComponent) || this.scrollComponent.parentElement;
     }
     let offset;
