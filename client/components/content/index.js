@@ -62,11 +62,15 @@ const ContentWrapper = styled.section`
   }
   ${styleUtils.media.tablet`
     font-size: 1.2em;
-    padding: 4% 8%;
+    padding: 4% 15%;
   `}
   ${styleUtils.media.desktop`
     margin-right: 0;
-    padding: 0 20% 0 10rem;
+    padding: 0 4rem 0 8rem;
+  `}
+  ${styleUtils.media.desktopHD`
+    margin-right: 0;
+    padding: 0 10rem;
   `}
   h3 {
     border-top: 1px solid #ccc;

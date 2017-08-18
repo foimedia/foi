@@ -86,6 +86,7 @@ const SidebarWrapper = styled.div`
   }
   ${styleUtils.media.desktop`
     width: 25%;
+    min-width: 280px;
     margin: 0;
     nav.sidebar-nav {
       display: none;
@@ -116,6 +117,7 @@ const SidebarWrapper = styled.div`
     }
   `}
   ${styleUtils.media.desktopHD`
+    width: 25%;
     font-size: 1.2em;
     &.active .sidebar-content,
     .sidebar-content {
