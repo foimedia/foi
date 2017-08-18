@@ -66,7 +66,7 @@ export default function reducer (state = initialState, action) {
         ...state,
         [action.id]: {
           ...state[action.id],
-          chats: getItemsIds(action.res.data)
+          chats: [...getItemsIds(action.res.data)]
         }
       };
     }
