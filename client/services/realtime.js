@@ -100,7 +100,9 @@ export default class Realtime {
   }
 
   connect () {
-    this.subscribe();
+    if(!this.subscribing) {
+      this.subscribe();
+    }
   }
 
   disconnect () {
