@@ -18,7 +18,6 @@ import 'font-awesome/css/font-awesome.css';
 
 import configureStore from 'store';
 import Application from 'app';
-import ScrollToTop from 'components/scroll-top';
 
 import initServices from 'services';
 import authService from 'services/auth';

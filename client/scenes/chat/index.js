@@ -7,6 +7,7 @@ import { loadChat } from 'actions/chats';
 import { getTitle } from 'services/chats';
 
 import ContentHeader from 'components/content/header';
+import ContentBody from 'components/content/body';
 import Loader from 'components/loader';
 
 import Home from './home';
@@ -71,13 +72,15 @@ class Chat extends Component {
               <p className="description">{chat.description}</p>
             }
           </ContentHeader>
-          <Switch location={isModal ? this.previousLocation : location}>
-            <Route path={`${match.path}/settings`} component={Settings} />
-            <Route path={`${match.path}/s/:storyId`} component={Story} />
-            <Route render={props => (
-              <Home {...props} fromHistory={fromHistory} />
-            )} />
-          </Switch>
+          <ContentBody>
+            <Switch location={isModal ? this.previousLocation : location}>
+              <Route path={`${match.path}/settings`} component={Settings} />
+              <Route path={`${match.path}/s/:storyId`} component={Story} />
+              <Route render={props => (
+                <Home {...props} fromHistory={fromHistory} />
+              )} />
+            </Switch>
+          </ContentBody>
           {isModal ? <Route path={`${match.path}/s/:storyId`} render={props => (
             <Gallery chat={chat} {...props} />
           )} /> : null}

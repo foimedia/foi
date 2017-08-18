@@ -9,7 +9,7 @@ import { logout } from 'actions/auth';
 import { hasUser, hasRole } from 'services/auth';
 import styleUtils from 'services/style-utils';
 
-import ScrollToTop from 'components/scroll-top';
+import ScrollManager from 'components/scroll-manager';
 import Sidebar from 'components/sidebar';
 import Content from 'components/content';
 import ContentHeader from 'components/content/header';
@@ -30,6 +30,14 @@ import 'styles/lists.css';
 import 'styles/scrollbar.css';
 
 const AppContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  ${styleUtils.media.desktop`
+    flex-direction: row;
+  `}
   .brand {
     float: left;
     img {
@@ -49,13 +57,20 @@ const AppContainer = styled.div`
   }
 `;
 
+const Main = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  contain: strict;
+`
+
 class Application extends Component {
   render () {
     const self = this;
     const { auth } = this.props;
     return (
       <AppContainer>
-        <ScrollToTop />
+        <ScrollManager node={this.scrollable} />
         <Headers />
         <Sidebar>
           <div className={`brand`}>
@@ -84,19 +99,21 @@ class Application extends Component {
             </div>
           }
         </Sidebar>
-        <Content>
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/c/:chatId" component={Chat} />
-            <Route path="/admin" component={Admin} />
-            <Route render={() => (
-              <ContentHeader icon="meh-o">
-                <h2>404 Not found</h2>
-              </ContentHeader>
-            )} />
-          </Switch>
-        </Content>
-        <Footer />
+        <Main id="main">
+          <Content ref={node => { self.scrollable = node; }}>
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route path="/c/:chatId" component={Chat} />
+              <Route path="/admin" component={Admin} />
+              <Route render={() => (
+                <ContentHeader icon="meh-o">
+                  <h2>404 Not found</h2>
+                </ContentHeader>
+              )} />
+            </Switch>
+          </Content>
+          <Footer />
+        </Main>
       </AppContainer>
     );
   }

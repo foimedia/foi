@@ -8,7 +8,6 @@ const Wrapper = styled.header`
   background: #fff;
   border-bottom: 1px solid #eee;
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
-    margin: -${styleUtils.margins[i]}rem;
     padding-left: ${styleUtils.margins[i]*2}rem;
     padding-right: ${styleUtils.margins[i]*2}rem;
     padding-top: ${styleUtils.margins[i]}rem;
@@ -32,6 +31,7 @@ const Wrapper = styled.header`
     display: table;
     table-layout: auto;
     height: 14rem;
+    padding-top: 4rem;
     margin-top: -4rem;
     margin-bottom: 0;
     .header-container {

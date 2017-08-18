@@ -43,20 +43,12 @@ export default function reducer (state = initialState, action) {
   switch(action.type) {
     case CONTEXT_UPDATE : {
       state = Object.assign({}, initialState, state, {
-        [action.context]: action.data
+        [action.context]:
+          (typeof action.data == 'string' ? action.data : {
+            ...state[action.context],
+            ...action.data
+          })
       });
-      return state;
-    }
-    case LOCATION_CHANGE : {
-      state = Object.assign({}, initialState, state);
-      const { lastKey } = state.scrollHistory;
-      const scroll = (
-        window.pageYOffset || document.documentElement.scrollTop
-      );
-      if(lastKey !== undefined && (state.scrollHistory[lastKey] || scroll > 0)) {
-        state.scrollHistory[lastKey] = scroll;
-      }
-      state.scrollHistory.lastKey = action.payload.key;
       return state;
     }
     case CHAT_LOAD : {

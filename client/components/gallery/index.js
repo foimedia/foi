@@ -16,9 +16,12 @@ const GalleryWrapper = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0,0,0,0.95);
+  background: #111;
   z-index: 99999;
   overflow: auto;
+  ${styleUtils.media.desktop`
+    border-left: 1px solid #333;
+  `}
   > div {
     outline: none;
   }
@@ -47,7 +50,7 @@ const Actions = styled.span`
   color: #fff;
   font-size: .8em;
   cursor: pointer;
-  background: #111;
+  text-shadow: 0 0 .5rem #000;
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
     padding: ${styleUtils.margins[i]}rem;
   `)}
@@ -87,7 +90,7 @@ const PostWrapper = styled.div`
   width: 100%;
   max-height: 90%;
   max-width: 1000px;
-  margin: 5rem auto 0;
+  margin: 4rem auto 0;
   z-index: 2;
   color: #fff;
   .post .caption {
@@ -287,8 +290,6 @@ export class Gallery extends Component {
 
   open (post) {
     window.addEventListener('keydown', this.attachKeys);
-    const body = document.getElementsByTagName('BODY')[0];
-    body.style.overflow = 'hidden';
     this.setState({
       open: true,
       post: post
@@ -297,8 +298,6 @@ export class Gallery extends Component {
 
   close (redirect = false) {
     window.removeEventListener('keydown', this.attachKeys);
-    const body = document.getElementsByTagName('BODY')[0];
-    body.style.overflow = null;
     this.setState({
       open: false
     });

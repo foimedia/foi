@@ -42,7 +42,7 @@ class ChatStories extends Component {
     if(stories !== undefined && stories) {
       const renders = {
         'scroll': (Component) => (
-          <InfiniteScroll loadMore={this.fetchMore} hasMore={hasMore}>
+          <InfiniteScroll loadMore={this.fetchMore} hasMore={hasMore} useWindow={false}>
             <Component stories={stories} />
           </InfiniteScroll>
         ),
