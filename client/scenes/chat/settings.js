@@ -29,7 +29,6 @@ class ChatSettings extends Component {
   remove () {
     const { chat, removeChat } = this.props;
     if(confirm('Are you sure? This will remove all chat data, including posts, stories and media!')) {
-      // This setState is not firing
       this.setState({
         removing: true
       });
@@ -40,7 +39,8 @@ class ChatSettings extends Component {
   removed () {
     const { chat } = this.props;
     const { removing } = this.state;
-    if(removing && chat.isFinished) {
+    console.log(removing, chat, 'removing?');
+    if(removing && chat == undefined) {
       return true;
     }
     return false;
@@ -92,7 +92,7 @@ class ChatSettings extends Component {
     if(chat !== undefined && auth.user !== null) {
       return (
         <section id="chat-settings">
-          {(!canManage(chat, auth) || this.removed()) &&
+          {!canManage(chat, auth) &&
             <Redirect to="/" />
           }
           <div className="sections">
@@ -219,6 +219,8 @@ class ChatSettings extends Component {
           </div>
         </section>
       )
+    } else if (removing || this.removed()) {
+      return <Redirect to="/" />
     } else {
       return <Loader size={20} />
     }

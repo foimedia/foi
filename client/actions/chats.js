@@ -42,7 +42,7 @@ const _load = (id, quiet) => {
 
 const _new = (id, data) => {
   return {
-    type: CHAT_UPDATE,
+    type: CHAT_NEW,
     id,
     data
   }
@@ -54,10 +54,11 @@ const _update = (id, data) => {
     data
   }
 };
-const _remove = id => {
+const _remove = (id, data) => {
   return {
     type: CHAT_REMOVE,
-    id
+    id,
+    data
   }
 };
 
@@ -344,5 +345,5 @@ export const patched = data => (dispatch) => {
   return dispatch(_update(data.id, data));
 };
 export const removed = data => (dispatch) => {
-  return dispatch(_remove(data.id));
+  return dispatch(_remove(data.id, data));
 };

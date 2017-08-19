@@ -13,6 +13,11 @@ import {
   AUTH_SUCCESS
 } from 'actions/auth';
 
+import {
+  CHAT_NEW,
+  CHAT_REMOVE
+} from 'actions/chats';
+
 const initialState = {};
 
 const initialUser = {};
@@ -69,6 +74,28 @@ export default function reducer (state = initialState, action) {
           chats: [...getItemsIds(action.res.data)]
         }
       };
+    }
+    case CHAT_NEW : {
+      state = {...state};
+      const users = action.data.users;
+      users.forEach(userId => {
+        state[userId] = {
+          ...state[userId],
+          chats: [
+            ...state[userId].chats,
+            action.id
+          ]
+        }
+      });
+      return state;
+    }
+    case CHAT_REMOVE : {
+      state = {...state};
+      const users = action.data.users;
+      users.forEach(userId => {
+        state[userId].chats = state[userId].chats.filter(cId => cId !== action.id);
+      });
+      return state;
     }
     default :
       return state;

@@ -153,7 +153,8 @@ export default function reducer (state = initialState, action) {
     case STORY_NEW : {
       state = {...state};
       let chat = state.chats[action.data.chatId];
-      chat.stories.new++;
+      if(chat !== undefined)
+        chat.stories.new++;
       return state;
     }
     case REHYDRATE : {
