@@ -39,7 +39,7 @@ class UserChats extends Component {
 
 const getUserChats = (user, chats) => {
   if(user !== undefined && user.chats !== undefined) {
-    user.chats = typeof user.chats == 'array' ? user.chats || [];
+    user.chats = typeof user.chats == 'array' ? user.chats : [];
     return user.chats.reduce((res, id) => {
       if(chats[id])
         res.push(chats[id]);
