@@ -23,13 +23,18 @@ class Chat extends Component {
   componentDidMount () {
     const { chatId } = this.props.match.params;
     const { chat, fromHistory } = this.props;
-    this.props.loadChat(chatId, fromHistory);
+    if(this.props.ready) {
+      this.props.loadChat(chatId, fromHistory);
+    }
   }
 
   componentWillReceiveProps (nextProps) {
     const { chatId } = this.props.match.params;
     const nextId = nextProps.match.params.chatId;
-    if(chatId !== nextId) {
+    if(
+      nextProps.ready &&
+      (chatId !== nextId || this.props.ready !== nextProps.ready)
+    ) {
       this.props.loadChat(nextId, nextProps.fromHistory);
     }
   }
@@ -51,7 +56,6 @@ class Chat extends Component {
 
   render () {
     const { match, chat, fromHistory } = this.props;
-    const { stories } = this.state;
     const { location } = this.props;
     const isModal = !!(
       location.state &&
@@ -99,6 +103,7 @@ function getFromHistory (scrollHistory, key) {
 function mapStateToProps (state, ownProps) {
   const { scrollHistory } = state.context;
   return {
+    ready: state.context.rehydrated,
     chat: state.chats[ownProps.match.params.chatId],
     fromHistory: getFromHistory(scrollHistory, ownProps.location.key)
   };

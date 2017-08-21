@@ -33,7 +33,8 @@ const styles = css`
   }
 `
 
-const SelectableWrapper = styled.div`
+const SelectableWrapper = styled.span`
+  display: block;
   position: relative;
   textarea.selectable {
     ${styles}
@@ -95,9 +96,7 @@ export class SelectableCode extends Component {
     const { children, ...props} = this.props;
     return (
       <SelectableWrapper onClick={this.handleClick}>
-        <textarea className="selectable" readonly={true} {...props}>
-          {children}
-        </textarea>
+        <textarea className="selectable" readOnly={true} {...props} defaultValue={children}></textarea>
         <a href="javascript:void(0);" title="Copy to clipboard" className="clipboard fa fa-clipboard" onClick={this.handleClipboardClick}></a>
       </SelectableWrapper>
     )

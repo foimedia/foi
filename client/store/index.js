@@ -9,7 +9,7 @@ const localStore = localForage.createInstance({
   description: 'Persistant application state'
 });
 
-export default function configureStore(initialState, callback) {
+export default function configureStore(callback) {
   // Engage the Chrome extension "Redux DevTools" if it is installed on the browser.
   // This extension watches reducers and logs their invocations, actions and changing state.
   // It caches activity so you can 'time travel' through state changes.
@@ -22,11 +22,11 @@ export default function configureStore(initialState, callback) {
 
   const createStoreWithMiddlewares = compose(applyMiddleware(...middlewares), autoRehydrate())(createStoreWithDevTools);
 
-  const store = createStoreWithMiddlewares(rootReducer(), initialState);
+  const store = createStoreWithMiddlewares(rootReducer());
 
   persistStore(store, {
     storage: localStore
-  }, callback);
+  }, callback.apply(this, [store]));
 
   return store;
 }

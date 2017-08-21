@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
 import styleUtils from 'services/style-utils';
+// import Link from 'components/smart-link';
 import { Link } from 'react-router-dom';
 
 const styles = css`
@@ -101,9 +102,13 @@ export const ButtonGroup = styled.nav`
   `}
 `
 
-export const ButtonLink = styled(Link)`
+export const ButtonLink = styled(({
+  small, block, dark, danger, primary, ...rest
+}) => (
+  <Link {...rest} />
+))`
   ${styles}
-`
+`;
 
 export const InputButton = styled.input`
   ${styles}

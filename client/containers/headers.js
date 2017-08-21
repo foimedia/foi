@@ -4,11 +4,14 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 class Headers extends Component {
-  shouldComponentUpdate (nextProps) {
-    // Helmet update on preact-compat causes infinite loop.
-    // See: https://github.com/nfl/react-helmet/issues/287
-    // See: https://github.com/developit/preact-compat/issues/391
-    return false;
+  // We are not using preact now.
+  // shouldComponentUpdate (nextProps) {
+  //   // Helmet update on preact-compat causes infinite loop.
+  //   // See: https://github.com/nfl/react-helmet/issues/287
+  //   // See: https://github.com/developit/preact-compat/issues/391
+  //   return false;
+  // }
+  componentWillReceiveProps (nextProps) {
   }
   render () {
     return (
@@ -21,7 +24,7 @@ class Headers extends Component {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  return {}
+  return {};
 };
 
 export default withRouter(connect(mapStateToProps)(Headers));

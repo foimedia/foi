@@ -30,11 +30,19 @@ import 'styles/lists.css';
 import 'styles/scrollbar.css';
 
 const AppContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
+  overflow: hidden;
   display: flex;
-  flex: 1;
+  flex: 1 1 auto;
   flex-direction: column;
+  justify-content: flext-start;
+  -webkit-box-orient: horizontal;
+  -webkit-box-pack: start;
+  -webkit-box-direction: normal;
   ${styleUtils.media.desktop`
     flex-direction: row;
   `}
@@ -59,10 +67,11 @@ const AppContainer = styled.div`
 
 const Main = styled.div`
   display: flex;
-  flex: 1;
+  flex: 1 1 100%;
   flex-direction: column;
   contain: strict;
-`
+  overflow: hidden;
+`;
 
 class Application extends Component {
   render () {

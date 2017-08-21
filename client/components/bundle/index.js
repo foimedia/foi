@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 
-import Loader from 'components/loader';
-
 export default class Bundle extends Component {
 
   constructor (props) {
@@ -41,7 +39,7 @@ export default class Bundle extends Component {
         return this.props.children;
       }
     } else {
-      return <Loader size={20} />;
+      return null;
     }
   }
 }

@@ -3,27 +3,24 @@ import styled from 'styled-components';
 import styleUtils from 'services/style-utils';
 
 const FooterWrapper = styled.footer`
+  display: flex;
+  flex: 0 0 auto;
+  flex-shrink: 0;
+  justify-content: flex-end;
   font-family: 'Inconsolata', monospace;
   text-transform: uppercase;
   color: #999;
   font-size: .7em;
   text-align: right;
-  margin-left: auto;
-  margin-right: auto;
   box-sizing: border-box;
-  position: relative;
   z-index: 10;
   width: 100%;
   border-top: 1px solid #ddd;
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
     padding: ${styleUtils.margins[i]}rem ${styleUtils.margins[i]*2}rem;
   `)}
-  &:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
   nav {
+    display: block;
     float: right;
     line-height: 1rem;
     a,

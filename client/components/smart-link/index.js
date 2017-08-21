@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
 import { Link, Redirect } from 'react-router-dom';
 
 export default class SmartLink extends Component {
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  }
   constructor(props) {
     super(props);
     this.state = {
@@ -30,7 +34,7 @@ export default class SmartLink extends Component {
         this.setState({
           redirect: true
         });
-      } else if(router === undefined) {
+      } else {
         window.open(event.target.href || foi.public + (to.pathname || to), this.isLocal() ? '_self' : '_blank');
       }
     }

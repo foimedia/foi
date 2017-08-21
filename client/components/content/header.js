@@ -78,8 +78,6 @@ const Wrapper = styled.header`
     background: #fff;
     a {
       background: #fff;
-      padding-top: .25rem;
-      padding-bottom: .25rem;
       text-transform: uppercase;
       display: inline-block;
       margin: -1px 0 0;
@@ -104,7 +102,7 @@ const Wrapper = styled.header`
       margin-top: ${styleUtils.margins[i]}rem;
       padding: 0;
       a {
-        padding: ${styleUtils.margins[i]}rem ${styleUtils.margins[i]*2}rem;
+        padding: ${styleUtils.margins[i]*.75}rem ${styleUtils.margins[i]*2}rem;
         .fa {
           margin-right: ${styleUtils.margins[i]/2}rem;
         }

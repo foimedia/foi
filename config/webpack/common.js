@@ -23,11 +23,7 @@ module.exports = {
     modules: [
       'client',
       'node_modules'
-    ],
-    alias: {
-      'react': 'preact-compat',
-      'react-dom': 'preact-compat'
-    }
+    ]
   },
   output: {
     path: path.resolve('public'),

@@ -65,12 +65,14 @@ const _remove = (id, data) => {
 const getRequest = id => {
   return {
     type: CHAT_GET_REQUEST,
+    name: 'chat',
     id
   }
 };
 const getSuccess = (id, data) => {
   return {
     type: CHAT_GET_SUCCESS,
+    name: 'chat',
     id,
     data
   }
@@ -78,6 +80,7 @@ const getSuccess = (id, data) => {
 const getFailure = (id, err) => {
   return {
     type: CHAT_GET_FAILURE,
+    name: 'chat',
     id,
     err
   }
@@ -129,12 +132,14 @@ const removeFailure = (id, err) => {
 const storiesRequest = (id) => {
   return {
     type: CHAT_STORIES_REQUEST,
+    name: 'stories',
     id
   }
 };
 const storiesSuccess = (id, res) => {
   return {
     type: CHAT_STORIES_SUCCESS,
+    name: 'stories',
     id,
     res
   }
@@ -142,6 +147,7 @@ const storiesSuccess = (id, res) => {
 const storiesExpand = (id, res) => {
   return {
     type: CHAT_STORIES_EXPAND,
+    name: 'stories',
     id,
     res
   }
@@ -149,6 +155,7 @@ const storiesExpand = (id, res) => {
 const storiesFailure = (id, err) => {
   return {
     type: CHAT_STORIES_FAILURE,
+    name: 'stories',
     id,
     err
   }
@@ -157,12 +164,14 @@ const storiesFailure = (id, err) => {
 const galleryRequest = (id) => {
   return {
     type: CHAT_GALLERY_REQUEST,
+    name: 'gallery',
     id
   }
 };
 const gallerySuccess = (id, types, res) => {
   return {
     type: CHAT_GALLERY_SUCCESS,
+    name: 'gallery',
     id,
     types,
     res
@@ -171,6 +180,7 @@ const gallerySuccess = (id, types, res) => {
 const galleryExpand = (id, types, res) => {
   return {
     type: CHAT_GALLERY_EXPAND,
+    name: 'gallery',
     id,
     types,
     res
@@ -179,6 +189,7 @@ const galleryExpand = (id, types, res) => {
 const galleryFailure = (id, types, err) => {
   return {
     type: CHAT_GALLERY_FAILURE,
+    name: 'gallery',
     id,
     types,
     err

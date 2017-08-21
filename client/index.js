@@ -26,12 +26,13 @@ import Application from 'app';
 import initServices from 'services';
 import authService from 'services/auth';
 
-const store = configureStore();
+const store = configureStore(store => {
+  initServices(store, () => {
+    authService(store);
+  });
+});
 const history = createHistory();
 
-initServices(store, () => {
-  authService(store);
-});
 
 ReactDom.render(
   <Provider store={store}>

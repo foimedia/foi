@@ -39,6 +39,9 @@ const StoryBox = styled.article`
     }
     border-bottom: 1px solid #eee;
   }
+  .story-content {
+    min-height: 25px;
+  }
   .post {
     margin: 0 0 .5rem;
     ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`

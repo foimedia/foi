@@ -246,13 +246,16 @@ export class Gallery extends Component {
     }
   }
 
-  componentDidUpdate () {
+  componentDidUpdate (prevProps, prevState) {
     const node = findDOMNode(this);
     if(node.childNodes.length) {
       const index = node.querySelectorAll('div[tabindex]');
       if(index.length) {
         index[0].focus();
       }
+    }
+    if(this.state.post !== prevState.post) {
+      this.setSiblings();
     }
   }
 
@@ -263,7 +266,6 @@ export class Gallery extends Component {
         go: false
       });
       this.open(nextProps.post);
-      this.setSiblings();
     }
   }
 
@@ -338,17 +340,19 @@ export class Gallery extends Component {
 
   setSiblings () {
     const { post } = this.state;
-    const { hasMore, posts, loadMore } = this.props;
-    const index = this.findIndex(post);
-    if(index+2 >= posts.length && hasMore) {
-      loadMore();
-    }
-    this.setState({
-      nav: {
-        prev: this._find(-1),
-        next: this._find(1)
+    if(post !== undefined) {
+      const { hasMore, posts, loadMore } = this.props;
+      const index = this.findIndex(post);
+      if(index+2 >= posts.length && hasMore) {
+        loadMore();
       }
-    });
+      this.setState({
+        nav: {
+          prev: this._find(-1),
+          next: this._find(1)
+        }
+      });
+    }
   }
 
   findIndex (post) {
@@ -380,7 +384,7 @@ export class Gallery extends Component {
             onSwipedRight={this.prev}
             >
             <GalleryWrapper>
-              <div tabindex="0">
+              <div tabIndex="0">
                 <Leave>
                   <Link to={`/c/${post.chatId}`}></Link>
                 </Leave>
@@ -409,6 +413,8 @@ export class Gallery extends Component {
           </Swipeable>
         </div>
       );
+    } else {
+      return null;
     }
   }
 }

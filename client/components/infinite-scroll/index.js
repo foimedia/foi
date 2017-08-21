@@ -90,6 +90,7 @@ class InfiniteScroll extends Component {
       hasMore,
       loadMore,
       threshold,
+      useWindow,
       ...props
     } = this.props;
     props.ref = (node) => {

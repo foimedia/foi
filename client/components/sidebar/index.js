@@ -9,6 +9,7 @@ const SidebarWrapper = styled.div`
   position: relative;
   display: flex;
   flex: 0 0 auto;
+  flex-shrink: 0;
   h3 {
     color: #fff;
   }

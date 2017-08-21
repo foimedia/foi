@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { findDOMNode } from 'react-dom';
 import { updateContext } from 'actions/context';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -23,8 +24,8 @@ class ScrollManager extends Component {
     let scroll = window;
     let height = document.getElementsByTagName('BODY')[0];
     if(this.props.node) {
-      scroll = this.props.node.base;
-      height = this.props.node.base.firstChild;
+      scroll = findDOMNode(this.props.node);
+      height = scroll ? scroll.firstChild : null;
     }
     return {
       scroll,
@@ -36,7 +37,7 @@ class ScrollManager extends Component {
     return (
       nodes.scroll == window ? (
         window.pageYOffset || (document.documentElement.scrollTop)
-      ) : nodes.scroll.scrollTop
+      ) : nodes.scroll ? nodes.scroll.scrollTop : 0
     );
 
   }
@@ -64,8 +65,12 @@ class ScrollManager extends Component {
           ) + 'px';
         nodes.scroll.scrollTop = scrollTop;
       } else {
-        nodes.height.style['min-height'] = null;
-        nodes.scroll.scrollTop = 0;
+        if(nodes.height) {
+          nodes.height.style['min-height'] = null;
+        }
+        if(nodes.scroll) {
+          nodes.scroll.scrollTop = 0;
+        }
       }
     }
   }

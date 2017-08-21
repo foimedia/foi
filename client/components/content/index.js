@@ -3,13 +3,13 @@ import styled from 'styled-components';
 import styleUtils from 'services/style-utils';
 
 const ContentWrapper = styled.section`
-  transition: width 200ms ${styleUtils.transition};
-  color: #444;
   display: flex;
-  flex: 1;
+  flex: 1 1 auto;
   flex-direction: column;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
+  color: #444;
+  box-sizing: border-box;
   ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
     h3 {
       padding: ${styleUtils.margins[i]*2}rem 0 0;
@@ -17,7 +17,7 @@ const ContentWrapper = styled.section`
     }
   `)}
   .loader {
-    margin: 2rem auto;
+    margin: 1rem auto;
   }
   .content-section {
     background: #fff;

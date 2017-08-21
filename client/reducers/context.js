@@ -4,8 +4,12 @@ import {
 
 import {
   CHAT_LOAD,
+  CHAT_GET_REQUEST,
+  CHAT_GET_SUCCESS,
+  CHAT_STORIES_REQUEST,
   CHAT_STORIES_SUCCESS,
   CHAT_STORIES_EXPAND,
+  CHAT_GALLERY_REQUEST,
   CHAT_GALLERY_SUCCESS,
   CHAT_GALLERY_EXPAND
 } from 'actions/chats';
@@ -50,6 +54,38 @@ export default function reducer (state = initialState, action) {
           } : action.data)
       });
       return state;
+    }
+    case CHAT_GET_REQUEST :
+    case CHAT_STORIES_REQUEST :
+    case CHAT_GALLERY_REQUEST : {
+      return {
+        ...state,
+        chats: {
+          ...state.chats,
+          [action.id]: {
+            ...state.chats[action.id],
+            loading: {
+              ...state.chats[action.id].loading,
+              [action.name]: true
+            }
+          }
+        }
+      }
+    }
+    case CHAT_GET_SUCCESS : {
+      return {
+        ...state,
+        chats: {
+          ...state.chats,
+          [action.id]: {
+            ...state.chats[action.id],
+            loading: {
+              ...state.chats[action.id].loading,
+              [action.name]: false
+            }
+          }
+        }
+      }
     }
     case CHAT_LOAD : {
       // Quiet does not update/reset context (used when came from history)
@@ -108,16 +144,19 @@ export default function reducer (state = initialState, action) {
         chats: {
           ...state.chats,
           [action.id]: {
-            ...state.chats[action.id],
+            ...chat,
             stories: {
               ...initialChat.stories,
-              ...(state.chats[action.id] ?
-                state.chats[action.id].stories : {}),
+              ...(chat ? chat.stories : {}),
               skip: action.quiet ?
                 chat.stories.skip : skip,
               total: total !== undefined ? total : chat.stories.total,
               limit: limit !== undefined ? limit : chat.stories.limit,
               loaded: skip > (loaded || 0) ? skip : loaded
+            },
+            loading: {
+              ...chat.loading,
+              stories: false
             }
           }
         }
@@ -136,15 +175,18 @@ export default function reducer (state = initialState, action) {
         chats: {
           ...state.chats,
           [action.id]: {
-            ...state.chats[action.id],
+            ...chat,
             gallery: {
               ...initialChat.gallery,
-              ...(state.chats[action.id] ?
-                state.chats[action.id].gallery : {}),
+              ...(chat ? chat.gallery : {}),
               skip,
               total,
               limit,
               loaded: skip > (loaded || 0) ? skip : loaded
+            },
+            loading: {
+              ...chat.loading,
+              gallery: false
             }
           }
         }

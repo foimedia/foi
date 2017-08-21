@@ -65,11 +65,20 @@ class ChatStories extends Component {
     }
   }
 
+  isFetchingStories () {
+    const { stories, loading } = this.props;
+    return stories.length && loading !== undefined && loading.stories;
+  }
+
   render () {
-    const { chat } = this.props;
+    const { chat, stories, loading } = this.props;
     if(chat !== null && chat !== undefined) {
       return (
         <section id={`chat-${chat.id}-stories`}>
+          {this.isFetchingStories() ? (
+              <Loader size={20} label="Looking for new content..." />
+            ) : null
+          }
           {this.renderStories()}
         </section>
       )
@@ -95,6 +104,7 @@ const mapStateToProps = (state, ownProps) => {
   const { scrollHistory } = state.context;
   const hasMore = !!(context.limit + context.skip < context.total);
   return {
+    loading: state.context.chats[id].loading,
     stories: getChatStories(state.chats[id], state.stories, context),
     hasMore
   };
