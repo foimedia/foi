@@ -29,8 +29,9 @@ import authService from 'services/auth';
 const store = configureStore();
 const history = createHistory();
 
-authService(store);
-initServices(store);
+initServices(store, () => {
+  authService(store);
+});
 
 ReactDom.render(
   <Provider store={store}>

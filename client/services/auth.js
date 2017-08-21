@@ -7,10 +7,6 @@ const authorization = client.service('authorize');
 
 export default function init (store) {
 
-  client.io.on('key', key => {
-    store.dispatch(updateContext('key', key))
-  });
-
   if(window.localStorage['feathers-jwt']) {
     store.dispatch(authenticate());
   }

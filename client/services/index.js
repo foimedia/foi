@@ -1,11 +1,15 @@
 import { updateContext } from 'actions/context';
 import validateStore from './validate-store';
+import client from './feathers';
 import chats from './chats';
 import stories from './stories';
 import posts from './posts';
 import users from './users';
 
-export default function init (store) {
+export default function init (store, callback) {
+  client.io.on('key', key => {
+    store.dispatch(updateContext('key', key))
+  });
   store.dispatch(updateContext('online', true));
   window.addEventListener('offline', () => {
     store.dispatch(updateContext('online', false));
@@ -29,6 +33,8 @@ export default function init (store) {
       validateStore(store, 'users').then(removed => {
         users(store).batchRemove(removed);
       });
+      if(typeof callback == 'function')
+        callback();
     }
   });
 };
