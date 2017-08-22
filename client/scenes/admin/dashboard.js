@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Table from 'components/table';
+import TGLink from 'components/telegram-link';
 
 class Dashboard extends Component {
   render () {
@@ -26,7 +27,7 @@ class Dashboard extends Component {
               </tr>
               <tr>
                 <th>Bot name</th>
-                <td>{foi.botName}</td>
+                <td><TGLink /></td>
               </tr>
               <tr>
                 <th>Default user roles</th>
