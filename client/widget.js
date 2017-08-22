@@ -40,7 +40,6 @@ document.addEventListener('DOMContentLoaded', function() {
           if(chats[chatId]) {
             const chat = chats[chatId];
             unsubscribe();
-            console.log(node.dataset.gallery);
             const props = {
               chat: chat,
               gallery: node.dataset.gallery !== undefined ?
