@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
 import styleUtils from 'services/style-utils';
 // import Link from 'components/smart-link';
-import { Link } from 'react-router-dom';
+import Link from 'components/smart-link';
+import TGLink from 'components/telegram-link';
 
 const styles = css`
   font-family: 'Inconsolata', monospace;
@@ -113,5 +114,13 @@ export const ButtonLink = styled(({
 export const InputButton = styled.input`
   ${styles}
 `
+
+export const TGButton = styled(({
+  small, block, dark, danger, primary, ...rest
+}) => (
+  <TGLink {...rest} />
+))`
+  ${styles}
+`;
 
 export default Button;

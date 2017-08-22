@@ -5,8 +5,9 @@ import client from 'services/feathers';
 import styleUtils from 'services/style-utils';
 import ContentHeader from 'components/content/header';
 import ContentBody from 'components/content/body';
-import Button, { ButtonGroup } from 'components/button';
+import Button, { ButtonGroup, TGButton } from 'components/button';
 import { Code, SelectableCode } from 'components/code';
+import TGLink from 'components/telegram-link';
 
 const HomeWrapper = styled.section`
   .description {
@@ -66,14 +67,12 @@ class Home extends Component {
               Learn more
             </Button>
             {(!auth.signedIn && connectionKey !== undefined) &&
-              <Button
+              <TGButton
                 primary
-                href={`https://telegram.me/${foi.botName}?start=${connectionKey}`}
-                target="_blank"
-                rel="external">
+                start={connectionKey}>
                 <span className="fa fa-telegram"></span>
                 Authenticate with Telegram
-              </Button>
+              </TGButton>
             }
           </ButtonGroup>
           <div className="extended-description">
@@ -83,7 +82,7 @@ class Home extends Component {
             <p>Creating a new coverage or simply starting a live feed is as easy as creating a Telegram group:</p>
             <ol>
               <li>Create your new Telegram group inviting the people you'd like to contribute with;</li>
-              <li>Invite <a href={`tg://resolve?domain=${foi.botName}`}>@{foi.botName}</a>;</li>
+              <li>Invite <TGLink />;</li>
               <li>That's it!</li>
             </ol>
             <p>If the invitation is sent by an authorized publisher the bot will start watching the group and publish its content in real-time.</p>
