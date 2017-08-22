@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
-import CSSTransition from 'react-transition-group/CSSTransition';
+import Transition from 'react-transition-group/Transition';
 
 const transitionDuration = 400;
 
@@ -16,19 +16,13 @@ const rotate = keyframes`
 const LoaderWrapper = styled.div`
   text-align: center;
   overflow: hidden;
-  .transition-exit-active,
-  .transition-appear,
-  .transition-enter {
+  transition: all ${transitionDuration}ms ease-in-out;
+  &.transition-exited,
+  &.transition-entering {
     max-height: 0.01px;
   }
-  .transition-exit-active,
-  .transition-enter-active,
-  .transition-appear-active {
-    transition: all ${transitionDuration}ms ease-in-out;
-  }
-  .transition-exit,
-  .transition-enter-active,
-  .transition-appear-active {
+  &.transition-entered,
+  &.transition-exiting {
     max-height: 60px;
   }
   span {
@@ -49,18 +43,19 @@ export default class Loader extends Component {
   render () {
     const { size, label } = this.props;
     return (
-      <LoaderWrapper className={`loader`}>
-        <CSSTransition
-          in
-          appear={true}
-          timeout={transitionDuration}
-          classNames="transition">
-          <div>
+      <Transition
+        in
+        appear={true}
+        enter={true}
+        exit={true}
+        timeout={transitionDuration}>
+        {status => (
+          <LoaderWrapper className={`loader transition-${status}`}>
             <img src={require('images/loader.svg')} width={size} />
             <span>{label}</span>
-          </div>
-        </CSSTransition>
-      </LoaderWrapper>
+          </LoaderWrapper>
+        )}
+      </Transition>
     )
   }
 }
