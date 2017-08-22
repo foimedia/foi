@@ -67,7 +67,7 @@ class ChatStories extends Component {
 
   isFetchingStories () {
     const { stories, loading } = this.props;
-    return stories.length && loading !== undefined && loading.stories;
+    return stories !== undefined && stories.length && loading !== undefined && loading.stories;
   }
 
   render () {

@@ -18,7 +18,8 @@ const GalleryWrapper = styled.div`
   right: 0;
   background: #111;
   z-index: 99999;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   ${styleUtils.media.desktop`
     border-left: 1px solid #333;
   `}
@@ -93,6 +94,9 @@ const PostWrapper = styled.div`
   margin: 4rem auto 0;
   z-index: 2;
   color: #fff;
+  .post .img-container {
+    overflow: visible;
+  }
   .post .caption {
     color: inherit;
   }

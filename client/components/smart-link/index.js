@@ -5,7 +5,7 @@ import { Link, Redirect } from 'react-router-dom';
 
 export default class SmartLink extends Component {
   static contextTypes = {
-    router: PropTypes.object.isRequired
+    router: PropTypes.object
   }
   constructor(props) {
     super(props);

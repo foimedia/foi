@@ -14,12 +14,15 @@ import Bundle from 'components/bundle';
 import loadChatGallery from 'bundle-loader?lazy!containers/chat-gallery';
 import loadChatStories from 'bundle-loader?lazy!containers/chat-stories';
 
-window.foiInitialized = false;
+window._foi = window._foi || {
+  initialized: false
+};
 const init = function () {
-  if(!window.foiInitialized || window.foiInitialized == undefined) {
-    window.foiStore = configureStore();
-    initServices(foiStore);
-    window.foiInitialized = true;
+  if(!_foi.initialized) {
+    _foi.store = configureStore(store => {
+      initServices(store);
+      _foi.initialized = true;
+    });
   }
 }
 
@@ -31,21 +34,21 @@ document.addEventListener('DOMContentLoaded', function() {
         const node = nodes[i];
         const chatId = node.dataset.chat;
         init();
-        window.foiStore.dispatch(loadChat(chatId));
+        _foi.store.dispatch(loadChat(chatId));
         const initChat = () => {
-          const { chats } = window.foiStore.getState();
+          const { chats } = _foi.store.getState();
           if(chats[chatId]) {
             const chat = chats[chatId];
             unsubscribe();
             const props = {
               chat: chat,
-              hideGallery: !node.dataset.gallery || chat.hideGallery,
+              hideGallery: chat.hideGallery,
               more: node.dataset.more || 'button'
             };
             ReactDom.render(
-              <Provider store={window.foiStore}>
+              <Provider store={_foi.store}>
                 <div>
-                  {props.displayGallery &&
+                  {!props.hideGallery &&
                     <Bundle load={loadChatGallery}>
                       {ChatGallery => (
                         <ChatGallery {...props} />
@@ -63,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
             );
           }
         }
-        let unsubscribe = window.foiStore.subscribe(initChat);
+        let unsubscribe = _foi.store.subscribe(initChat);
       })(i);
     }
   }
