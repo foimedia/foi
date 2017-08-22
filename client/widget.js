@@ -40,15 +40,19 @@ document.addEventListener('DOMContentLoaded', function() {
           if(chats[chatId]) {
             const chat = chats[chatId];
             unsubscribe();
+            console.log(node.dataset.gallery);
             const props = {
               chat: chat,
-              hideGallery: chat.hideGallery,
+              gallery: node.dataset.gallery !== undefined ?
+                (node.dataset.gallery === 'false' ? false : true) :
+                !chat.hideGallery,
               more: node.dataset.more || 'button'
             };
+            console.log(props);
             ReactDom.render(
               <Provider store={_foi.store}>
                 <div>
-                  {!props.hideGallery &&
+                  {props.gallery &&
                     <Bundle load={loadChatGallery}>
                       {ChatGallery => (
                         <ChatGallery {...props} />
