@@ -47,7 +47,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 !chat.hideGallery,
               more: node.dataset.more || 'button'
             };
-            console.log(props);
             ReactDom.render(
               <Provider store={_foi.store}>
                 <div>
