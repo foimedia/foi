@@ -8,6 +8,7 @@ export default class TGLink extends Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
+    this.isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') !== -1;
   }
   getParams (props) {
     return Object.keys(props).map((key) => {
@@ -19,7 +20,12 @@ export default class TGLink extends Component {
   // the custom scheme url with default _self target.
   handleClick (event) {
     event.preventDefault();
-    this.linkNode.querySelector('iframe').src = this.linkNode.href;
+    if(this.isFirefox) {
+      const iframe = this.linkNode.querySelector('iframe');
+      iframe.src = this.linkNode.href;
+    } else {
+      window.location = this.linkNode.href;
+    }
   }
   render () {
     const { children, className, ...props } = this.props;
@@ -31,7 +37,16 @@ export default class TGLink extends Component {
         onClick={this.handleClick}
         >
         {children}
-        <iframe style={{display: 'none'}}></iframe>
+        {this.isFirefox &&
+          <iframe
+            frameBorder="0"
+            style={{
+              width: 0,
+              height: 0,
+              border: 0,
+              display: 'inline'
+            }} />
+        }
       </a>
     )
   }
