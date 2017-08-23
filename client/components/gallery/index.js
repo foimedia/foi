@@ -252,7 +252,7 @@ export class Gallery extends Component {
 
   componentDidUpdate (prevProps, prevState) {
     const node = findDOMNode(this);
-    if(node.childNodes.length) {
+    if(node !== null && node.childNodes.length) {
       const index = node.querySelectorAll('div[tabindex]');
       if(index.length) {
         index[0].focus();
@@ -410,7 +410,7 @@ export class Gallery extends Component {
                   </Link>
                 </Actions>
                 <PostWrapper>
-                  <Post post={post} />
+                  <Post post={post} focus={true} />
                 </PostWrapper>
               </div>
             </GalleryWrapper>

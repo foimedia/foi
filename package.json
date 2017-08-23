@@ -53,6 +53,7 @@
     "helmet": "^3.6.1",
     "history": "^4.6.3",
     "html-webpack-plugin": "^2.29.0",
+    "in-view": "^0.6.1",
     "leaflet": "^1.1.0",
     "localforage": "^1.5.0",
     "localstorage-memory": "^1.0.2",

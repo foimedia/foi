@@ -39,7 +39,6 @@ class ChatSettings extends Component {
   removed () {
     const { chat } = this.props;
     const { removing } = this.state;
-    console.log(removing, chat, 'removing?');
     if(removing && chat == undefined) {
       return true;
     }

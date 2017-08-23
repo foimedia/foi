@@ -79,6 +79,7 @@ class PostVideo extends PostMedia {
       <VideoBox className={`type-${ type }`}>
         <div className="video-container">
           <VideoPlayer
+            autoplay={this.props.focus}
             aspectRatio={`${ar[0]}:${ar[1]}`}
             controls={true}
             sources={src}
