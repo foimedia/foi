@@ -5,6 +5,10 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 class ScrollManager extends Component {
+  constructor(props) {
+    super(props);
+    this.watchScroll = this.watchScroll.bind(this);
+  }
   isModal (prevLocation) {
     const { location } = this.props;
     return !(
@@ -32,23 +36,21 @@ class ScrollManager extends Component {
       height
     }
   }
-  getScroll () {
-    const nodes = this.getNodes();
-    return (
-      nodes.scroll == window ? (
-        window.pageYOffset || (document.documentElement.scrollTop)
-      ) : nodes.scroll ? nodes.scroll.scrollTop : 0
-    );
-
-  }
   componentWillReceiveProps (nextProps) {
-    const scroll = this.getScroll();
+    const nodes = this.getNodes();
+    const scroll = this.currentScroll;
     const { scrollHistory, location } = this.props;
     if((scroll > 0 || scrollHistory[location.key]) && scrollHistory[location.key] !== scroll) {
       this.props.updateContext('scrollHistory', {
         [location.key]: scroll
       });
     }
+    nodes.scroll.removeEventListener('scroll', this.watchScroll);
+  }
+  watchScroll (ev) {
+    this.currentScroll = ev.target == window ? (
+      window.pageYOffset || (document.documentElement.scrollTop)
+    ) : ev.target.scrollTop;
   }
   componentDidUpdate (prevProps) {
     const nodes = this.getNodes();
@@ -73,6 +75,10 @@ class ScrollManager extends Component {
         }
       }
     }
+    nodes.scroll.addEventListener('scroll', this.watchScroll);
+  }
+  componentWillUnmount () {
+    nodes.scroll.removeEventListener('scroll', this.watchScroll);
   }
   render () {
     return null;
