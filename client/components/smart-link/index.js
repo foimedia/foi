@@ -34,7 +34,7 @@ export default class SmartLink extends Component {
         this.setState({
           redirect: true
         });
-      } else {
+      } else if(router === undefined) {
         window.open(event.target.href || foi.public + (to.pathname || to), this.isLocal() ? '_self' : '_blank');
       }
     }
