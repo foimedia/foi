@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
 import Transition from 'react-transition-group/Transition';
 
-const transitionDuration = 400;
+const transitionDuration = 200;
 
 const rotate = keyframes`
   from {
@@ -17,13 +17,19 @@ const LoaderWrapper = styled.div`
   text-align: center;
   overflow: hidden;
   transition: all ${transitionDuration}ms ease-in-out;
+  margin-left: auto;
+  margin-right: auto;
   &.transition-exited,
   &.transition-entering {
     max-height: 0.01px;
+    margin-top: 0.01rem;
+    margin-bottom: 0.01rem;
   }
   &.transition-entered,
   &.transition-exiting {
-    max-height: 60px;
+    max-height: 55px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
   }
   span {
     font-size: .7em;

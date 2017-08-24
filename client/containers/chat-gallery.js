@@ -80,6 +80,7 @@ class ChatGallery extends Component {
           const post = posts.find(post => post.id == location.state.post);
           return (
             <Gallery
+              className="modal"
               loadMore={this.fetchMore}
               hasMore={hasMore}
               posts={posts}

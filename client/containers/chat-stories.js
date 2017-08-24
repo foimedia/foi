@@ -15,6 +15,9 @@ class ChatStories extends Component {
 
   constructor (props) {
     super(props);
+    this.state = {
+      showFetchingMessage: false
+    };
     this.fetchMore = this.fetchMore.bind(this);
     this.renderStories = this.renderStories.bind(this);
   }
@@ -34,6 +37,19 @@ class ChatStories extends Component {
       if(prevProps.chat !== undefined && chat.id !== prevProps.chat.id) {
         this.props.loadChatStories(chat.id, fromHistory);
       }
+    }
+  }
+
+  componentWillReceiveProps (nextProps, nextState) {
+    if(nextProps.loading && nextProps.loading.stories && (!this.props.loading || !this.props.loading.stories)) {
+      this.setState({
+        showFetchingMessage: true
+      });
+      setTimeout(() => {
+        this.setState({
+          showFetchingMessage: false
+        });
+      }, 1200);
     }
   }
 
@@ -66,8 +82,9 @@ class ChatStories extends Component {
   }
 
   isFetchingStories () {
+    const { showFetchingMessage } = this.state;
     const { stories, loading } = this.props;
-    return stories !== undefined && stories.length && loading !== undefined && loading.stories;
+    return showFetchingMessage || (stories !== undefined && stories.length && loading !== undefined && loading.stories);
   }
 
   render () {

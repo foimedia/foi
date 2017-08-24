@@ -49,7 +49,7 @@ class ScrollManager extends Component {
   }
   watchScroll (ev) {
     this.currentScroll = ev.target == window ? (
-      window.pageYOffset || (document.documentElement.scrollTop)
+      window.pageYOffset || document.documentElement.scrollTop
     ) : ev.target.scrollTop;
   }
   componentDidUpdate (prevProps) {

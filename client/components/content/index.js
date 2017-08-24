@@ -16,9 +16,6 @@ const ContentWrapper = styled.section`
       margin: ${styleUtils.margins[i]*2}rem 0;
     }
   `)}
-  .loader {
-    margin: 1rem auto;
-  }
   .content-section {
     background: #fff;
     border: 1px solid #e4e4e4;

@@ -382,7 +382,7 @@ export class Gallery extends Component {
       }
     } else if(open && post) {
       return (
-        <div className="media-gallery">
+        <div className={`media-gallery ${this.props.className || ''}`}>
           <Swipeable
             onSwipedLeft={this.next}
             onSwipedRight={this.prev}
