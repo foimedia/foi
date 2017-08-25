@@ -110,6 +110,7 @@ const PostWrapper = styled.div`
   }
   .post .img-container,
   .post .interactive {
+    overflow: visible;
     position: relative;
     z-index: 3;
   }
