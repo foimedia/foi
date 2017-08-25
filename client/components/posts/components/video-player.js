@@ -126,7 +126,9 @@ export default class VideoPlayer extends Component {
   setup () {
     let updateCount = this.state.updateCount;
     this.setState({
-      updateCount: updateCount + 1
+      updateCount: updateCount + 1,
+      triggeredPlay: false,
+      backgroundPlay: true
     });
   }
   findScrollableAncestor (el) {
