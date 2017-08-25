@@ -99,8 +99,9 @@ export default class VideoPlayer extends Component {
       } else {
         this.viewportContainer.removeEventListener('scroll', this.handleScroll);
       }
-
-      this.handleBGPlay();
+      this.player.ready(() => {
+        this.handleBGPlay();
+      });
     }
 
     const { backgroundPlay, triggeredPlay } = this.state;
