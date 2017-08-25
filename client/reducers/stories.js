@@ -94,8 +94,10 @@ const updateStory = (state, id, data = initialStory) => {
 const getItemsIds = (items) => items.map(item => typeof item == 'string' ? item : item.id);
 
 const updateFromArray = (state, data = []) => {
-  data.forEach(story => {
-    updateStory(state, story.id, story);
-  });
+  if(Array.isArray(data)) {
+    data.forEach(story => {
+      updateStory(state, story.id, story);
+    });
+  }
   return state;
 };

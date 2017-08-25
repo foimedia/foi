@@ -63,10 +63,12 @@ const updatePost = (state, id, data = initialPost) => {
 };
 
 const updateFromArray = (state, data) => {
-  state = Object.assign({}, state);
-  data.forEach(post => {
-    state[post.id] = Object.assign({}, post);
-  });
+  if(Array.isArray(data)) {
+    state = Object.assign({}, state);
+    data.forEach(post => {
+      state[post.id] = Object.assign({}, post);
+    });
+  }
   return state;
 };
 

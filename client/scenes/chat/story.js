@@ -39,7 +39,7 @@ class Story extends Component {
     if(nextProps.match) {
       const { params } = nextProps.match;
       if(params.storyId !== storyId) {
-        this.props.loadStory();
+        this.props.loadStory(params.storyId);
       }
     }
   }

@@ -3,7 +3,7 @@ import { findDOMNode } from 'react-dom';
 import styled from 'styled-components';
 import { ProgressiveImage } from 'react-progressive-image-loading';
 import Hammer from 'hammerjs';
-// import interact from 'interactjs/dist/interact';
+import Link from 'components/smart-link';
 
 import styleUtils from 'services/style-utils';
 
@@ -50,6 +50,7 @@ class PostPhoto extends PostMedia {
     this.pinchstart = this.pinchstart.bind(this);
     this.pinchmove = this.pinchmove.bind(this);
     this.pinchend = this.pinchend.bind(this);
+    this.result = this.result.bind(this);
   }
 
   componentDidMount () {
@@ -129,6 +130,29 @@ class PostPhoto extends PostMedia {
     return 1;
   }
 
+  result (source, style) {
+    const ar = this.getPhotoAspectRatio();
+    const src = this.getFileUrl();
+    const comp = (
+      <div
+        ref={node => this.img = node}
+        className="img"
+        style={Object.assign(style, {
+          transition: 'all 0 linear',
+          backgroundImage: `url(${src})`,
+          paddingBottom: `${ar*100}%`,
+          backgroundSize: 'cover'
+        })} />
+    );
+    if(this.props.link) {
+      return (
+        <Link to={this.props.link}>{comp}</Link>
+      )
+    } else {
+      return comp;
+    }
+  }
+
   render() {
     const { caption } = this.props;
     const ar = this.getPhotoAspectRatio();
@@ -142,23 +166,13 @@ class PostPhoto extends PostMedia {
             src={src}
             preview={preview}
             transitionTime={200}
-            render={(source, style) => {
-              return (
-                <div
-                  ref={node => this.img = node}
-                  className="img"
-                  style={Object.assign(style, {
-                    transition: 'all 0 linear',
-                    backgroundImage: `url(${src})`,
-                    paddingBottom: `${ar*100}%`,
-                    backgroundSize: 'cover'
-                  })} />
-              )
-            }}
+            render={this.result}
           />
         </div>
         {typeof caption == 'string' &&
-          <p className="caption">{caption}</p>
+          <div className="caption-container">
+            <p className="caption">{caption}</p>
+          </div>
         }
       </PhotoBox>
     )

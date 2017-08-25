@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import uniqueId from 'lodash/uniqueId';
 
 import styleUtils from 'services/style-utils';
 
@@ -47,6 +48,11 @@ function gcd (a, b) {
 
 class PostVideo extends PostMedia {
 
+  constructor(props) {
+    super(props);
+    this.uniqueId = uniqueId();
+  }
+
   isVideoNote () {
     return this.props.type == 'video_note';
   }
@@ -79,14 +85,17 @@ class PostVideo extends PostMedia {
       <VideoBox className={`type-${ type }`}>
         <div className="video-container">
           <VideoPlayer
-            autoplay={this.props.focus}
+            id={`video-${this.props.id}-${this.uniqueId}`}
             aspectRatio={`${ar[0]}:${ar[1]}`}
-            controls={true}
+            controls={type == 'video_note' ? false : true}
+            loop={type == 'video_note' ? true : false}
             sources={src}
             />
         </div>
         {typeof caption == 'string' &&
-          <p className="caption">{caption}</p>
+          <div className="caption-container">
+            <p className="caption">{caption}</p>
+          </div>
         }
       </VideoBox>
     )

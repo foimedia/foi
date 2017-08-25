@@ -34,14 +34,20 @@ class Post extends Component {
         {(post.type == 'photo' || post.type == 'sticker') &&
           <Bundle load={loadPostPhoto}>
             {PostPhoto => (
-              <PostPhoto data={post.media} caption={post.content} {...props} />
+              <PostPhoto link={props.focus ? false : {
+                pathname: `/c/${post.chatId}/s/${post.storyId}`,
+                state: {
+                  modal: true,
+                  post: post.id
+                }
+              }} data={post.media} caption={post.content} {...props} />
             )}
           </Bundle>
         }
         {(post.type == 'video' || post.type == 'video_note') &&
           <Bundle load={loadPostVideo}>
             {PostVideo => (
-              <PostVideo data={post.media} caption={post.content} type={post.type} {...props} />
+              <PostVideo id={post.id} data={post.media} caption={post.content} type={post.type} {...props} />
             )}
           </Bundle>
         }

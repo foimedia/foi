@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import debounce from 'lodash/debounce';
 import { findDOMNode } from 'react-dom';
 import { updateContext } from 'actions/context';
 import { withRouter } from 'react-router-dom';
@@ -47,11 +48,11 @@ class ScrollManager extends Component {
     }
     nodes.scroll.removeEventListener('scroll', this.watchScroll);
   }
-  watchScroll (ev) {
+  watchScroll = debounce((ev) => {
     this.currentScroll = ev.target == window ? (
       window.pageYOffset || document.documentElement.scrollTop
     ) : ev.target.scrollTop;
-  }
+  }, 200)
   componentDidUpdate (prevProps) {
     const nodes = this.getNodes();
     const { scrollHistory, location } = this.props;

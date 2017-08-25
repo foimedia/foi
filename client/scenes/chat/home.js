@@ -23,10 +23,10 @@ class ChatHome extends Component {
     if(chat !== undefined) {
       return (
         <section id="chat-home">
+          <PullToCallback callback={this.reloadContent} />
           {!chat.hideGallery &&
             <Gallery chat={chat} />
           }
-          <PullToCallback callback={this.reloadContent} />
           <Stories chat={chat} fromHistory={fromHistory} />
         </section>
       )

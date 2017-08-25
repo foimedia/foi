@@ -23,6 +23,11 @@ const GalleryWrapper = styled.div`
   ${styleUtils.media.desktop`
     border-left: 1px solid #333;
   `}
+  .media-gallery-container {
+    width: 100%;
+    height: 100%;
+    display: table;
+  }
   > div {
     outline: none;
   }
@@ -31,7 +36,7 @@ const GalleryWrapper = styled.div`
 const Leave = styled.div`
   a {
     position: fixed;
-    z-index: 1;
+    z-index: 2;
     top: 0;
     left: 0;
     bottom: 0;
@@ -43,21 +48,26 @@ const Leave = styled.div`
 const Actions = styled.span`
   font-family: "Inconsolata", monospace;
   text-transform: uppercase;
-  z-index: 3;
   position: fixed;
+  z-index: 4;
   top: 0;
-  left: 0;
   right: 0;
   color: #fff;
   font-size: .8em;
   cursor: pointer;
   text-shadow: 0 0 .5rem #000;
-  ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
-    padding: ${styleUtils.margins[i]}rem;
-  `)}
   a,
   .disabled-nav-link {
     color: #fff;
+    ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+      padding-top: ${styleUtils.margins[i]}rem;
+      padding-bottom: ${styleUtils.margins[i]}rem;
+    `)}
+    &:first-child {
+      ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
+        padding-right: ${styleUtils.margins[i]}rem;
+    `)}
+    }
     &:hover,
     &:active,
     &:focus {
@@ -79,26 +89,45 @@ const Actions = styled.span`
   }
   > * {
     float: right;
-    margin: 0;
+    padding: 0;
     ${styleUtils.sizes.map((size, i) => styleUtils.media[size.device]`
-      margin-left: ${styleUtils.margins[i]}rem;
+      padding-left: ${styleUtils.margins[i]/2}rem;
+      padding-right: ${styleUtils.margins[i]/2}rem;
     `)}
   }
 `
 
 const PostWrapper = styled.div`
+  display: table-cell;
+  vertical-align: middle;
   position: relative;
   width: 100%;
-  max-height: 90%;
-  max-width: 1000px;
-  margin: 4rem auto 0;
-  z-index: 2;
+  height: 100%;
   color: #fff;
-  .post .img-container {
-    overflow: visible;
+  .post {
+    max-width: 1000px;
+    margin: 4rem auto;
   }
-  .post .caption {
-    color: inherit;
+  .post .img-container,
+  .post .interactive {
+    position: relative;
+    z-index: 3;
+  }
+  .post .caption-container {
+    p.caption {
+      color: inherit;
+    }
+    position: fixed;
+    z-index: 4;
+    width: 100%;
+    padding: 4rem 0 0;
+    bottom: 0;
+    left: 0;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0+0,0.65+100 */
+    background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#a6000000',GradientType=0 ); /* IE6-9 */
   }
 `;
 
@@ -388,15 +417,15 @@ export class Gallery extends Component {
             onSwipedRight={this.prev}
             >
             <GalleryWrapper>
-              <div tabIndex="0">
+              <div tabIndex="0" className="media-gallery-container">
                 <Leave>
-                  <Link to={`/c/${post.chatId}`}></Link>
+                  <a href="javascript:void(0);" onClick={back}></a>
                 </Leave>
                 <Actions>
-                  <Link to={`/c/${post.chatId}`}>
+                  <a href="javascript:void(0);" onClick={back}>
                     Close
                     <span className="fa fa-close"></span>
-                  </Link>
+                  </a>
                   <GalleryNavLink post={nav.next}>
                     Next
                     <span className="fa fa-chevron-right"></span>
