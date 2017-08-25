@@ -99,21 +99,27 @@ export default class VideoPlayer extends Component {
       } else {
         this.viewportContainer.removeEventListener('scroll', this.handleScroll);
       }
+
+      this.handleBGPlay();
     }
 
     const { backgroundPlay, triggeredPlay } = this.state;
     if(this.player && !triggeredPlay && prevState.backgroundPlay !== backgroundPlay) {
-      if(backgroundPlay) {
-        if(this.props.control)
-          this.player.controls(false);
-        if(!this.props.muted)
-          this.player.muted(true);
-        if(!this.props.loop)
-          this.player.loop(true);
-        this.player.play();
-      } else {
-        this.player.pause();
-      }
+      this.handleBGPlay();
+    }
+  }
+  handleBGPlay () {
+    const { backgroundPlay } = this.state;
+    if(backgroundPlay) {
+      if(this.props.control)
+        this.player.controls(false);
+      if(!this.props.muted)
+        this.player.muted(true);
+      if(!this.props.loop)
+        this.player.loop(true);
+      this.player.play();
+    } else {
+      this.player.pause();
     }
   }
   setup () {
