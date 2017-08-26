@@ -32,7 +32,7 @@ class Users extends Component {
               </thead>
               <tbody>
                 {users.map(user => (
-                  <tr>
+                  <tr key={user.id}>
                     <td>{`${user.first_name} ${user.last_name}`}</td>
                     <td>{user.roles.join(', ')}</td>
                     {/* <td></td> */}
