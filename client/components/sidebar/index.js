@@ -13,6 +13,12 @@ const SidebarWrapper = styled.div`
   h3 {
     color: #fff;
   }
+  a {
+    color: #f0f0f0;
+    &:hover {
+      color: #fff;
+    }
+  }
   nav.sidebar-nav {
     font-size: 1em;
     line-height: 1.5rem;

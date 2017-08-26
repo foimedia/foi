@@ -6,7 +6,9 @@ import client from 'services/feathers';
 import styleUtils from 'services/style-utils';
 import { hasRole } from 'services/auth';
 
-import ButtonedList from 'components/buttoned-list'
+import ButtonedList from 'components/buttoned-list';
+import TGLink from 'components/telegram-link';
+
 import Chat from './components/chat';
 
 const ChatsWrapper = styled.section`
@@ -111,7 +113,7 @@ class Chats extends Component {
           </ButtonedList>
           <footer>
             {hasRole(auth, 'publisher') &&
-              <p>Invite <strong>@{foi.botName}</strong> to a group for more chats!</p>
+              <p>Invite <TGLink /> to a group for more chats!</p>
             }
           </footer>
         </ChatsWrapper>

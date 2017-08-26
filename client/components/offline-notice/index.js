@@ -42,7 +42,7 @@ export default class OfflineNotice extends Component {
         timeout={transitionDuration}>
         {status => (
           <Wrapper className={`loader transition-${status}`}>
-            <span className="fa fa-wifi"></span>
+            <span className="fa fa-signal"></span>
             You are offline
           </Wrapper>
         )}
