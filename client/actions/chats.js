@@ -207,13 +207,15 @@ const get = id => (dispatch) => {
 
 export const loadChat = (id, quiet = false) => (dispatch, getState) => {
   dispatch(_load(id, quiet));
-  if(quiet)
+  if(quiet || !getState().context.online)
     return null;
   const chats = getState().chats;
   dispatch(get(id));
 };
 
-export const patchChat = (id, data) => (dispatch) => {
+export const patchChat = (id, data) => (dispatch, getState) => {
+  if(!getState().context.online)
+    return;
   dispatch(patchRequest(id, data));
   service.patch(id, data).then(chat => {
     dispatch(patchSuccess(id, chat));
@@ -222,7 +224,9 @@ export const patchChat = (id, data) => (dispatch) => {
   });
 };
 
-export const removeChat = id => (dispatch) => {
+export const removeChat = id => (dispatch, getState) => {
+  if(!getState().context.online)
+    return;
   dispatch(removeRequest(id));
   service.remove(id).then(data => {
     dispatch(removeSuccess(id, data));
@@ -233,7 +237,7 @@ export const removeChat = id => (dispatch) => {
 
 export const loadChatStories = (id, quiet = false) => (dispatch, getState) => {
   const chat = getState().chats[id];
-  if(chat === undefined || quiet)
+  if(chat === undefined || quiet || !getState().context.online)
     return null;
   dispatch(storiesRequest(id));
   stories.find({
@@ -250,6 +254,7 @@ export const loadChatStories = (id, quiet = false) => (dispatch, getState) => {
   });
 };
 export const expandChatStories = id => (dispatch, getState) => {
+  const online = getState().context.online;
   const chat = getState().chats[id];
   const context = getState().context.chats[id].stories;
   const skip = context.limit + context.skip;
@@ -264,19 +269,23 @@ export const expandChatStories = id => (dispatch, getState) => {
       skip: subsequentLimit + context.skip + context.new
     }));
     // Lazy expand for data update
-    stories.find({
-      query: {
-        chatId: id,
-        $sort: {
-          createdAt: chat.archived ? 1 : -1
-        },
-        $skip: subsequentLimit + context.skip + context.new
-      }
-    }).then(res => {
-      dispatch(storiesExpand(id, res));
-    });
+    if(online === true) {
+      stories.find({
+        query: {
+          chatId: id,
+          $sort: {
+            createdAt: chat.archived ? 1 : -1
+          },
+          $skip: subsequentLimit + context.skip + context.new
+        }
+      }).then(res => {
+        dispatch(storiesExpand(id, res));
+      });
+    }
   // Requesting new data if skip is more than whats loaded
   } else if(skip > (context.loaded || 0)) {
+    if(!online)
+      return;
     stories.find({
       query: {
         chatId: id,
@@ -304,7 +313,7 @@ export const galleryMediaTypes = [
 
 export const loadChatGallery = id => (dispatch, getState) => {
   const chat = getState().chats[id];
-  if(chat === undefined)
+  if(chat === undefined || !getState().context.online)
     return null;
   dispatch(galleryRequest(id));
   posts.find({
@@ -324,9 +333,12 @@ export const loadChatGallery = id => (dispatch, getState) => {
   });
 };
 export const expandChatGallery = id => (dispatch, getState) => {
+  const online = getState().context.online;
   const context = getState().context.chats[id].gallery;
   const skip = context.limit + context.skip;
   if(context.skip > context.loaded || 0) {
+    if(!online)
+      return;
     posts.find({
       query: {
         chatId: id,

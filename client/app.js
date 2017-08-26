@@ -16,6 +16,7 @@ import ContentHeader from 'components/content/header';
 import Footer from 'components/footer';
 import Auth from 'components/auth';
 import { ButtonLink } from 'components/button';
+import OfflineNotice from 'components/offline-notice';
 
 import Headers from 'containers/headers';
 import UserChats from 'containers/user-chats';
@@ -76,7 +77,7 @@ const Main = styled.div`
 class Application extends Component {
   render () {
     const self = this;
-    const { auth } = this.props;
+    const { auth, online } = this.props;
     return (
       <AppContainer>
         <ScrollManager node={this.scrollable} />
@@ -122,6 +123,9 @@ class Application extends Component {
             </Switch>
           </Content>
           <Footer />
+          {!online &&
+            <OfflineNotice />
+          }
         </Main>
       </AppContainer>
     );
@@ -130,7 +134,8 @@ class Application extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    auth: state.auth
+    auth: state.auth,
+    online: state.context.online
   }
 }
 
