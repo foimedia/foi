@@ -45,12 +45,16 @@ class ChatStories extends Component {
       this.setState({
         showFetchingMessage: true
       });
-      setTimeout(() => {
+      this.showFetchingTimeout = setTimeout(() => {
         this.setState({
           showFetchingMessage: false
         });
       }, 1200);
     }
+  }
+
+  componentWillUnmount () {
+    clearTimeout(this.showFetchingTimeout);
   }
 
   renderStories () {

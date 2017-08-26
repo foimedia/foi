@@ -93,13 +93,13 @@ export default class VideoPlayer extends Component {
       this.attachPlayerListeners();
 
       // Handling udpated video events
-      if(!this.props.autoplay) {
-        this.viewportContainer.addEventListener('scroll', this.handleScroll);
-        this.handleScroll();
-      } else {
-        this.viewportContainer.removeEventListener('scroll', this.handleScroll);
-      }
       this.player.ready(() => {
+        if(!this.props.autoplay) {
+          this.viewportContainer.addEventListener('scroll', this.handleScroll);
+          this.handleScroll();
+        } else {
+          this.viewportContainer.removeEventListener('scroll', this.handleScroll);
+        }
         this.handleBGPlay();
       });
     }
@@ -128,7 +128,7 @@ export default class VideoPlayer extends Component {
     this.setState({
       updateCount: updateCount + 1,
       triggeredPlay: false,
-      backgroundPlay: true
+      backgroundPlay: false
     });
   }
   findScrollableAncestor (el) {
