@@ -1,4 +1,4 @@
-const Message = require('../../telegram').Message;
+const Message = require('feathers-telegram-bot').Message;
 
 module.exports = function (app, path) {
   const telegram = app.telegram;

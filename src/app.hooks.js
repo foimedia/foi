@@ -1,7 +1,7 @@
 // Application hooks that run for every service
 const logger = require('./hooks/logger');
 const { when } = require('feathers-hooks-common');
-const telegram = require('./telegram').hooks;
+const telegram = require('feathers-telegram-bot').hooks;
 
 module.exports = {
   before: {

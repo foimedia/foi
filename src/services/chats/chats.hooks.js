@@ -3,7 +3,7 @@ const errors = require('feathers-errors');
 const parseDateQuery = require('../../hooks/parse-date-query');
 const { when, iff, iffElse, discard, disallow, setCreatedAt, setUpdatedAt } = require('feathers-hooks-common');
 const { restrictToAuthenticated, restrictToOwner, restrictToRoles } = require('feathers-authentication-hooks');
-const telegram = require('../../telegram').hooks;
+const telegram = require('feathers-telegram-bot').hooks;
 
 const isPrivate = () => hook => {
   return hook.service.get(hook.id)

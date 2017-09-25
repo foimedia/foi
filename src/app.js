@@ -19,7 +19,7 @@ const appHooks = require('./app.hooks');
 
 const mongodb = require('./mongodb');
 
-const telegram = require('./telegram');
+const telegram = require('feathers-telegram-bot');
 
 const authentication = require('./authentication');
 
@@ -55,7 +55,7 @@ app.configure(middleware);
 // Configure authentication (see `authentication.js`)
 app.configure(authentication);
 // Set up Telegram Bot (see `telegram/index.js`)
-app.configure(telegram);
+app.configure(telegram());
 // Set up our services (see `services/index.js`)
 app.configure(services);
 

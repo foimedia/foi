@@ -1723,6 +1723,12 @@ debug@2.6.8, debug@^2.1.1, debug@^2.2.0, debug@^2.3.1, debug@^2.3.2, debug@^2.4.
   dependencies:
     ms "2.0.0"
 
+debug@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-3.0.1.tgz#0564c612b521dc92d9f2988f0549e34f9c98db64"
+  dependencies:
+    ms "2.0.0"
+
 decamelize@^1.0.0, decamelize@^1.1.1, decamelize@^1.1.2:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
@@ -2505,6 +2511,12 @@ feathers-errors@^2.0.1, feathers-errors@^2.2.0, feathers-errors@^2.4.0, feathers
   dependencies:
     debug "^2.2.0"
 
+feathers-errors@^2.9.2:
+  version "2.9.2"
+  resolved "https://registry.yarnpkg.com/feathers-errors/-/feathers-errors-2.9.2.tgz#96ca0e5fe50cc56f0eccc90ce3fa5e1f8840828d"
+  dependencies:
+    debug "^3.0.0"
+
 feathers-hooks-common@^3.5.5:
   version "3.5.5"
   resolved "https://registry.yarnpkg.com/feathers-hooks-common/-/feathers-hooks-common-3.5.5.tgz#40f0f61c3411d3c4a413bace0f31237a1a32d041"
@@ -2565,6 +2577,15 @@ feathers-socketio@^2.0.0:
     feathers-socket-commons "^2.0.0"
     socket.io "^2.0.1"
     uberproto "^1.2.0"
+
+feathers-telegram-bot@^0.0.1-2:
+  version "0.0.1-2"
+  resolved "https://registry.yarnpkg.com/feathers-telegram-bot/-/feathers-telegram-bot-0.0.1-2.tgz#54faab0199d227f6699b2b7424183f00d94cdd1f"
+  dependencies:
+    feathers-errors "^2.9.2"
+    lodash.omit "^4.5.0"
+    lodash.union "^4.6.0"
+    node-telegram-bot-api "^0.28.0"
 
 feathers@^2.1.3:
   version "2.1.7"
@@ -3849,6 +3870,10 @@ lodash.set@^4.3.2:
   version "4.3.2"
   resolved "https://registry.yarnpkg.com/lodash.set/-/lodash.set-4.3.2.tgz#d8757b1da807dde24816b0d6a84bea1a76230b23"
 
+lodash.union@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/lodash.union/-/lodash.union-4.6.0.tgz#48bb5088409f16f1821666641c44dd1aaae3cd88"
+
 lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
@@ -4201,6 +4226,22 @@ node-rest-client@^1.5.1:
 node-telegram-bot-api@^0.27.1:
   version "0.27.1"
   resolved "https://registry.yarnpkg.com/node-telegram-bot-api/-/node-telegram-bot-api-0.27.1.tgz#b39cf0289a9bae2bf8408634873673afa671c93a"
+  dependencies:
+    array.prototype.findindex "^2.0.0"
+    bl "^1.1.2"
+    bluebird "^3.3.4"
+    debug "^2.2.0"
+    depd "^1.1.0"
+    eventemitter3 "^2.0.2"
+    file-type "^3.9.0"
+    mime "^1.3.4"
+    pump "^1.0.1"
+    request "^2.69.0"
+    request-promise "^4.1.1"
+
+node-telegram-bot-api@^0.28.0:
+  version "0.28.0"
+  resolved "https://registry.yarnpkg.com/node-telegram-bot-api/-/node-telegram-bot-api-0.28.0.tgz#a42afdf8ad2b7d1ce16d387ddc856a373fe85a26"
   dependencies:
     array.prototype.findindex "^2.0.0"
     bl "^1.1.2"

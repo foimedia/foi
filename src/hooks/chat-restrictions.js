@@ -1,7 +1,7 @@
 const errors = require('feathers-errors');
 const { when, iffElse } = require('feathers-hooks-common');
 const { restrictToRoles } = require('feathers-authentication-hooks');
-const { isTelegram, isChatType } = require('../telegram').hooks;
+const { isTelegram, isChatType } = require('feathers-telegram-bot').hooks;
 
 const restrictToActive = () => hook => {
   const chatId = hook.data.chatId;

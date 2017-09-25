@@ -3,8 +3,8 @@ const parseDateQuery = require('../../hooks/parse-date-query');
 const { restrictToAuthenticated } = require('feathers-authentication-hooks');
 const { when, populate, discard, disallow, setCreatedAt, setUpdatedAt } = require('feathers-hooks-common');
 const { restrictChatContent, restrictChatContentErrors } = require('../../hooks/chat-restrictions');
-const { isTelegram } = require('../../telegram').hooks;
-const Message = require('../../telegram').Message;
+const { isTelegram } = require('feathers-telegram-bot').hooks;
+const Message = require('feathers-telegram-bot').Message;
 
 const assignToStory = () => hook => {
   const storyService = hook.app.service('stories');
