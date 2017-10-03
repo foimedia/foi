@@ -1,4 +1,4 @@
-FROM node:8.1-alpine
+FROM node:8.6-alpine
 
 EXPOSE 3030
 
@@ -11,7 +11,7 @@ RUN apk -U upgrade \
      git \
      su-exec \
      tini \
-  && npm install -g yarn nodemon gulp-cli \
+  && npm install -g yarn nodemon \
   && update-ca-certificates \
   && rm -rf /tmp/* /var/cache/apk/*
 
