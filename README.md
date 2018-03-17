@@ -150,6 +150,8 @@ Persisting mongo database, uploaded files and the public directory (bundled asse
 
 #### Bundling assets
 
+**This is only required for production.**
+
 After the app container is created, you should run the command that generates the static content:
 
 ```

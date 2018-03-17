@@ -1,8 +1,11 @@
-FROM node:8.6-alpine
+FROM node:9-alpine
+
+ARG UID=991
+ARG GID=991
 
 EXPOSE 3030
 
-WORKDIR /src
+WORKDIR /foi
 
 RUN apk -U upgrade \
   && apk add \
@@ -15,15 +18,20 @@ RUN apk -U upgrade \
   && update-ca-certificates \
   && rm -rf /tmp/* /var/cache/apk/*
 
+RUN addgroup -g ${GID} foi \
+  && adduser -h /foi -s /bin/sh -D -G foi -u ${UID} foi
+
 # Copy files
-COPY . /src
+COPY . /foi
 
 # Install app dependencies
 RUN yarn install
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
+RUN chown -R foi:foi /foi
+
+USER foi
+
+ENTRYPOINT ["/sbin/tini", "--"]
 
 # Run node server
 CMD ["node", "src/"]
