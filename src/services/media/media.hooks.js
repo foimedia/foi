@@ -39,10 +39,8 @@ const checkFiles = () => hook => {
       return new Promise((resolve, reject) => {
         fs.access(path, fs.constants.F_OK, err => {
           if (err) {
-            console.log("fetch");
             fetchFiles(file, dir, telegram).then(file => resolve(file));
           } else {
-            console.log("file ok");
             resolve(file);
           }
         });
@@ -52,14 +50,16 @@ const checkFiles = () => hook => {
     }
   };
   if (hook.type == "after") {
-    if (hook.method == "get") {
-      return check(hook.result).then(() => hook);
-    } else if (hook.method == "find") {
+    if (Array.isArray(hook.result)) {
       let promises = [];
       for (let file of hook.result) {
-        promises.push(check(file));
+        if (file && file.file_id) {
+          promises.push(check(file));
+        }
       }
       return Promise.all(promises).then(() => hook);
+    } else if (hook.result.file_id) {
+      return check(hook.result).then(() => hook);
     }
   }
   return hook;
