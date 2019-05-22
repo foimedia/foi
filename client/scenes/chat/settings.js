@@ -1,18 +1,17 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-import { patchChat, removeChat } from 'actions/chats';
-import { hasRole } from 'services/auth';
-import { canManage, isActive } from 'services/chats';
-import Loader from 'components/loader';
-import Table from 'components/table';
-import Form from 'components/form';
-import { SelectableCode } from 'components/code';
-import Button, { InputButton, ButtonGroup } from 'components/button';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+import { patchChat, removeChat } from "actions/chats";
+import { hasRole } from "services/auth";
+import { canManage, isActive } from "services/chats";
+import Loader from "components/loader";
+import Table from "components/table";
+import Form from "components/form";
+import { SelectableCode } from "components/code";
+import Button, { InputButton, ButtonGroup } from "components/button";
 
 class ChatSettings extends Component {
-
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       formData: {},
@@ -26,9 +25,13 @@ class ChatSettings extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  remove () {
+  remove() {
     const { chat, removeChat } = this.props;
-    if(confirm('Are you sure? This will remove all chat data, including posts, stories and media!')) {
+    if (
+      confirm(
+        "Are you sure? This will remove all chat data, including posts, stories and media!"
+      )
+    ) {
       this.setState({
         removing: true
       });
@@ -36,79 +39,89 @@ class ChatSettings extends Component {
     }
   }
 
-  removed () {
+  removed() {
     const { chat } = this.props;
     const { removing } = this.state;
-    if(removing && chat == undefined) {
+    if (removing && chat == undefined) {
       return true;
     }
     return false;
   }
 
-  archive () {
+  archive() {
     const { chat, patchChat } = this.props;
     patchChat(chat.id, { archived: true });
   }
 
-  unarchive () {
+  unarchive() {
     const { chat, patchChat } = this.props;
     patchChat(chat.id, { archived: false });
   }
 
-  activate () {
+  activate() {
     const { chat, patchChat } = this.props;
     patchChat(chat.id, { active: true });
   }
 
-  handleChange (event) {
+  handleChange(event) {
     const { formData } = this.state;
     const { target } = event;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const value = target.type === "checkbox" ? target.checked : target.value;
     this.setState({
-      formData: Object.assign({}, formData, {[target.name]: value})
+      formData: Object.assign({}, formData, { [target.name]: value })
     });
   }
 
-  isCheckedInput (name) {
+  isCheckedInput(name) {
     const { chat } = this.props;
     const { formData } = this.state;
-    if(formData[name] !== undefined) {
+    if (formData[name] !== undefined) {
       return !!formData[name];
     } else {
       return !!chat[name];
     }
   }
 
-  handleSubmit (event) {
+  handleSubmit(event) {
     const { chat, patchChat } = this.props;
     patchChat(chat.id, this.state.formData);
     event.preventDefault();
   }
 
-  render () {
+  _getInputValue(key) {
+    const { chat } = this.props;
+    const { formData } = this.state;
+    console.log(key, formData[key], chat[key]);
+    if (typeof formData[key] == "string") return formData[key];
+    if (typeof chat[key] == "string") return chat[key];
+    return "";
+  }
+
+  render() {
     const { chat, auth } = this.props;
     const { formData, removing } = this.state;
-    if(chat !== undefined && auth.user !== null) {
+    if (chat !== undefined && auth.user !== null) {
       return (
         <section id="chat-settings">
-          {!canManage(chat, auth) &&
-            <Redirect to="/" />
-          }
+          {!canManage(chat, auth) && <Redirect to="/" />}
           <div className="sections">
-            {(!isActive(chat) && hasRole(auth, 'publisher')) &&
-              <div className="chat-activation content-section">
-                <h3>
-                  <span className="fa fa-warning"></span>
-                  Chat activation
-                </h3>
-                <p>
-                  <Button primary block onClick={this.activate}>Your chat is not active. Click here to activate!</Button>
-                </p>
-              </div>
-            }
+            {!isActive(chat) &&
+              hasRole(auth, "publisher") && (
+                <div className="chat-activation content-section">
+                  <h3>
+                    <span className="fa fa-warning" />
+                    Chat activation
+                  </h3>
+                  <p>
+                    <Button primary block onClick={this.activate}>
+                      Your chat is not active. Click here to activate!
+                    </Button>
+                  </p>
+                </div>
+              )}
             <div className="chat-info content-section">
               <h3>
-                <span className="fa fa-info-circle"></span>
+                <span className="fa fa-info-circle" />
                 General information
               </h3>
               <Table>
@@ -138,27 +151,42 @@ class ChatSettings extends Component {
             </div>
             <div className="main-settings content-section">
               <h3>
-                <span className="fa fa-gear"></span>
+                <span className="fa fa-gear" />
                 Settings
               </h3>
               <Form onSubmit={this.handleSubmit}>
                 <p>
                   <label>
                     Description
-                    <textarea name="description" value={formData.description || chat.description} onChange={this.handleChange}></textarea>
+                    <textarea
+                      name="description"
+                      value={this._getInputValue("description")}
+                      onChange={this.handleChange}
+                    />
                   </label>
                 </p>
                 <p>
                   <label>
                     Live video URL
-                    <input name="liveURL" type="text" value={formData.liveURL || chat.liveURL} onChange={this.handleChange} />
+                    <input
+                      name="liveURL"
+                      type="text"
+                      value={formData.liveURL || chat.liveURL}
+                      onChange={this.handleChange}
+                    />
                   </label>
                 </p>
                 <p>
                   <label>
                     Media Gallery
                     <span className="checkbox">
-                      <input name="hideGallery" type="checkbox" checked={this.isCheckedInput('hideGallery')} onChange={this.handleChange} /> Hide media gallery
+                      <input
+                        name="hideGallery"
+                        type="checkbox"
+                        checked={this.isCheckedInput("hideGallery")}
+                        onChange={this.handleChange}
+                      />{" "}
+                      Hide media gallery
                     </span>
                   </label>
                 </p>
@@ -169,7 +197,7 @@ class ChatSettings extends Component {
             </div>
             <div className="share-settings content-section">
               <h3>
-                <span className="fa fa-bullhorn"></span>
+                <span className="fa fa-bullhorn" />
                 Share
               </h3>
               <Form>
@@ -191,40 +219,41 @@ class ChatSettings extends Component {
                 </p>
                 <p>Make sure to add the widget javascript to your page:</p>
                 <SelectableCode>
-                  {`<script type="text/javascript" src="${foi.public}/widget.js" async></script>`}
+                  {`<script type="text/javascript" src="${
+                    foi.public
+                  }/widget.js" async></script>`}
                 </SelectableCode>
               </Form>
             </div>
-            {chat.type !== 'private' &&
+            {chat.type !== "private" && (
               <ButtonGroup alignright>
-                {!chat.archived &&
+                {!chat.archived && (
                   <Button onClick={this.archive}>
-                    <span className="fa fa-archive"></span>
+                    <span className="fa fa-archive" />
                     Archive chat
                   </Button>
-                }
-                {chat.archived &&
+                )}
+                {chat.archived && (
                   <Button onClick={this.unarchive}>
-                    <span className="fa fa-archive"></span>
+                    <span className="fa fa-archive" />
                     Unarchive chat
                   </Button>
-                }
+                )}
                 <Button danger onClick={this.remove}>
-                  <span className="fa fa-remove"></span>
+                  <span className="fa fa-remove" />
                   Delete chat
                 </Button>
               </ButtonGroup>
-            }
+            )}
           </div>
         </section>
-      )
+      );
     } else if (removing || this.removed()) {
-      return <Redirect to="/" />
+      return <Redirect to="/" />;
     } else {
-      return <Loader size={20} />
+      return <Loader size={20} />;
     }
   }
-
 }
 
 const mapStateToProps = (state, ownProps) => {
@@ -232,7 +261,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     chat: state.chats[chatId],
     auth: state.auth
-  }
+  };
 };
 
 const mapDispatchToProps = {
@@ -240,4 +269,7 @@ const mapDispatchToProps = {
   removeChat
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChatSettings);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ChatSettings);

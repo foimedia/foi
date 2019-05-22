@@ -1,7 +1,7 @@
 // Application hooks that run for every service
-const logger = require('./hooks/logger');
-const { when } = require('feathers-hooks-common');
-const telegram = require('feathers-telegram-bot').hooks;
+const logger = require("./hooks/logger");
+const { when } = require("feathers-hooks-common");
+const telegram = require("feathers-telegram-bot").hooks;
 
 module.exports = {
   before: {
@@ -9,17 +9,19 @@ module.exports = {
       when(telegram.isTelegram(), [
         telegram.patchOrCreateMessageChats(),
         telegram.patchOrCreateMessageUsers({
-          telegramIdField: 'id',
-          as: ''
+          telegramIdField: "id",
+          as: ""
         }),
         telegram.patchMessageUserChat({
-          telegramIdField: 'id',
-          as: 'chats'
+          telegramIdField: "id",
+          as: "chats"
         }),
         telegram.authenticate({
-          telegramIdField: 'id'
+          telegramIdField: "id"
         }),
-        hook => { hook.params.provider = 'telegram' }
+        hook => {
+          hook.params.provider = "telegram";
+        }
       ])
     ],
     find: [],
@@ -31,7 +33,7 @@ module.exports = {
   },
 
   after: {
-    all: [ logger() ],
+    all: [logger()],
     find: [],
     get: [],
     create: [],
@@ -47,9 +49,9 @@ module.exports = {
         hook => {
           const telegram = hook.app.telegram;
           const chatId = hook.params.message.chat.id;
-          if(!hook.error.silent)
+          if (!hook.error.silent)
             telegram.sendMessage(chatId, hook.error.message);
-          if(hook.error.leaveChat) {
+          if (hook.error.leaveChat) {
             telegram.leaveChat(chatId);
           }
           return hook;
@@ -59,7 +61,7 @@ module.exports = {
           hook => {
             const telegram = hook.app.telegram;
             const chatId = hook.params.message.chat.id;
-            if(hook.error.silent) {
+            if (hook.error.silent) {
               telegram.sendMessage(chatId, hook.error.message);
             }
             return hook;
