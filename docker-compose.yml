@@ -1,4 +1,4 @@
-version: '2'
+version: "2"
 services:
   app:
     image: miguelpeixe/foi:latest
@@ -9,14 +9,14 @@ services:
     links:
       - mongo
     ports:
-    - 3030:3030
+      - 3030:3030
     volumes:
-    # Development volumes. Comment-out for production
-    - /src/node_modules
-    - .:/src
+      # Development volumes. Comment-out for production
+      - /foi/node_modules
+      - .:/foi
     # Uncomment below for production (persist app data)
-    # - ./.data/files:/src/files
-    # - ./.data/public:/src/public
+    # - ./.data/files:/foi/files
+    # - ./.data/public:/foi/public
     environment:
       NODE_ENV: development
   mongo:
@@ -25,4 +25,4 @@ services:
     # volumes:
     # - ./.data/database:/data/db
     ports:
-    - 27018:27017
+      - 27018:27017
