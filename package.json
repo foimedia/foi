@@ -61,7 +61,7 @@
     "lodash": "^4.17.4",
     "mkdirp": "^0.5.1",
     "moment": "^2.18.1",
-    "mongodb": "^2.2.29",
+    "mongodb": "^3.1.13",
     "node-telegram-bot-api": "^0.27.1",
     "normalize.css": "^7.0.0",
     "offline-plugin": "^4.8.3",
